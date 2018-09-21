@@ -28,7 +28,7 @@ export default class Client {
   }
 
   disconnect() {
-    if (this.stompClient.connected) {
+    if (this.stompClient && this.stompClient.connected) {
       this.stompClient.disconnect();
     }
   }
