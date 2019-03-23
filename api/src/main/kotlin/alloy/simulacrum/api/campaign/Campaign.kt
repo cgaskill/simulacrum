@@ -1,5 +1,7 @@
-package alloy.simulacrum.api.game
+package alloy.simulacrum.api.campaign
 
+import alloy.simulacrum.api.content.ContentItem
+import alloy.simulacrum.api.content.ContentItems
 import alloy.simulacrum.api.user.User
 import alloy.simulacrum.api.user.Users
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -22,7 +24,7 @@ class Campaign(id: EntityID<Long>) : LongEntity(id) {
     var name by Campaigns.name
     var archived by Campaigns.archived
     var players by User via CampaignPlayers
-    val entities by CampaignEntity referrersOn CampaignEntities.campaign
+    val entities by ContentItem referrersOn ContentItems.campaign
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,7 +46,6 @@ data class CampaignDTO(val name: String) {
     var sceneConfigs: List<SceneConfig> = listOf()
     var archived: Boolean? = null
     var playerIds: List<Long>? = null
-    var entities: List<CampaignEntityDTO>? = null
 
     constructor(campaign: Campaign): this(campaign.name) {
         this.id = campaign.id.value
@@ -52,9 +53,6 @@ data class CampaignDTO(val name: String) {
         this.archived = campaign.archived
         this.playerIds = campaign.players.map { it.id.value }
 
-        this.entities = campaign.entities.map {
-            CampaignEntityDTO(it)
-        }
         // TODO pull game config from DB
         gameConfig = GameConfig(0)
 

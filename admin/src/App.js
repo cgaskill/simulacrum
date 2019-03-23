@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Admin, Resource } from 'react-admin';
-import {UserList, UserEdit} from 'pages/users';
-import LoginPage from 'LoginPage';
-import {authProvider,dataProvider} from "providers";
+import React, {Component} from "react";
+import {Admin, Resource} from "react-admin";
+import {UserList, UserEdit} from "pages/users";
+import LoginPage from "LoginPage";
+import {authProvider, dataProvider} from "providers";
 import {CampaignEdit, CampaignList} from "pages/campaigns";
-import DashBoard from 'pages/dashboard'
-import UserIcon from '@material-ui/icons/Group';
-import CampaignIcon from '@material-ui/icons/Games';
+import DashBoard from "pages/dashboard";
+import UserIcon from "@material-ui/icons/Group";
+import CampaignIcon from "@material-ui/icons/Games";
 
 class App extends Component {
   render() {

@@ -13,7 +13,7 @@ export default class CampaignInfoPage extends Component {
     const campaignId = _.toNumber(this.props.match.params.campaignId);
 
     return (
-        <TemplatePage>
+        <TemplatePage hideHeaderBanner={true} >
           <CampaignInfoBodyContainer campaignId={campaignId} {...this.props}/>
         </TemplatePage>
     );

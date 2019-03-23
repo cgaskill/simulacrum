@@ -1,4 +1,5 @@
-import EntityGrid from "components/campaign/info/EntityGrid";
+import CampaignInfoBodyCreator from "components/campaign/info/CampaignInfoBodyCreator";
+import ContentGrid from "components/campaign/info/content/ContentGrid";
 import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
@@ -7,9 +8,6 @@ import {Redirect} from "react-router-dom";
 import InvitePlayerForm from "components/campaign/info/InvitePlayerForm";
 
 const styles = (themes) => ({
-  campaignInfoContainer: {
-
-  },
 });
 
 class CampaignInfoBody extends React.Component {
@@ -18,6 +16,7 @@ class CampaignInfoBody extends React.Component {
     isLoading: PropTypes.bool.isRequired,
     campaignId: PropTypes.number.isRequired,
     loadCampaign: PropTypes.func.isRequired,
+    loadContentItems: PropTypes.func.isRequired,
     campaign: PropTypes.object,
     isCreator: PropTypes.bool.isRequired,
   };
@@ -26,19 +25,20 @@ class CampaignInfoBody extends React.Component {
     if (_.isEmpty(this.props.campaign)) {
       const campaignId = _.toNumber(this.props.campaignId);
       this.props.loadCampaign(campaignId);
+      this.props.loadContentItems(campaignId);
     }
   }
 
   renderCreatorView() {
     return <React.Fragment>
-      <EntityGrid {...this.props} />
-      <InvitePlayerForm {...this.props} />;
+      <ContentGrid {...this.props} />
+      <InvitePlayerForm {...this.props} />
     </React.Fragment>;
   }
 
   renderPlayerView() {
     return <React.Fragment>
-      <EntityGrid {...this.props}/>
+      <ContentGrid {...this.props}/>
     </React.Fragment>;
   }
 
@@ -57,7 +57,7 @@ class CampaignInfoBody extends React.Component {
         <React.Fragment>
           {
             isCreator &&
-            this.renderCreatorView()
+            <CampaignInfoBodyCreator {...this.props} />
           }
           {
             !isCreator &&

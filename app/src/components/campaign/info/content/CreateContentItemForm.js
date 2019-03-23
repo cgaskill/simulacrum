@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import _ from "lodash";
-import {Redirect} from "react-router-dom";
 import CardActions from "@material-ui/core/CardActions";
 import {Field, reduxForm} from "redux-form";
 import Typography from "@material-ui/core/Typography";
@@ -29,7 +28,7 @@ const validate = (values) => {
   return errors;
 };
 
-class CreateEntityForm extends React.Component {
+class CreateContentItemForm extends React.Component {
   static propTypes = {
     campaignId: PropTypes.number.isRequired,
     loadCampaign: PropTypes.func.isRequired,
@@ -52,7 +51,7 @@ class CreateEntityForm extends React.Component {
   }
 
   render() {
-    const {handleSubmit, pristine, submitting, classes, isLoading, campaign, invitePlayer} = this.props;
+    const {handleSubmit, pristine, submitting, classes, isLoading, invitePlayer} = this.props;
 
     if (isLoading) {
       return null;
@@ -60,7 +59,7 @@ class CreateEntityForm extends React.Component {
 
     return (
         <div className={classes.campaignInfoContainer}>
-          <form onSubmit={handleSubmit(invitePlayer)}>
+          <form onSubmit={(e) => handleSubmit(invitePlayer)}>
             <Card className={classes.campaignForm}>
               <CardContent>
                 <Typography variant="headline" color={"inherit"} gutterBottom className={classes.campaignFormTitle}>
@@ -86,6 +85,6 @@ class CreateEntityForm extends React.Component {
 }
 
 export default withStyles(styles)(reduxForm({
-  form: "CreateEntityForm",
+  form: "CreateContentItemForm",
   validate,
-})(CreateEntityForm));
+})(CreateContentItemForm));

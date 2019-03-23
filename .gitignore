@@ -1,10 +1,5 @@
 .idea
 *.iml
-.gradle
-/gradle/wrapper/gradle-wrapper.jar
-/gradle/wrapper/gradle-wrapper.properties
-/api/gradle/wrapper/gradle-wrapper.jar
-/api/gradle/wrapper/gradle-wrapper.properties
 /build
 */out
 npm-debug.log

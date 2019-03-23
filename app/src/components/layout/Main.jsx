@@ -6,6 +6,7 @@ const styles = (theme) => ({
   main: {
     paddingLeft: 32,
     paddingRight: 32,
+    paddingTop: 32,
     minHeight: 100,
   },
 });

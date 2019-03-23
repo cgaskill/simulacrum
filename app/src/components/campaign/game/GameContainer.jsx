@@ -19,7 +19,7 @@ class GameContainer extends Component {
 
     // Initialize
     this.game.start();
-    this.client.connect();
+    // this.client.connect();
 
     window.addEventListener("resize", this.updateDimensions);
   }

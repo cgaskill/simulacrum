@@ -7,11 +7,20 @@
       "target": "http://localhost:8080"
     }
   },
+  "scripts": {
+    "start": "NODE_PATH=./src react-scripts start",
+    "build": "NODE_PATH=./src react-scripts build",
+    "test": "NODE_PATH=./src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .js,.jsx --ignore-pattern node_modules/"
+  },
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "connected-react-router": "^4.3.0",
+    "draft-js": "^0.10.5",
     "history": "^4.7.2",
     "jss": "latest",
     "lodash": "^4.17.10",
@@ -32,13 +41,6 @@
     "sockjs-client": "1.0.0",
     "stompjs": "^2.3.3",
     "typeface-roboto": "0.0.54"
-  },
-  "scripts": {
-    "start": "NODE_PATH=./src react-scripts start",
-    "build": "NODE_PATH=./src react-scripts build",
-    "test": "NODE_PATH=./src react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx --ignore-pattern node_modules/"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -62,7 +64,7 @@
       "require-jsdoc": "off",
       "max-len": [
         1,
-        120,
+        160,
         4
       ],
       "babel/new-cap": 1,

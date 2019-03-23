@@ -12,11 +12,11 @@ export default class TemplatePage extends Component {
   render() {
     return (
         <React.Fragment>
-          <HeaderContainer />
+          <HeaderContainer { ...this.props } />
           <MainContainer>
             { this.props.children }
           </MainContainer>
-          <Footer/>
+          <Footer { ...this.props } />
         </React.Fragment>
     );
   }

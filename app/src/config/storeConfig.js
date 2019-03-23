@@ -1,7 +1,7 @@
 import {connectRouter, routerMiddleware} from "connected-react-router";
 import {applyMiddleware, compose, createStore} from "redux";
 import thunk from "redux-thunk";
-import rootReducer from "reducers";
+import rootReducer from "actions";
 
 const configureStore = (history) => {
   const initialState = {};

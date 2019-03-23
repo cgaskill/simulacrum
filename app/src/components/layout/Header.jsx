@@ -41,10 +41,11 @@ class Header extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     handleLogoutClick: PropTypes.func.isRequired,
+    hideHeaderBanner: PropTypes.bool,
   };
 
   render() {
-    const {classes} = this.props;
+    const {classes, hideHeaderBanner} = this.props;
 
     return (
         <React.Fragment>
@@ -66,7 +67,9 @@ class Header extends Component {
               }
             </Toolbar>
           </AppBar>
-          <SubMenu />
+          {
+            !hideHeaderBanner && <SubMenu />
+          }
         </React.Fragment>
     );
   }

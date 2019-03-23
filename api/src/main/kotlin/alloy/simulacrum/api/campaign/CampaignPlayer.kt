@@ -1,4 +1,4 @@
-package alloy.simulacrum.api.game
+package alloy.simulacrum.api.campaign
 
 import alloy.simulacrum.api.user.Users
 import org.jetbrains.exposed.dao.EntityID

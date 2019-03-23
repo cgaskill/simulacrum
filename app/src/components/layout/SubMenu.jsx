@@ -11,7 +11,6 @@ const styles = (theme) => ({
     "color": theme.palette.common.white,
     "justifyContent": "center",
     "position": "relative",
-    "marginBottom": "20px",
     "&:after": {
       content: "\"\"",
       // TODO Setup image credits

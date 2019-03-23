@@ -8,18 +8,67 @@
     }
   },
   "dependencies": {
+    "@material-ui/core": "^3.1.0",
+    "@material-ui/icons": "^3.0.1",
     "ra-data-json-server": "^2.0.3",
     "ra-data-simple-rest": "^2.0.3",
     "react": "^16.4.1",
-    "react-admin": "^2.0.3",
+    "react-admin": "^2.3.0",
     "react-dom": "^16.4.1",
     "react-google-login": "^3.2.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "^1.1.5"
   },
   "scripts": {
     "start": "NODE_PATH=./src react-scripts start",
     "build": "NODE_PATH=./src react-scripts build",
     "test": "NODE_PATH=./src react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-flowtype": "^2.49.3",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.10.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "react-app",
+      "google"
+    ],
+    "rules": {
+      "require-jsdoc": "off",
+      "max-len": [
+        1,
+        120,
+        4
+      ],
+      "babel/new-cap": 1,
+      "babel/no-invalid-this": 1,
+      "babel/object-curly-spacing": 1,
+      "babel/quotes": 1,
+      "babel/semi": 1,
+      "babel/no-unused-expressions": 1,
+      "no-invalid-this": 0,
+      "quotes": 0,
+      "no-restricted-imports": [
+        "error",
+        {
+          "patterns": [
+            "@material-ui/core/es/*"
+          ]
+        }
+      ]
+    },
+    "plugins": [
+      "babel",
+      "react"
+    ]
   }
 }

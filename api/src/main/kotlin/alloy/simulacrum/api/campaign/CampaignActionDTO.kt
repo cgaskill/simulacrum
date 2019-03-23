@@ -1,4 +1,4 @@
-package alloy.simulacrum.api.game
+package alloy.simulacrum.api.campaign
 
 data class CampaignActionDTO(val type: String) {
     var userId: Long? = null

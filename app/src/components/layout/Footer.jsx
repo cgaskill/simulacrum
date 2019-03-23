@@ -18,7 +18,6 @@ class Footer extends Component {
 
     return (
         <footer className={classes.footer}>
-          Simulacrum
         </footer>
     );
   }

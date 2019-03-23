@@ -1,6 +1,8 @@
 package alloy.simulacrum.api.user
 
-import alloy.simulacrum.api.*
+import alloy.simulacrum.api.Page
+import alloy.simulacrum.api.Pageable
+import alloy.simulacrum.api.withPageable
 import org.jetbrains.exposed.sql.select
 import org.joda.time.DateTime
 import org.springframework.security.core.GrantedAuthority
@@ -40,6 +42,7 @@ class UserService : UserDetailsService {
         return allAuths
     }
 
+    @Transactional
     fun registerUser(userDTO: UserDTO): User {
         val newUser = User.new {
             userName = userDTO.username
