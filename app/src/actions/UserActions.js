@@ -31,7 +31,7 @@ function clearToken() {
 
 export function login(googleUser) {
   return (dispatch) => {
-    setUserToken(googleUser.accessToken);
+    setUserToken(googleUser.Zi.access_token);
 
     return axios.post("/api/users/login")
     .then((response) => {
@@ -43,8 +43,10 @@ export function login(googleUser) {
   };
 }
 
-export function loadUserFromToken() {
+export function initializeUser() {
   return (dispatch) => {
+    window.gapi.load("auth2", () => initSigninV2(dispatch));
+
     let token = getToken();
     if (_.isEmpty(token)) {
       dispatch(loadUserFromTokenFailure("No Token"));
@@ -60,6 +62,39 @@ export function loadUserFromToken() {
     });
   };
 }
+
+let initSigninV2 = function(dispatch) {
+  const auth2 = window.gapi.auth2.init({
+    client_id: "1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com",
+    scope: "profile",
+  });
+
+  auth2.currentUser.listen((user) => userChanged(dispatch, user));
+
+  const user = auth2.isSignedIn.get();
+  if (user) {
+    auth2.signIn();
+  }
+
+  refreshValues(dispatch, auth2);
+};
+
+let userChanged = function(dispatch, user) {
+  updateGoogleUser(dispatch, user);
+};
+
+let updateGoogleUser = function(dispatch, googleUser) {
+  if (googleUser && googleUser.Zi) {
+    dispatch(login(googleUser));
+  }
+};
+
+let refreshValues = function(dispatch, auth2) {
+  if (auth2) {
+    const googleUser = auth2.currentUser.get();
+    updateGoogleUser(googleUser);
+  }
+};
 
 export function loadUserFromTokenSuccess(user, token) {
   setUserToken(token);
@@ -94,6 +129,8 @@ export function loginUserFailure(error) {
 
 export function logoutUser() {
   clearToken();
+  let auth2 = window.gapi.auth2.getAuthInstance();
+  auth2.signOut();
 
   return {
     type: TYPES.LOGOUT_USER,

@@ -14,11 +14,11 @@ export default class PageRoutes extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    loadUserFromToken: PropTypes.func.isRequired,
+    initializeUser: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.loadUserFromToken();
+    this.props.initializeUser();
   }
 
   render() {

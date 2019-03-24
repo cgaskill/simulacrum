@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {GoogleLogin} from "react-google-login";
 import {withStyles} from "@material-ui/core/styles";
 import {Redirect} from "react-router-dom";
 import CardContent from "@material-ui/core/CardContent";
@@ -33,6 +32,8 @@ const styles = (theme) => ({
   },
 });
 
+const GOOGLE_BUTTON_ID = "google-sign-in-button";
+
 class LoginBody extends Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
@@ -55,8 +56,22 @@ class LoginBody extends Component {
     return null;
   }
 
+  componentDidMount() {
+    if (!this.props.isLoggedIn) {
+      window.gapi.signin2.render(
+          GOOGLE_BUTTON_ID,
+          {
+            width: 200,
+            height: 50,
+            onsuccess: this.props.loginSuccess,
+            onFailure: this.props.loginFailure,
+          },
+      );
+    }
+  }
+
   render() {
-    const {classes, isLoggedIn, isLoading, loginSuccess, loginFailure} = this.props;
+    const {classes, isLoggedIn, isLoading} = this.props;
 
     if (isLoading) {
       return null;
@@ -66,7 +81,6 @@ class LoginBody extends Component {
       return <Redirect to={from} />;
     }
 
-    /* TODO Style the Google Login button according to documentation*/
     return (
         <div className={classes.root}>
           <div className={classes.row}>
@@ -75,11 +89,7 @@ class LoginBody extends Component {
                 <div className={classes.row}>
                   <Typography variant="headline" gutterBottom>Login</Typography>
                 </div>
-                <GoogleLogin
-                    clientId="1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com"
-                    onSuccess={loginSuccess}
-                    onFailure={loginFailure}
-                />
+                <div id={GOOGLE_BUTTON_ID}/>
               </CardContent>
             </Card>
           </div>

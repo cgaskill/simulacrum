@@ -12,8 +12,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadUserFromToken: () => {
-      dispatch(UserActions.loadUserFromToken());
+    initializeUser: () => {
+      dispatch(UserActions.initializeUser());
     },
   };
 };
