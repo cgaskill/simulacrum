@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import _ from "lodash";
 import {Redirect} from "react-router-dom";
-import InvitePlayerForm from "components/campaign/info/InvitePlayerForm";
 
 const styles = (themes) => ({
 });
@@ -27,13 +26,6 @@ class CampaignInfoBody extends React.Component {
       this.props.loadCampaign(campaignId);
       this.props.loadContentItems(campaignId);
     }
-  }
-
-  renderCreatorView() {
-    return <React.Fragment>
-      <ContentGrid {...this.props} />
-      <InvitePlayerForm {...this.props} />
-    </React.Fragment>;
   }
 
   renderPlayerView() {

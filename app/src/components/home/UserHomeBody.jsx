@@ -1,3 +1,4 @@
+import Divider from "@material-ui/core/Divider";
 import CampaignCard from "components/campaign/card/CampaignCard";
 import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles";
@@ -54,13 +55,14 @@ class UserHomeBody extends Component {
             <Grid item sm={12} md={8}>
               {
                 <div className={classes.root} elevation={4}>
-                  <div>
-                    <Typography variant="headline" component="h2" align={"center"}>
-                      Campaigns
-                      <Button component={Link} to={"/campaigns/new"}><AddCircleOutlineIcon/></Button>
-                    </Typography>
-                  </div>
                   <Grid container spacing={32} className={classes.campaignGrid}>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={"title"}>
+                      <Typography variant="headline" component="h2">
+                        Campaigns
+                        <Button component={Link} to={"/campaigns/new"}><AddCircleOutlineIcon/></Button>
+                      </Typography>
+                      <Divider />
+                    </Grid>
                     {
                       campaigns.instances.map(function(campaign, index) {
                         return (

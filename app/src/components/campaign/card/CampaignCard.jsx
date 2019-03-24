@@ -20,7 +20,6 @@ const styles = (theme) => ({
     marginBottom: 0,
   },
   campaignCard: {
-    width: "250px",
     maxWidth: "100%",
     margin: "auto",
     marginBottom: 16,
@@ -35,7 +34,7 @@ const styles = (theme) => ({
   },
 });
 
-class UserHomeBody extends Component {
+class CampaignCard extends Component {
   static propTypes = {
     campaign: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
@@ -65,4 +64,4 @@ class UserHomeBody extends Component {
   }
 }
 
-export default withStyles(styles)(UserHomeBody);
+export default withStyles(styles)(CampaignCard);

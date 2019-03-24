@@ -11,6 +11,7 @@ export const TYPES = {
   LOGIN_USER_FAILURE: "LOGIN_USER_FAILURE",
   LOGOUT_USER: "LOGOUT_USER",
   USER_FROM_TOKEN: "USER_FROM_TOKEN",
+  GAPI_LOADED: "GAPI_LOADED",
 };
 
 function setUserToken(token) {
@@ -31,6 +32,9 @@ function clearToken() {
 
 export function login(googleUser) {
   return (dispatch) => {
+    if (getToken() === googleUser.Zi.access_token) {
+      return;
+    }
     setUserToken(googleUser.Zi.access_token);
 
     return axios.post("/api/users/login")
@@ -43,9 +47,12 @@ export function login(googleUser) {
   };
 }
 
-export function initializeUser() {
+export function initializeUser(gapiLoaded) {
   return (dispatch) => {
-    window.gapi.load("auth2", () => initSigninV2(dispatch));
+    if (!gapiLoaded) {
+      window.gapi.load("auth2", () => initSigninV2(dispatch));
+      dispatch(setgapiLoaded());
+    }
 
     let token = getToken();
     if (_.isEmpty(token)) {
@@ -102,6 +109,12 @@ export function loadUserFromTokenSuccess(user, token) {
     type: TYPES.LOAD_USER_FROM_TOKEN_SUCCESS,
     user,
     token,
+  };
+}
+
+export function setgapiLoaded() {
+  return {
+    type: TYPES.GAPI_LOADED,
   };
 }
 

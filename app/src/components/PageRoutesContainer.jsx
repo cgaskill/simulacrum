@@ -7,13 +7,14 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
     isLoading: state.user.isLoading,
+    gapiLoaded: state.user.gapiLoaded,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initializeUser: () => {
-      dispatch(UserActions.initializeUser());
+    initializeUser: (gapiLoaded) => {
+      dispatch(UserActions.initializeUser(gapiLoaded));
     },
   };
 };

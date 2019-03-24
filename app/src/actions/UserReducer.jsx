@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   isLoggedIn: false,
   isLoading: true,
   info: null,
+  gapiLoaded: false,
 };
 
 export function userReducer(state = INITIAL_STATE, action) {
@@ -20,6 +21,8 @@ export function userReducer(state = INITIAL_STATE, action) {
         isLoggedIn: true, isLoading: false};
     case TYPES.LOGOUT_USER:
       return {...state, info: null, isLoggedIn: false, isLoading: false};
+    case TYPES.GAPI_LOADED:
+      return {...state, gapiLoaded: true};
     case "TIMEOUT":
       return {...state, info: null, isLoggedIn: false, isLoading: false};
     default:

@@ -20,12 +20,6 @@ const styles = (theme) => ({
   entityGrid: {
     marginBottom: 0,
   },
-  entityCard: {
-    // width: "250px",
-    // maxWidth: "100%",
-    // margin: "auto",
-    // marginBottom: 16,
-  },
   subheader: {
     width: "100%",
   },
@@ -75,6 +69,7 @@ class ContentGrid extends Component {
 
     const filteredContentItems = contentItems;
 
+    // TODO Change from GRID to GRIDLIST
     return (
         <React.Fragment>
           <div className={"contentItems"}>
