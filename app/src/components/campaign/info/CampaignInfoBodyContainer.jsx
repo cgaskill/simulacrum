@@ -18,7 +18,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createContentItem: (contentItem) => {
+    putContentItem: (contentItem) => {
       return dispatch(ContentActions.putContentItem(contentItem));
     },
     loadCampaign: (campaignId) => {

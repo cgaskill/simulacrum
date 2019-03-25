@@ -42,7 +42,7 @@ class ContentModal extends Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    createContentItem: PropTypes.func.isRequired,
+    putContentItem: PropTypes.func.isRequired,
     campaignId: PropTypes.number.isRequired,
     classes: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -59,7 +59,7 @@ class ContentModal extends Component {
   }
 
   handleSaveContentItem = (contentItem) => {
-    this.props.createContentItem({...contentItem, campaignId: this.props.campaignId})
+    this.props.putContentItem({...contentItem, campaignId: this.props.campaignId})
     .then(this.handleClose);
   };
 

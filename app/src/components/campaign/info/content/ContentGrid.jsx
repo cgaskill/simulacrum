@@ -124,7 +124,8 @@ class ContentGrid extends Component {
           <ContentModal initialValues={this.state.editContentItem}
                         handleClose={this.handleCloseContentItemModal}
                         isOpen={this.state.contentItemModalIsOpen}
-                        enableReinitialize={true}/>
+                        enableReinitialize={true}
+                        {...this.props}/>
         </div>
     );
   }

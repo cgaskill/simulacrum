@@ -29,7 +29,7 @@ export function contentReducer(state = INITIAL_STATE, action) {
 }
 
 function replaceItem(instances, newContentItem) {
-  const tempContentItemIndex = _.findLastIndex(instances, (contentItem) => contentItem.id = newContentItem.id);
+  const tempContentItemIndex = _.findLastIndex(instances, (contentItem) => contentItem.id === newContentItem.id);
   if (tempContentItemIndex > -1) {
     return _.concat(_.slice(instances, 0, tempContentItemIndex), newContentItem, _.slice(instances, tempContentItemIndex + 1));
   } else {
