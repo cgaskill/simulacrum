@@ -26,7 +26,7 @@ class CampaignInfoBodyCreator extends React.Component {
 
     return (
         <Grid container spacing={32}>
-          <Grid item xs={12} sm={12} md={9} lg={9} xl={10} key={"content"}>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={"content"}>
             <ContentGrid {...this.props} />
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3} xl={2} key={"sidePanel"}>

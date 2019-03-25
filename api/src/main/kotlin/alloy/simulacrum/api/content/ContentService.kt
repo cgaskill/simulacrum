@@ -9,19 +9,33 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ContentService {
     @Transactional
-    fun createContentItem(user: User, contentItemDTO: ContentItemDTO): ContentItemDTO {
+    fun putContentItem(user: User, contentItemDTO: ContentItemDTO): ContentItemDTO {
         val currentUser = User.findById(user.id)!!
         val currentCampaign = Campaign.findById(contentItemDTO.campaignId!!)!!
-        val newContentItem = ContentItem.new {
-            name = contentItemDTO.name
-            type = contentItemDTO.type
-            visibleToPlayers = contentItemDTO.visibleToPlayers
-            campaign = currentCampaign.id
-            creator = currentUser.id
-            archived = contentItemDTO.archived
+
+        val contentItem = if(contentItemDTO.id != null) {
+            val oldContentItem = ContentItem.findById(contentItemDTO.id!!)!!
+            if (currentUser.id == oldContentItem.creator
+                || currentCampaign.creator == currentUser) {
+                oldContentItem.archived = contentItemDTO.archived
+                oldContentItem.gmNotes = contentItemDTO.gmNotes ?: ""
+                oldContentItem.notes = contentItemDTO.notes ?: ""
+                oldContentItem.name = contentItemDTO.name
+                oldContentItem.visibleToPlayers = contentItemDTO.visibleToPlayers
+            }
+            oldContentItem
+        } else {
+            ContentItem.new {
+                name = contentItemDTO.name
+                type = contentItemDTO.type
+                visibleToPlayers = contentItemDTO.visibleToPlayers
+                campaign = currentCampaign.id
+                creator = currentUser.id
+                archived = contentItemDTO.archived
+            }
         }
 
-        return ContentItemDTO(newContentItem)
+        return ContentItemDTO(contentItem)
     }
 
     @Transactional(readOnly = true)

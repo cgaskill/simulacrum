@@ -20,7 +20,7 @@ const configureStore = (history) => {
     }
 
     if (module.hot) {
-      module.hot.accept("../reducers", () => {
+      module.hot.accept("../actions", () => {
         store.replaceReducer(rootReducer);
       });
     }

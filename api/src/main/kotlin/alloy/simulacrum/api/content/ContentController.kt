@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*
 class ContentController(val contentService: ContentService) {
     companion object : KLogging()
 
-    @PostMapping()
-    fun createContentItem(@AuthenticationPrincipal user: User, @RequestBody contentItemDTO: ContentItemDTO): ContentItemDTO {
-        return contentService.createContentItem(user, contentItemDTO)
+    @PutMapping()
+    fun putContentItem(@AuthenticationPrincipal user: User, @RequestBody contentItemDTO: ContentItemDTO): ContentItemDTO {
+        return contentService.putContentItem(user, contentItemDTO)
     }
 
     @GetMapping("/{campaignId}/load")

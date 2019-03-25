@@ -49,10 +49,7 @@ export function login(googleUser) {
 
 export function initializeUser(gapiLoaded) {
   return (dispatch) => {
-    if (!gapiLoaded) {
-      window.gapi.load("auth2", () => initSigninV2(dispatch));
-      dispatch(setgapiLoaded());
-    }
+    initializeGoogleAPI(dispatch, gapiLoaded);
 
     let token = getToken();
     if (_.isEmpty(token)) {
@@ -70,7 +67,14 @@ export function initializeUser(gapiLoaded) {
   };
 }
 
-let initSigninV2 = function(dispatch) {
+function initializeGoogleAPI(dispatch, gapiLoaded) {
+  if (!gapiLoaded && window.gapi) {
+    window.gapi.load("auth2", () => initSigninV2(dispatch));
+    dispatch(setgapiLoaded());
+  }
+}
+
+function initSigninV2(dispatch) {
   const auth2 = window.gapi.auth2.init({
     client_id: "1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com",
     scope: "profile",
@@ -84,24 +88,24 @@ let initSigninV2 = function(dispatch) {
   }
 
   refreshValues(dispatch, auth2);
-};
+}
 
-let userChanged = function(dispatch, user) {
+function userChanged(dispatch, user) {
   updateGoogleUser(dispatch, user);
-};
+}
 
-let updateGoogleUser = function(dispatch, googleUser) {
+function updateGoogleUser(dispatch, googleUser) {
   if (googleUser && googleUser.Zi) {
     dispatch(login(googleUser));
   }
-};
+}
 
-let refreshValues = function(dispatch, auth2) {
+function refreshValues(dispatch, auth2) {
   if (auth2) {
     const googleUser = auth2.currentUser.get();
     updateGoogleUser(googleUser);
   }
-};
+}
 
 export function loadUserFromTokenSuccess(user, token) {
   setUserToken(token);

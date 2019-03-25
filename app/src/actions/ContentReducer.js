@@ -9,12 +9,12 @@ const INITIAL_STATE = {
 
 export function contentReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case TYPES.CREATE_CONTENT_ITEM_START:
-      return {...state, instances: [...state.instances, action.contentItem], isLoading: true, error: false};
-    case TYPES.CREATE_CONTENT_ITEM_SUCCESS:
+    case TYPES.PUT_CONTENT_ITEM_START:
+      return {...state, isLoading: true, error: false};
+    case TYPES.PUT_CONTENT_ITEM_SUCCESS:
       return {...state, instances: replaceItem(state.instances, action.contentItem), isLoading: false, error: false};
-    case TYPES.CREATE_CONTENT_ITEM_FAILURE:
-      return {...state, instances: removeItem(state.instances, action.contentItem), isLoading: false, error: action.error};
+    case TYPES.PUT_CONTENT_ITEM_FAILURE:
+      return {...state, isLoading: false, error: action.error};
     case TYPES.LOAD_CONTENT_ITEMS_START:
       return {...state, instances: [], campaignId: action.campaignId, isLoading: true, error: false};
     case TYPES.LOAD_CONTENT_ITEMS_SUCCESS:
@@ -29,11 +29,19 @@ export function contentReducer(state = INITIAL_STATE, action) {
 }
 
 function replaceItem(instances, newContentItem) {
-  const tempContentItemIndex = _.findLastIndex(instances, (contentItem) => contentItem.name = newContentItem.name);
-  return _.concat(_.slice(instances, 0, tempContentItemIndex), newContentItem, _.slice(instances, tempContentItemIndex + 1));
+  const tempContentItemIndex = _.findLastIndex(instances, (contentItem) => contentItem.id = newContentItem.id);
+  if (tempContentItemIndex > -1) {
+    return _.concat(_.slice(instances, 0, tempContentItemIndex), newContentItem, _.slice(instances, tempContentItemIndex + 1));
+  } else {
+    return _.concat(instances, newContentItem);
+  }
 }
 
-function removeItem(instances, newContentItem) {
-  const tempContentItemIndex = _.findLastIndex(instances, (contentItem) => contentItem.name = newContentItem.name);
-  return _.concat(_.slice(instances, 0, tempContentItemIndex), _.slice(instances, tempContentItemIndex + 1));
-}
+// function removeItem(instances, newContentItem) {
+//   const tempContentItemIndex = _.findLastIndex(instances, (contentItem) => contentItem.name = newContentItem.name);
+//   if (tempContentItemIndex > -1) {
+//     return _.concat(_.slice(instances, 0, tempContentItemIndex), _.slice(instances, tempContentItemIndex + 1));
+//   } else {
+//     return instances;
+//   }
+// }

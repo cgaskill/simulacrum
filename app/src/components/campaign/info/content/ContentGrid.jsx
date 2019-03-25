@@ -1,14 +1,16 @@
-import Button from "@material-ui/core/Button";
+import {Divider} from "@material-ui/core";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
+import IconButton from "@material-ui/core/IconButton";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import {withStyles} from "@material-ui/core/styles/index";
 import ContentModal from "components/campaign/info/content/ContentModal";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import CardMedia from "@material-ui/core/CardMedia";
-import Grid from "@material-ui/core/Grid";
+import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
 
 const styles = (theme) => ({
   contentItems: {
@@ -31,6 +33,11 @@ const styles = (theme) => ({
   button: {
     margin: theme.spacing.unit,
   },
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
 });
 
 class ContentGrid extends Component {
@@ -38,28 +45,42 @@ class ContentGrid extends Component {
     campaignId: PropTypes.number.isRequired,
     contentItems: PropTypes.array,
     classes: PropTypes.object.isRequired,
-    createContentItem: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      createContentItemModalIsOpen: false,
+      contentItemModalIsOpen: false,
+      cols: 4,
+      editContentItem: null,
     };
+    this.rootRef = React.createRef();
   }
 
-  handleOpenCreateContentItemModal = (event) => {
-    this.setState({createContentItemModalIsOpen: true});
+  handleOpenContentItemModal = (event, editContentItem) => {
+    editContentItem = editContentItem || {};
+    this.setState({contentItemModalIsOpen: true, editContentItem});
   };
 
-  handleCloseCreateContentItemModal = (event) => {
-    this.setState({createContentItemModalIsOpen: false});
+  handleCloseContentItemModal = () => {
+    this.setState({contentItemModalIsOpen: false, editContentItem: null});
   };
 
-  handleCreateContentItem = (contentItem) => {
-    this.setState({createContentItemModalIsOpen: false});
-    this.props.createContentItem({...contentItem, campaignId: this.props.campaignId});
-  };
+  updateCols() {
+    if (this.rootRef.current) {
+      const cols = Math.min(Math.max(Math.floor(this.rootRef.current.offsetWidth / 250), 1), 6);
+      this.setState({cols});
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateCols.bind(this));
+    this.updateCols();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateCols.bind(this));
+  }
 
   render() {
     const {classes, contentItems} = this.props;
@@ -69,42 +90,42 @@ class ContentGrid extends Component {
 
     const filteredContentItems = contentItems;
 
-    // TODO Change from GRID to GRIDLIST
     return (
-        <React.Fragment>
-          <div className={"contentItems"}>
-            <Grid container spacing={32} className={classes.entityGrid}>
-              <Grid item xs={12} key={"filterMenu"}>
-                <Button variant="contained" color="primary" className={classes.button} onClick={this.handleOpenCreateContentItemModal}>
-                  <AddIcon /> New
-                  <ContentModal handleCreateContent={this.handleCreateContentItem}
-                                handleClose={this.handleCloseCreateContentItemModal}
-                                isOpen={this.state.createContentItemModalIsOpen}/>
-                </Button>
-              </Grid>
-              {
-                filteredContentItems.map(function(entity, index) {
-                  return (
-                      <Grid item xs={12} sm={6} md={6} lg={4} xl={3} key={index}>
-                        <Card className={classes.entityCard}>
-                          <CardMedia
-                              image="http://via.placeholder.com/250x150"
-                              title="Placeholder"
-                              className={classes.media}
-                          />
-                          <CardContent>
-                            <Typography className={classes.entityTitle} color="primary">
-                              {entity.name}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                  );
-                })
-              }
-            </Grid>
-          </div>
-        </React.Fragment>
+        <div ref={this.rootRef} className={"contentItems"}>
+          <GridList cellHeight={180} cols={this.state.cols} className={classes.gridList}>
+            <GridListTile key="Subheader" cols={this.state.cols} style={{height: "auto"}}>
+              <ListSubheader component="h1">Content</ListSubheader>
+              <Divider/>
+            </GridListTile>
+            {
+              filteredContentItems.map((contentItem, index) => {
+                return (
+                    <GridListTile key={index}>
+                      {/* <img src={contentItem.img}*/}
+                      <img src={"http://via.placeholder.com/260x180"}
+                           alt={contentItem.title}/>
+                      <GridListTileBar
+                          title={contentItem.name}
+                          subtitle={<span>{contentItem.notes}</span>}
+                          actionIcon={
+                            <IconButton className={classes.icon}>
+                              <EditIcon onClick={(e) => this.handleOpenContentItemModal(e, contentItem)}/>
+                            </IconButton>
+                          }
+                      />
+                    </GridListTile>
+                );
+              })
+            }
+          </GridList>
+          <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.handleOpenContentItemModal} >
+            <AddIcon />
+          </Fab>
+          <ContentModal initialValues={this.state.editContentItem}
+                        handleClose={this.handleCloseContentItemModal}
+                        isOpen={this.state.contentItemModalIsOpen}
+                        enableReinitialize={true}/>
+        </div>
     );
   }
 }

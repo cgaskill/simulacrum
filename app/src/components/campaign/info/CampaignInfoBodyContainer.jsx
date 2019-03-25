@@ -19,17 +19,17 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createContentItem: (contentItem) => {
-      dispatch(ContentActions.createContentItem(contentItem));
+      return dispatch(ContentActions.putContentItem(contentItem));
     },
     loadCampaign: (campaignId) => {
-      dispatch(CampaignActions.loadCampaign(campaignId));
+      return dispatch(CampaignActions.loadCampaign(campaignId));
     },
     loadContentItems: (campaignId) => {
-      dispatch(ContentActions.loadContentItems(campaignId));
+      return dispatch(ContentActions.loadContentItems(campaignId));
     },
     invitePlayer: (form) => {
       const {email, campaignId} = form;
-      dispatch(CampaignActions.invitePlayer(campaignId, email));
+      return dispatch(CampaignActions.invitePlayer(campaignId, email));
     },
   };
 };

@@ -42,53 +42,59 @@ class ContentModal extends Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    handleCreateContent: PropTypes.func.isRequired,
+    createContentItem: PropTypes.func.isRequired,
+    campaignId: PropTypes.number.isRequired,
     classes: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    reset: PropTypes.func.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      createEntityIsOpen: false,
-    };
+
+    this.handleSaveContentItem = this.handleSaveContentItem.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
+  handleSaveContentItem = (contentItem) => {
+    this.props.createContentItem({...contentItem, campaignId: this.props.campaignId})
+    .then(this.handleClose);
+  };
+
+  handleClose = () => {
+    this.props.reset();
+    this.props.handleClose();
+  };
+
   render() {
-    const {handleSubmit, pristine, submitting, handleCreateContent} = this.props;
+    const {handleSubmit, pristine, submitting} = this.props;
 
     return (
         <Dialog
             open={this.props.isOpen}
-            onClose={this.props.handleClose}
+            onClose={this.handleClose}
             aria-labelledby="form-dialog-title">
-          <form onSubmit={handleSubmit(handleCreateContent)}>
+          <form onSubmit={handleSubmit(this.handleSaveContentItem)}>
             <DialogTitle id="form-dialog-title">New Content</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Create new content!
               </DialogContentText>
               <div>
-                {/* <TextField*/}
-                {/* id="filled-dense"*/}
-                {/* label="Name"*/}
-                {/* className={classNames(classes.textField, classes.dense)}*/}
-                {/* margin="dense"*/}
-                {/* variant="filled"*/}
-                {/* />*/}
-
                 <Field name="name" type="text"
-                       component={FormTextField} label="Name"
-                />
+                       component={FormTextField} label="Name"/>
                 <Field name="type" type="text"
-                       component={FormTextField} label="Type"
-                />
+                       component={FormTextField} label="Type"/>
+                <Field name="notes" type="text"
+                       component={FormTextField} label="Notes"/>
+                <Field name="gmNotes" type="text"
+                       component={FormTextField} label="GM Only Notes"/>
               </div>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.props.handleClose} color="primary">
+              <Button onClick={this.handleClose} color="primary">
                 Cancel
               </Button>
               <Button type="submit" disabled={pristine || submitting} color={"inherit"}>

@@ -1,22 +1,22 @@
 import axios from "axios";
 
 export const TYPES = {
-  CREATE_CONTENT_ITEM_START: "CREATE_CONTENT_ITEM_START",
-  CREATE_CONTENT_ITEM_SUCCESS: "CREATE_CONTENT_ITEM_SUCCESS",
-  CREATE_CONTENT_ITEM_FAILURE: "CREATE_CONTENT_ITEM_FAILURE",
+  PUT_CONTENT_ITEM_START: "PUT_CONTENT_ITEM_START",
+  PUT_CONTENT_ITEM_SUCCESS: "PUT_CONTENT_ITEM_SUCCESS",
+  PUT_CONTENT_ITEM_FAILURE: "PUT_CONTENT_ITEM_FAILURE",
   LOAD_CONTENT_ITEMS_START: "LOAD_CONTENT_ITEMS_START",
   LOAD_CONTENT_ITEMS_SUCCESS: "LOAD_CONTENT_ITEMS_SUCCESS",
   LOAD_CONTENT_ITEMS_FAILURE: "LOAD_CONTENT_ITEMS_FAILURE",
 };
 
-export function createContentItem(contentItem) {
+export function putContentItem(contentItem) {
   return (dispatch, getState) => {
-    dispatch(createContentStart(contentItem));
-    return axios.post("/api/content/", contentItem)
+    dispatch(putContentStart(contentItem));
+    return axios.put("/api/content/", contentItem)
     .then((response) => {
-      dispatch(createContentSuccess(response.data));
+      dispatch(putContentSuccess(response.data));
     }).catch((error) => {
-      dispatch(createContentFailure(error, contentItem));
+      dispatch(putContentFailure(error, contentItem));
     });
   };
 }
@@ -33,23 +33,23 @@ export function loadContentItems(campaignId) {
   };
 }
 
-export function createContentStart(contentItem) {
+export function putContentStart(contentItem) {
   return {
-    type: TYPES.CREATE_CONTENT_ITEM_START,
+    type: TYPES.PUT_CONTENT_ITEM_START,
     contentItem,
   };
 }
 
-export function createContentSuccess(contentItem) {
+export function putContentSuccess(contentItem) {
   return {
-    type: TYPES.CREATE_CONTENT_ITEM_SUCCESS,
+    type: TYPES.PUT_CONTENT_ITEM_SUCCESS,
     contentItem,
   };
 }
 
-export function createContentFailure(error, contentItem) {
+export function putContentFailure(error, contentItem) {
   return {
-    type: TYPES.CREATE_CONTENT_ITEM_FAILURE,
+    type: TYPES.PUT_CONTENT_ITEM_FAILURE,
     error,
     contentItem,
   };
