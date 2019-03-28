@@ -1,18 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const TYPES = {
-  PUT_CONTENT_ITEM_START: "PUT_CONTENT_ITEM_START",
-  PUT_CONTENT_ITEM_SUCCESS: "PUT_CONTENT_ITEM_SUCCESS",
-  PUT_CONTENT_ITEM_FAILURE: "PUT_CONTENT_ITEM_FAILURE",
-  LOAD_CONTENT_ITEMS_START: "LOAD_CONTENT_ITEMS_START",
-  LOAD_CONTENT_ITEMS_SUCCESS: "LOAD_CONTENT_ITEMS_SUCCESS",
-  LOAD_CONTENT_ITEMS_FAILURE: "LOAD_CONTENT_ITEMS_FAILURE",
+  PUT_CONTENT_ITEM_START: 'PUT_CONTENT_ITEM_START',
+  PUT_CONTENT_ITEM_SUCCESS: 'PUT_CONTENT_ITEM_SUCCESS',
+  PUT_CONTENT_ITEM_FAILURE: 'PUT_CONTENT_ITEM_FAILURE',
+  LOAD_CONTENT_ITEMS_START: 'LOAD_CONTENT_ITEMS_START',
+  LOAD_CONTENT_ITEMS_SUCCESS: 'LOAD_CONTENT_ITEMS_SUCCESS',
+  LOAD_CONTENT_ITEMS_FAILURE: 'LOAD_CONTENT_ITEMS_FAILURE',
 };
 
 export function putContentItem(contentItem) {
   return (dispatch, getState) => {
     dispatch(putContentStart(contentItem));
-    return axios.put("/api/content/", contentItem)
+    return axios.put('/api/content/', contentItem)
     .then((response) => {
       dispatch(putContentSuccess(response.data));
     }).catch((error) => {

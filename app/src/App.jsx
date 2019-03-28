@@ -1,21 +1,21 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import "typeface-roboto";
-import {create} from "jss";
-import JssProvider from "react-jss/lib/JssProvider";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from "@material-ui/core/styles";
-import {lightBlue as primary, green as secondary, yellow as accent} from "@material-ui/core/colors";
-import PageRoutesContainer from "./components/PageRoutesContainer";
-import {Provider} from "react-redux";
-import {ConnectedRouter} from "connected-react-router";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import 'typeface-roboto';
+import {create} from 'jss';
+import JssProvider from 'react-jss/lib/JssProvider';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from '@material-ui/core/styles';
+import {lightBlue as primary, green as secondary, yellow as accent} from '@material-ui/core/colors';
+import PageRoutesContainer from './components/PageRoutesContainer';
+import {Provider} from 'react-redux';
+import {ConnectedRouter} from 'connected-react-router';
 
 const theme = createMuiTheme({
   palette: {
     primary: primary,
     secondary: secondary,
     accent: accent,
-    type: "light",
+    type: 'light',
   },
 });
 

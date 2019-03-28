@@ -1,18 +1,18 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import IconButton from "@material-ui/core/IconButton";
-import ListItemText from "@material-ui/core/ListItemText";
-import Badge from "@material-ui/core/Badge";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationIcon from "@material-ui/icons/Notifications";
-import CampaignIcon from "@material-ui/icons/Games";
-import Divider from "@material-ui/core/Divider";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import InvitationNotificationDialogContainer from "components/layout/InvitationNotificationDialogContainer";
-import MenuList from "@material-ui/core/MenuList";
-import _ from "lodash";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemText from '@material-ui/core/ListItemText';
+import Badge from '@material-ui/core/Badge';
+import MailIcon from '@material-ui/icons/Mail';
+import NotificationIcon from '@material-ui/icons/Notifications';
+import CampaignIcon from '@material-ui/icons/Games';
+import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import InvitationNotificationDialogContainer from 'components/layout/InvitationNotificationDialogContainer';
+import MenuList from '@material-ui/core/MenuList';
+import _ from 'lodash';
 
 class UserNotificationMenu extends Component {
   static propTypes = {
@@ -70,7 +70,7 @@ class UserNotificationMenu extends Component {
   }
 
   renderNotificationIcon(notification) {
-    if (notification.type === "INVITATION") {
+    if (notification.type === 'INVITATION') {
       return <CampaignIcon />;
     }
     return <NotificationIcon />;
@@ -92,7 +92,7 @@ class UserNotificationMenu extends Component {
   }
 
   renderNotificationDialog(notification) {
-    if (notification.type === "INVITATION") {
+    if (notification.type === 'INVITATION') {
       return (
         <InvitationNotificationDialogContainer
           notification={notification}
@@ -116,11 +116,11 @@ class UserNotificationMenu extends Component {
     return (
       <React.Fragment>
         {unreadNotifications.length > 0 &&
-          this.renderNotifications(unreadNotifications, "Unread Notification")}
+          this.renderNotifications(unreadNotifications, 'Unread Notification')}
         {unreadNotifications.length > 0 &&
           readNotifications.length > 0 && <Divider />}
         {readNotifications.length > 0 &&
-          this.renderNotifications(readNotifications, "Read Notification")}
+          this.renderNotifications(readNotifications, 'Read Notification')}
       </React.Fragment>
     );
   }
@@ -153,10 +153,10 @@ class UserNotificationMenu extends Component {
         {notifications.length > 0 && (
           <React.Fragment>
             <IconButton
-              aria-owns={anchorEl ? "simple-menu" : null}
+              aria-owns={anchorEl ? 'simple-menu' : null}
               aria-haspopup="true"
               onClick={this.handleMenuOpen}
-              color={"inherit"}
+              color={'inherit'}
             >
               {unreadMessages === 0 && <MailIcon />}
               {unreadMessages > 0 && (

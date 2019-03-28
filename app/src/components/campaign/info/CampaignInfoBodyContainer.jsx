@@ -1,7 +1,7 @@
-import * as ContentActions from "actions/ContentActions";
-import {connect} from "react-redux";
-import * as CampaignActions from "actions/CampaignActions";
-import CampaignInfoBody from "components/campaign/info/CampaignInfoBody";
+import * as ContentActions from 'actions/ContentActions';
+import {connect} from 'react-redux';
+import * as CampaignActions from 'actions/CampaignActions';
+import CampaignInfoBody from 'components/campaign/info/CampaignInfoBody';
 
 const mapStateToProps = (state, ownProps) => {
   const currentCampaign = state.campaigns.current !== null &&

@@ -12,7 +12,7 @@
     "build": "NODE_PATH=./src react-scripts build",
     "test": "NODE_PATH=./src react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx --ignore-pattern node_modules/"
+    "lint": "eslint ./src --ext .js,.jsx --ignore-pattern node_modules/"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
@@ -70,7 +70,7 @@
       "babel/new-cap": 1,
       "babel/no-invalid-this": 1,
       "babel/object-curly-spacing": 1,
-      "babel/quotes": 1,
+      "babel/quotes": ["warn", "single"],
       "babel/semi": 1,
       "babel/no-unused-expressions": 1,
       "no-invalid-this": 0,

@@ -1,26 +1,26 @@
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import {withStyles} from "@material-ui/core/styles/index";
-import {FormTextField} from "components/util/ReduxFields";
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Field, reduxForm} from "redux-form";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import {withStyles} from '@material-ui/core/styles/index';
+import {FormTextField} from 'components/util/ReduxFields';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {Field, reduxForm} from 'redux-form';
 
 const styles = (theme) => ({
   createEntityModal: {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    position: "absolute",
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    position: 'absolute',
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
-    outline: "none",
+    outline: 'none',
   },
   dense: {
     marginTop: 16,
@@ -29,10 +29,10 @@ const styles = (theme) => ({
 
 const validate = (values) => {
   const errors = {};
-  const requiredFields = ["name", "type"];
+  const requiredFields = ['name', 'type'];
   requiredFields.forEach((field) => {
     if (!values[field]) {
-      errors[field] = "Required";
+      errors[field] = 'Required';
     }
   });
   return errors;
@@ -97,7 +97,7 @@ class ContentModal extends Component {
               <Button onClick={this.handleClose} color="primary">
                 Cancel
               </Button>
-              <Button type="submit" disabled={pristine || submitting} color={"inherit"}>
+              <Button type="submit" disabled={pristine || submitting} color={'inherit'}>
                 Submit
               </Button>
             </DialogActions>
@@ -108,6 +108,6 @@ class ContentModal extends Component {
 }
 
 export default withStyles(styles)(reduxForm({
-  form: "ContentModal",
+  form: 'ContentModal',
   validate,
 })(ContentModal));

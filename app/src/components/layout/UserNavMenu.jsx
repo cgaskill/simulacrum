@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import IconButton from "@material-ui/core/IconButton";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ListItemText from "@material-ui/core/ListItemText";
-import {withStyles} from "@material-ui/core/styles/index";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ListItemText from '@material-ui/core/ListItemText';
+import {withStyles} from '@material-ui/core/styles/index';
 
 const styles = (theme) => ({
   root: {
@@ -42,10 +42,10 @@ class UserNavMenu extends Component {
     return (
         <div className={classes.userNavMenu}>
           <IconButton
-              aria-owns={anchorEl ? "simple-menu" : null}
+              aria-owns={anchorEl ? 'simple-menu' : null}
               aria-haspopup="true"
               onClick={this.handleClick}
-              color={"inherit"}>
+              color={'inherit'}>
             <AccountCircleIcon />
           </IconButton>
           <Menu id="simple-menu"
@@ -53,9 +53,9 @@ class UserNavMenu extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleClose}
           >
-            <MenuItem><Link to={"/account"}>My account</Link></MenuItem>
+            <MenuItem><Link to={'/account'}>My account</Link></MenuItem>
             <MenuItem onClick={handleLogoutClick}>
-              <ListItemText primary={"Logout"} />
+              <ListItemText primary={'Logout'} />
             </MenuItem>
           </Menu>
         </div>

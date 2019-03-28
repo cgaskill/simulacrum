@@ -1,31 +1,31 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
   root: {
-    "height": 350,
-    "flexGrow": 1,
-    "display": "flex",
-    "color": theme.palette.common.white,
-    "justifyContent": "center",
-    "position": "relative",
-    "&:after": {
-      content: "\"\"",
+    'height': 350,
+    'flexGrow': 1,
+    'display': 'flex',
+    'color': theme.palette.common.white,
+    'justifyContent': 'center',
+    'position': 'relative',
+    '&:after': {
+      content: '""',
       // TODO Setup image credits
-      background: "url(https://c1.staticflickr.com/5/4259/35185763616_dc78259d19_h.jpg)",
-      backgroundRepeatX: "no-repeat",
-      backgroundSize: "100%",
+      background: 'url(https://c1.staticflickr.com/5/4259/35185763616_dc78259d19_h.jpg)',
+      backgroundRepeatX: 'no-repeat',
+      backgroundSize: '100%',
       opacity: 0.8,
       top: 0,
       left: 0,
       bottom: 0,
       right: 0,
-      position: "absolute",
+      position: 'absolute',
       zIndex: -1,
-      boxShadow: "0px 2px 4px -1px rgba(0, 0, 0, 0.2)," +
-      " 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
+      boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.2),' +
+      ' 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)',
     },
 
   },
@@ -50,9 +50,9 @@ class Header extends Component {
         <div className={classes.container}>
           <Typography variant="display3"
                       gutterBottom
-                      color={"inherit"}
+                      color={'inherit'}
                       className={classes.headerTitle}
-                      style={{"fontWeight": "600"}}>
+                      style={{'fontWeight': '600'}}>
             Live Your Game
           </Typography>
         </div>

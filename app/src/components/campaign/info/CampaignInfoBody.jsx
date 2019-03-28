@@ -1,10 +1,10 @@
-import CampaignInfoBodyCreator from "components/campaign/info/CampaignInfoBodyCreator";
-import ContentGrid from "components/campaign/info/content/ContentGrid";
-import React from "react";
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core/styles";
-import _ from "lodash";
-import {Redirect} from "react-router-dom";
+import CampaignInfoBodyCreator from 'components/campaign/info/CampaignInfoBodyCreator';
+import ContentGrid from 'components/campaign/info/content/ContentGrid';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import _ from 'lodash';
+import {Redirect} from 'react-router-dom';
 
 const styles = (themes) => ({
 });
@@ -42,7 +42,7 @@ class CampaignInfoBody extends React.Component {
     }
 
     if (_.isEmpty(campaign)) {
-      return <Redirect to={"/"}/>;
+      return <Redirect to={'/'}/>;
     }
 
     return (

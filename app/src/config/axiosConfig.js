@@ -1,4 +1,4 @@
-import axios from "axios/index";
+import axios from 'axios/index';
 
 const configureAxios = (history, store) => {
   const timeoutDuration = 1000 * 60 * 60;
@@ -8,10 +8,10 @@ const configureAxios = (history, store) => {
     localStorage.clear();
     store.dispatch(
         {
-          "type": "TIMEOUT",
+          'type': 'TIMEOUT',
         }
     );
-    history.push("/login");
+    history.push('/login');
   };
 
   const startLogoutTimer = () => {

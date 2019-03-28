@@ -1,4 +1,4 @@
-import Phaser from "components/campaign/game/Phaser";
+import Phaser from 'components/campaign/game/Phaser';
 
 export default class extends Phaser.State {
   constructor(mediator, config, userId) {
@@ -12,7 +12,7 @@ export default class extends Phaser.State {
   }
 
   init() {
-    this.game.stage.backgroundColor = "#FFFFFF";
+    this.game.stage.backgroundColor = '#FFFFFF';
     this.fontsReady = false;
   }
 
@@ -37,10 +37,10 @@ export default class extends Phaser.State {
 
     // this.map = this.game.add.tilemap("mapmaker");
     this.map = this.game.add.tilemap();
-    this.tileset = this.map.addTilesetImage("grass_biome");
+    this.tileset = this.map.addTilesetImage('grass_biome');
 
     // TODO create the current scene
-    this.backgroundLayer = this.map.create("scene-" + currentScene.sceneId,
+    this.backgroundLayer = this.map.create('scene-' + currentScene.sceneId,
         currentScene.width, currentScene.height, 32, 32);
     this.backgroundLayer.resizeWorld();
 
@@ -131,7 +131,7 @@ export default class extends Phaser.State {
     tileSelector.add(tileSelectorBackground);
 
     // TODO update color palette
-    let tileStrip = tileSelector.create(1, 1, "ground_1x1");
+    let tileStrip = tileSelector.create(1, 1, 'ground_1x1');
     tileStrip.inputEnabled = true;
     tileStrip.events.onInputDown.add(this.pickTile, this);
 

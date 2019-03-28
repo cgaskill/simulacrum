@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core/styles";
-import _ from "lodash";
-import GameContainer from "components/campaign/game/GameContainer";
-import {Redirect} from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import _ from 'lodash';
+import GameContainer from 'components/campaign/game/GameContainer';
+import {Redirect} from 'react-router-dom';
 
 const styles = (themes) => ({
   root: {
@@ -34,7 +34,7 @@ class CampaignBody extends React.Component {
     }
 
     if (_.isEmpty(campaign)) {
-      return <Redirect to={"/"} />;
+      return <Redirect to={'/'} />;
     }
 
     return (

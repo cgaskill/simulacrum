@@ -1,5 +1,5 @@
-import {TYPES} from "actions/ContentActions";
-import _ from "lodash";
+import {TYPES} from 'actions/ContentActions';
+import _ from 'lodash';
 
 const INITIAL_STATE = {
   isLoading: true,

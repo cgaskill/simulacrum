@@ -1,18 +1,18 @@
-import React from "react";
-import {Field, reduxForm} from "redux-form";
-import Button from "@material-ui/core/Button";
-import CardActions from "@material-ui/core/CardActions";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import {withStyles} from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import {FormTextField} from "components/util/ReduxFields";
-import PropTypes from "prop-types";
+import React from 'react';
+import {Field, reduxForm} from 'redux-form';
+import Button from '@material-ui/core/Button';
+import CardActions from '@material-ui/core/CardActions';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import {FormTextField} from 'components/util/ReduxFields';
+import PropTypes from 'prop-types';
 
 const styles = (theme) => ({
   campaignFormContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
   campaignForm: {
 
@@ -24,10 +24,10 @@ const styles = (theme) => ({
 
 const validate = (values) => {
   const errors = {};
-  const requiredFields = ["name"];
+  const requiredFields = ['name'];
   requiredFields.forEach((field) => {
     if (!values[field]) {
-      errors[field] = "Required";
+      errors[field] = 'Required';
     }
   });
   return errors;
@@ -48,7 +48,7 @@ class CampaignCreationForm extends React.Component {
         <form onSubmit={handleSubmit}>
           <Card className={classes.campaignForm}>
             <CardContent>
-              <Typography variant="headline" color={"inherit"} gutterBottom className={classes.campaignFormTitle}>
+              <Typography variant="headline" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
                 Start your next Adventure
               </Typography>
               <div>
@@ -56,7 +56,7 @@ class CampaignCreationForm extends React.Component {
               </div>
             </CardContent>
             <CardActions>
-              <Button type="submit" disabled={pristine || submitting} color={"inherit"}>Create Campaign</Button>
+              <Button type="submit" disabled={pristine || submitting} color={'inherit'}>Create Campaign</Button>
             </CardActions>
           </Card>
         </form>
@@ -66,6 +66,6 @@ class CampaignCreationForm extends React.Component {
 }
 
 export default withStyles(styles)(reduxForm({
-  form: "CampaignCreationForm",
+  form: 'CampaignCreationForm',
   validate,
 })(CampaignCreationForm));

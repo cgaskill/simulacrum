@@ -1,5 +1,5 @@
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
 
 export default class Client {
   constructor(mediator, config, token, userId) {
@@ -36,13 +36,13 @@ export default class Client {
   // Local Events
   sendClientJoin() {
     this.send({
-      "type": "join",
+      'type': 'join',
     });
   }
 
   localLongPress(x, y) {
     this.send({
-      "type": "click",
+      'type': 'click',
       x,
       y,
     });

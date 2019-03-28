@@ -1,10 +1,10 @@
-import Grid from "@material-ui/core/Grid";
-import ContentGrid from "components/campaign/info/content/ContentGrid";
-import React from "react";
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core/styles";
-import _ from "lodash";
-import {Redirect} from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import ContentGrid from 'components/campaign/info/content/ContentGrid';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import _ from 'lodash';
+import {Redirect} from 'react-router-dom';
 
 const styles = (themes) => ({
 });
@@ -20,12 +20,12 @@ class CampaignInfoBodyCreator extends React.Component {
     const {campaign} = this.props;
 
     if (_.isEmpty(campaign)) {
-      return <Redirect to={"/"}/>;
+      return <Redirect to={'/'}/>;
     }
 
     return (
         <Grid container spacing={32}>
-          <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={"content"}>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={'content'}>
             <ContentGrid {...this.props} />
           </Grid>
           {/* <Grid item xs={12} sm={12} md={3} lg={3} xl={2} key={"sidePanel"}>*/}

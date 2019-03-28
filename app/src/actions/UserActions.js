@@ -1,33 +1,33 @@
-import axios from "axios";
-import _ from "lodash";
+import axios from 'axios';
+import _ from 'lodash';
 
 export const TYPES = {
-  UPDATE_USER: "UPDATE_USER",
-  LOAD_USER_FROM_TOKEN: "LOAD_USER_FROM_TOKEN",
-  LOAD_USER_FROM_TOKEN_SUCCESS: "LOAD_USER_FROM_TOKEN_SUCCESS",
-  LOAD_USER_FROM_TOKEN_FAILURE: "LOAD_USER_FROM_TOKEN_FAILURE",
-  RESET_TOKEN: "RESET_TOKEN",
-  LOGIN_USER_SUCCESS: "LOGIN_USER_SUCCESS",
-  LOGIN_USER_FAILURE: "LOGIN_USER_FAILURE",
-  LOGOUT_USER: "LOGOUT_USER",
-  USER_FROM_TOKEN: "USER_FROM_TOKEN",
-  GAPI_LOADED: "GAPI_LOADED",
+  UPDATE_USER: 'UPDATE_USER',
+  LOAD_USER_FROM_TOKEN: 'LOAD_USER_FROM_TOKEN',
+  LOAD_USER_FROM_TOKEN_SUCCESS: 'LOAD_USER_FROM_TOKEN_SUCCESS',
+  LOAD_USER_FROM_TOKEN_FAILURE: 'LOAD_USER_FROM_TOKEN_FAILURE',
+  RESET_TOKEN: 'RESET_TOKEN',
+  LOGIN_USER_SUCCESS: 'LOGIN_USER_SUCCESS',
+  LOGIN_USER_FAILURE: 'LOGIN_USER_FAILURE',
+  LOGOUT_USER: 'LOGOUT_USER',
+  USER_FROM_TOKEN: 'USER_FROM_TOKEN',
+  GAPI_LOADED: 'GAPI_LOADED',
 };
 
 function setUserToken(token) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  localStorage.setItem("accessToken", token);
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  localStorage.setItem('accessToken', token);
 }
 
 function getToken() {
-  const token = localStorage.getItem("accessToken");
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  const token = localStorage.getItem('accessToken');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   return token;
 }
 
 function clearToken() {
-  axios.defaults.headers.common["Authorization"] = null;
-  localStorage.removeItem("accessToken");
+  axios.defaults.headers.common['Authorization'] = null;
+  localStorage.removeItem('accessToken');
 }
 
 export function login(googleUser) {
@@ -37,7 +37,7 @@ export function login(googleUser) {
     }
     setUserToken(googleUser.Zi.access_token);
 
-    return axios.post("/api/users/login")
+    return axios.post('/api/users/login')
     .then((response) => {
       dispatch(loginUserSuccess(response.data, googleUser.accessToken));
     })
@@ -53,12 +53,12 @@ export function initializeUser(gapiLoaded) {
 
     let token = getToken();
     if (_.isEmpty(token)) {
-      dispatch(loadUserFromTokenFailure("No Token"));
+      dispatch(loadUserFromTokenFailure('No Token'));
       return;
     }
 
     // TODO check for an expired token
-    return axios.get("/api/users/currentUser")
+    return axios.get('/api/users/currentUser')
     .then((response) => {
       dispatch(loadUserFromTokenSuccess(response.data, token));
     }).catch((error) => {
@@ -69,15 +69,15 @@ export function initializeUser(gapiLoaded) {
 
 function initializeGoogleAPI(dispatch, gapiLoaded) {
   if (!gapiLoaded && window.gapi) {
-    window.gapi.load("auth2", () => initSigninV2(dispatch));
+    window.gapi.load('auth2', () => initSigninV2(dispatch));
     dispatch(setgapiLoaded());
   }
 }
 
 function initSigninV2(dispatch) {
   const auth2 = window.gapi.auth2.init({
-    client_id: "1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com",
-    scope: "profile",
+    client_id: '1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com',
+    scope: 'profile',
   });
 
   auth2.currentUser.listen((user) => userChanged(dispatch, user));

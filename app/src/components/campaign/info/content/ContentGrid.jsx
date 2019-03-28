@@ -1,56 +1,56 @@
-import Chip from "@material-ui/core/Chip";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
-import IconButton from "@material-ui/core/IconButton";
-import {withStyles} from "@material-ui/core/styles/index";
-import Typography from "@material-ui/core/Typography";
-import ContentModal from "components/campaign/info/content/ContentModal";
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from "@material-ui/icons/Add";
-import DoneIcon from "@material-ui/icons/Done";
-import CloseIcon from "@material-ui/icons/Close";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Fab from "@material-ui/core/Fab";
-import _ from "lodash";
-import memoize from "memoize-one";
+import Chip from '@material-ui/core/Chip';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import IconButton from '@material-ui/core/IconButton';
+import {withStyles} from '@material-ui/core/styles/index';
+import Typography from '@material-ui/core/Typography';
+import ContentModal from 'components/campaign/info/content/ContentModal';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Fab from '@material-ui/core/Fab';
+import _ from 'lodash';
+import memoize from 'memoize-one';
 
 const styles = (theme) => ({
   contentItems: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "start",
-    overflow: "hidden",
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'start',
+    overflow: 'hidden',
   },
   entityGrid: {
     marginBottom: 0,
   },
   subheader: {
-    width: "100%",
+    width: '100%',
   },
   media: {
     height: 0,
-    paddingTop: "56.25%",
-    width: "100%",
+    paddingTop: '56.25%',
+    width: '100%',
   },
   button: {
     margin: theme.spacing.unit,
   },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
   },
   tile: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   column: {
-    flexBasis: "33.33%",
+    flexBasis: '33.33%',
   },
 });
 
@@ -90,12 +90,12 @@ class ContentGrid extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.updateCols.bind(this));
+    window.addEventListener('resize', this.updateCols.bind(this));
     this.updateCols();
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateCols.bind(this));
+    window.removeEventListener('resize', this.updateCols.bind(this));
   }
 
   toggleFilter = (type) => {
@@ -119,7 +119,7 @@ class ContentGrid extends Component {
     const filteredContentItems = this.filter(contentItems, this.state.excludedTypes);
 
     return (
-        <div ref={this.rootRef} className={"contentItems"}>
+        <div ref={this.rootRef} className={'contentItems'}>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.column}>
@@ -130,10 +130,10 @@ class ContentGrid extends Component {
               <div className={classes.column}/>
               <div className={classes.column}>
                 {
-                  _.uniqBy(contentItems, "type").map((contentItem, index) => {
+                  _.uniqBy(contentItems, 'type').map((contentItem, index) => {
                     const excluded = _.includes(this.state.excludedTypes, contentItem.type);
                     return (<Chip label={contentItem.type} key={index} className={classes.chip}
-                                  color={excluded ? "default" : "primary"}
+                                  color={excluded ? 'default' : 'primary'}
                                   deleteIcon={excluded ? <CloseIcon/> : <DoneIcon/>}
                                   onDelete={() => {
                                     this.toggleFilter(contentItem.type);
@@ -157,7 +157,7 @@ class ContentGrid extends Component {
                 return (
                     <GridListTile key={index} onClick={(e) => this.handleOpenContentItemModal(e, contentItem)} classes={{root: classes.tile}}>
                       {/* <img src={contentItem.img}*/}
-                      <img src={"http://via.placeholder.com/260x180"}
+                      <img src={'http://via.placeholder.com/260x180'}
                            alt={contentItem.title}/>
                       <GridListTileBar
                           title={contentItem.name}

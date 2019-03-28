@@ -1,4 +1,4 @@
-import {TYPES} from "actions/UserActions";
+import {TYPES} from 'actions/UserActions';
 
 const INITIAL_STATE = {
   isLoggedIn: false,
@@ -23,7 +23,7 @@ export function userReducer(state = INITIAL_STATE, action) {
       return {...state, info: null, isLoggedIn: false, isLoading: false};
     case TYPES.GAPI_LOADED:
       return {...state, gapiLoaded: true};
-    case "TIMEOUT":
+    case 'TIMEOUT':
       return {...state, info: null, isLoggedIn: false, isLoading: false};
     default:
       return state;

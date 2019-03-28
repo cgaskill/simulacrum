@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import CampaignBodyContainer from "components/campaign/CampaignBodyContainer";
-import _ from "lodash";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import CampaignBodyContainer from 'components/campaign/CampaignBodyContainer';
+import _ from 'lodash';
 
 export default class CampaignPage extends Component {
   static propTypes = {

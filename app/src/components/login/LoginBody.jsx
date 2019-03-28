@@ -1,38 +1,38 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core/styles";
-import {Redirect} from "react-router-dom";
-import CardContent from "@material-ui/core/CardContent";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import {Redirect} from 'react-router-dom';
+import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
 
   },
   row: {
   },
   card: {
-    display: "flex",
-    minWidth: "25%",
+    display: 'flex',
+    minWidth: '25%',
   },
   content: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   appLogo: {
     height: 75,
-    display: "block",
+    display: 'block',
   },
 });
 
-const GOOGLE_BUTTON_ID = "google-sign-in-button";
+const GOOGLE_BUTTON_ID = 'google-sign-in-button';
 
 class LoginBody extends Component {
   static propTypes = {
@@ -77,7 +77,7 @@ class LoginBody extends Component {
       return null;
     }
     if (isLoggedIn) {
-      const {from} = this.state.location.state || {from: {pathname: "/"}};
+      const {from} = this.state.location.state || {from: {pathname: '/'}};
       return <Redirect to={from} />;
     }
 

@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import Game from "components/campaign/game/Game";
-import Client from "components/campaign/game/Client";
-import GameMediator from "components/campaign/game/ClientGameMediator";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import Game from 'components/campaign/game/Game';
+import Client from 'components/campaign/game/Client';
+import GameMediator from 'components/campaign/game/ClientGameMediator';
 
 class GameContainer extends Component {
   static propTypes = {
@@ -21,14 +21,14 @@ class GameContainer extends Component {
     this.game.start();
     // this.client.connect();
 
-    window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentWillUnmount() {
     this.client.disconnect();
     this.game.destroy();
 
-    window.removeEventListener("resize", this.updateDimensions);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   updateDimensions = () => {

@@ -1,28 +1,28 @@
-import Button from "@material-ui/core/Button";
-import React from "react";
-import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core/styles";
-import _ from "lodash";
-import CardActions from "@material-ui/core/CardActions";
-import {Field, reduxForm} from "redux-form";
-import Typography from "@material-ui/core/Typography";
-import CardContent from "@material-ui/core/CardContent";
-import Card from "@material-ui/core/Card";
-import {FormTextField} from "components/util/ReduxFields";
+import Button from '@material-ui/core/Button';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import _ from 'lodash';
+import CardActions from '@material-ui/core/CardActions';
+import {Field, reduxForm} from 'redux-form';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
+import {FormTextField} from 'components/util/ReduxFields';
 
 const styles = (themes) => ({
   campaignInfoContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
 });
 
 const validate = (values) => {
   const errors = {};
-  const requiredFields = ["email"];
+  const requiredFields = ['email'];
   requiredFields.forEach((field) => {
     if (!values[field]) {
-      errors[field] = "Required";
+      errors[field] = 'Required';
     }
   });
   return errors;
@@ -30,7 +30,7 @@ const validate = (values) => {
 
 const email = (value) =>
     value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
-        "Invalid email address" : undefined;
+        'Invalid email address' : undefined;
 
 class InvitePlayerForm extends React.Component {
   static propTypes = {
@@ -62,7 +62,7 @@ class InvitePlayerForm extends React.Component {
           <form onSubmit={handleSubmit(invitePlayer)}>
             <Card className={classes.campaignForm}>
               <CardContent>
-                <Typography variant="headline" color={"inherit"} gutterBottom className={classes.campaignFormTitle}>
+                <Typography variant="headline" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
                   Invite Your Adventurers
                 </Typography>
                 <div>
@@ -73,7 +73,7 @@ class InvitePlayerForm extends React.Component {
                 </div>
               </CardContent>
               <CardActions>
-                <Button type="submit" disabled={pristine || submitting} color={"inherit"}>Invite Player</Button>
+                <Button type="submit" disabled={pristine || submitting} color={'inherit'}>Invite Player</Button>
               </CardActions>
             </Card>
           </form>
@@ -83,6 +83,6 @@ class InvitePlayerForm extends React.Component {
 }
 
 export default withStyles(styles)(reduxForm({
-  form: "InvitePlayerForm",
+  form: 'InvitePlayerForm',
   validate,
 })(InvitePlayerForm));
