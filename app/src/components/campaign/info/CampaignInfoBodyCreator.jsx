@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import _ from "lodash";
 import {Redirect} from "react-router-dom";
-import InvitePlayerForm from "components/campaign/info/InvitePlayerForm";
 
 const styles = (themes) => ({
 });
@@ -29,9 +28,9 @@ class CampaignInfoBodyCreator extends React.Component {
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={"content"}>
             <ContentGrid {...this.props} />
           </Grid>
-          <Grid item xs={12} sm={12} md={3} lg={3} xl={2} key={"sidePanel"}>
-            <InvitePlayerForm {...this.props} />
-          </Grid>
+          {/* <Grid item xs={12} sm={12} md={3} lg={3} xl={2} key={"sidePanel"}>*/}
+            {/* <InvitePlayerForm {...this.props} />*/}
+          {/* </Grid>*/}
         </Grid>
     );
   }

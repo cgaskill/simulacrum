@@ -29,7 +29,7 @@ spring:
     password: password
     driver-class-name: com.mysql.jdbc.Driver
     domain: localhost
-    params:
+    params: useLegacyDatetimeCode=false&serverTimezone=UTC
     database: simulacrum
 
 management:
