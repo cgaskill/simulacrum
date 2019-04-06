@@ -11,6 +11,7 @@ object ContentItems: LongIdTable() {
     val visibleToPlayers = bool("visibile_to_player").default(false)
     val name = varchar("name", 50)
     val type = varchar("type", 50)
+    val image = varchar("image", 1000).default("")
     val notes = varchar("notes", 1000).default("")
     val gmNotes = varchar("gmNotes", 1000).default("")
     val campaign = reference("campaign_id", Campaigns)
@@ -25,6 +26,7 @@ class ContentItem(id: EntityID<Long>) : LongEntity(id) {
     var visibleToPlayers by ContentItems.visibleToPlayers
     var campaign by ContentItems.campaign
     var type by ContentItems.type
+    var image by ContentItems.image
     var archived by ContentItems.archived
     var creator by ContentItems.creator
     var gmNotes by ContentItems.gmNotes
@@ -34,6 +36,7 @@ class ContentItem(id: EntityID<Long>) : LongEntity(id) {
 data class ContentItemDTO(val name: String, val type: String) {
     var id: Long? = null
     var campaignId: Long? = null
+    var image: String? = null
     var visibleToPlayers: Boolean = false
     var archived: Boolean = false
     var gmNotes: String? = null
@@ -45,5 +48,6 @@ data class ContentItemDTO(val name: String, val type: String) {
         visibleToPlayers = contentItem.visibleToPlayers
         gmNotes = contentItem.gmNotes
         notes = contentItem.notes
+        image = contentItem.image
     }
 }

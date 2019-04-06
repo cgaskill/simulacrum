@@ -31,6 +31,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "react-draggable": "^3.2.1",
     "react-jss": "^8.5.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
@@ -70,7 +71,10 @@
       "babel/new-cap": 1,
       "babel/no-invalid-this": 1,
       "babel/object-curly-spacing": 1,
-      "babel/quotes": ["warn", "single"],
+      "babel/quotes": [
+        "warn",
+        "single"
+      ],
       "babel/semi": 1,
       "babel/no-unused-expressions": 1,
       "no-invalid-this": 0,

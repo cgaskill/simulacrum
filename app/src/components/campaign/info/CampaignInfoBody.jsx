@@ -42,7 +42,7 @@ class CampaignInfoBody extends React.Component {
     }
 
     if (_.isEmpty(campaign)) {
-      return <Redirect to={'/'}/>;
+      return <Redirect to={{from: {pathname: '/'}}}/>;
     }
 
     return (
