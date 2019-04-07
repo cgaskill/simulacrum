@@ -57,7 +57,7 @@ class LoginBody extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.isLoggedIn) {
+    if (!this.props.isLoggedIn && window.gapi) {
       window.gapi.signin2.render(
           GOOGLE_BUTTON_ID,
           {
