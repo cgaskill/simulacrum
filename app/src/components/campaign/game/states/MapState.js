@@ -35,6 +35,10 @@ export default class extends Phaser.State {
         this.borderOffset * 2 + this.squareLength * currentScene.width,
         this.borderOffset * 2 + this.squareLength * currentScene.height);
 
+    this.size = new Phaser.Rectangle(0, 0,
+        this.borderOffset * 2 + this.squareLength * currentScene.width,
+        this.borderOffset * 2 + this.squareLength * currentScene.height);
+
     // this.map = this.game.add.tilemap("mapmaker");
     this.map = this.game.add.tilemap();
     this.tileset = this.map.addTilesetImage('grass_biome');
@@ -50,8 +54,35 @@ export default class extends Phaser.State {
     this.createTileSelector();
 
     this.drawGrid(this.group, currentScene);
+
+    this.zooming = false;
+    this.zoomAmount = 0;
+
+    this.container = document.getElementById('phaser-container');
+    this.container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.ctrlKey) {
+        this.zoomAmount += Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail))) * .01;
+      } else {
+        // posX -= e.deltaX * 2;
+        // posY -= e.deltaY * 2;
+      }
+    });
+    this.container.addEventListener('gesturestart', (e) => {
+      e.preventDefault();
+      this.zoomAmount += 0.01;
+    });
+    this.container.addEventListener('gesturechange', (e) => {
+      e.preventDefault();
+    });
+    this.container.addEventListener('gestureend', (e) => {
+      e.preventDefault();
+    });
+
+    this.cursors = this.game.input.keyboard.createCursorKeys();
   }
 
+  // TODO drawlines instead of having individual rectangles?
   drawGrid(group, currentScene) {
     let grid = this.game.add.graphics(); // adds to the world stage
     grid.beginFill(0x29aa2e);
@@ -75,7 +106,22 @@ export default class extends Phaser.State {
   }
 
   update() {
+    if (this.zoomAmount !== 0) {
+      // TODO prevent zooming if screen is too small/large
+      this.game.camera.scale.x += this.zoomAmount;
+      this.game.camera.scale.y += this.zoomAmount;
 
+      this.game.camera.bounds.x = this.size.x * this.game.camera.scale.x;
+      this.game.camera.bounds.y = this.size.y * this.game.camera.scale.y;
+      this.game.camera.bounds.width = this.size.width * this.game.camera.scale.x;
+      this.game.camera.bounds.height = this.size.height * this.game.camera.scale.y;
+
+      // TODO zoom around mouse
+      // this.game.camera.x += -1 * this.zoomAmount / 2;
+      // this.game.camera.y += -1 * this.zoomAmount / 2;
+
+      this.zoomAmount = 0;
+    }
   }
 
   gridOnDragStart = (grid, pointer, startX, startY) => {
@@ -88,7 +134,6 @@ export default class extends Phaser.State {
     if (nextX !== 0 || nextY !== 0) {
       this.camera.x -= nextX;
       this.camera.y -= nextY;
-      grid.reset(0, 0);
     }
   };
 
@@ -145,5 +190,10 @@ export default class extends Phaser.State {
 
   pickTile(sprite, pointer) {
     this.currentTile = this.game.math.snapToFloor(pointer.x, 32) / 32;
+  }
+
+  render() {
+    // this.game.debug.inputInfo(16, 16);
+    // this.game.debug.cameraInfo(this.game.camera, 32, 32);
   }
 }

@@ -50,7 +50,7 @@ class GameContainer extends Component {
       if (nextProps.height) {
         height = nextProps.height;
       }
-      this.game.resize(width, height);
+      // this.game.resize(width, height);
     }
     return false;
   }
@@ -59,7 +59,9 @@ class GameContainer extends Component {
     const {classes} = this.props;
 
     return (
-        <div className={classes.phaserContainer} id="phaser-container" ref={this.container}>
+        <div>
+          <div className={classes.phaserContainer} id="phaser-container" ref={this.container}>
+          </div>
         </div>
     );
   }

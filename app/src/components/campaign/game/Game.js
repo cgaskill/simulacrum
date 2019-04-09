@@ -25,7 +25,7 @@ export default class Game extends Phaser.Game {
   }
 
   init() {
-    this.stage.disableVisibilityChange = true;
+    // this.stage.disableVisibilityChange = true;
   }
 
   preload() {
