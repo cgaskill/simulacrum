@@ -1,42 +1,47 @@
+import BootScene from 'components/campaign/game/scene/BootScene';
+import MapScene from 'components/campaign/game/scene/MapScene';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Game from 'components/campaign/game/Game';
-import Client from 'components/campaign/game/Client';
 import GameMediator from 'components/campaign/game/ClientGameMediator';
+import Phaser from 'phaser';
 
-let width = null;
-let height = null;
+let width;
+let height;
 
 class GameContainer extends Component {
   static propTypes = {
     campaign: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired,
     userId: PropTypes.number.isRequired,
-    classes: PropTypes.object.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-    this.container = React.createRef();
-  }
 
   componentDidMount() {
     // Setup
     width = this.props.width;
     height = this.props.height;
     this.gameMediator = new GameMediator();
-    this.game = new Game(this.gameMediator, this.props.campaign, this.props.userId, width, height);
-    this.client = new Client(this.gameMediator, this.props.campaign, this.props.token, this.props.userId);
+
+    let config = {
+      type: Phaser.AUTO,
+      width: this.props.width,
+      height: this.props.height,
+      scene: [BootScene, MapScene],
+    };
+
+    this.game = new Phaser.Game(config);
+    this.game.scene.start('boot', {...this.props.campaign, userId: this.props.userId});
+
+    // this.game = new Game(this.gameMediator, this.props.campaign, this.props.userId, width, height);
+    // this.client = new Client(this.gameMediator, this.props.campaign, this.props.token, this.props.userId);
 
     // Initialize
-    this.game.start();
     // this.client.connect();
   }
 
   componentWillUnmount() {
-    this.client.disconnect();
+    // this.client.disconnect();
     this.game.destroy();
   }
 
@@ -50,19 +55,14 @@ class GameContainer extends Component {
       if (nextProps.height) {
         height = nextProps.height;
       }
-      // this.game.resize(width, height);
+      this.game.resize(width, height);
     }
     return false;
   }
 
   render() {
-    const {classes} = this.props;
-
     return (
-        <div>
-          <div className={classes.phaserContainer} id="phaser-container" ref={this.container}>
-          </div>
-        </div>
+        <div id="phaser-container"/>
     );
   }
 }
