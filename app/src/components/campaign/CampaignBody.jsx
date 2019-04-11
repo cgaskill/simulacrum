@@ -7,7 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
-import GameContainer from 'components/campaign/game/GameContainer';
+import GameContainer from 'components/game/GameContainer';
 import {Redirect} from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -73,7 +73,7 @@ class CampaignBody extends React.Component {
   };
 
   render() {
-    const {classes, campaign, isLoading, token} = this.props;
+    const {classes, campaign, isLoading, token, ...other} = this.props;
 
     if (isLoading) {
       return null;
@@ -104,7 +104,7 @@ class CampaignBody extends React.Component {
               }}
               anchor="right"
           >
-            <ContentList {...this.props} />
+            <ContentList {...other} />
           </Drawer>
         </div>
     );

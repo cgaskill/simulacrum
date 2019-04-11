@@ -1,8 +1,8 @@
-import BootScene from 'components/campaign/game/scene/BootScene';
-import MapScene from 'components/campaign/game/scene/MapScene';
+import BootScene from 'components/game/scene/BootScene';
+import MapScene from 'components/game/scene/MapScene';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import GameMediator from 'components/campaign/game/ClientGameMediator';
+import GameMediator from 'components/game/ClientGameMediator';
 import Phaser from 'phaser';
 
 let width;
@@ -15,6 +15,7 @@ class GameContainer extends Component {
     userId: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    shutdown: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -42,7 +43,7 @@ class GameContainer extends Component {
 
   componentWillUnmount() {
     // this.client.disconnect();
-    this.game.destroy();
+    this.game.sys.destroy();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
