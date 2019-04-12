@@ -28,6 +28,7 @@ class GameContainer extends Component {
       type: Phaser.AUTO,
       width: this.props.width,
       height: this.props.height,
+      backgroundColor: '#FFFFFF',
       scene: [BootScene, MapScene],
     };
 
@@ -43,7 +44,7 @@ class GameContainer extends Component {
 
   componentWillUnmount() {
     // this.client.disconnect();
-    this.game.sys.destroy();
+    this.game.destroy(true);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -56,7 +57,7 @@ class GameContainer extends Component {
       if (nextProps.height) {
         height = nextProps.height;
       }
-      this.game.resize(width, height);
+      this.game.scale.resize(width, height);
     }
     return false;
   }

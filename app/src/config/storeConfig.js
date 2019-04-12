@@ -2,9 +2,14 @@ import {connectRouter, routerMiddleware} from 'connected-react-router';
 import {applyMiddleware, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'actions';
+import * as UserActions from 'actions/UserActions';
 
 const configureStore = (history) => {
-  const initialState = {};
+  const initialState = {
+    user: {
+      token: UserActions.getToken(),
+    },
+  };
 
   const enhancers = [];
   const middleware = [

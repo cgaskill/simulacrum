@@ -49,8 +49,8 @@ class CampaignBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameWidth: window.innerWidth - drawerWidth - 100,
-      gameHeight: window.innerHeight - 137,
+      gameWidth: window.innerWidth - drawerWidth,
+      gameHeight: window.innerHeight - 65,
     };
 
     window.addEventListener('resize', this.updateDimensions);
@@ -69,7 +69,7 @@ class CampaignBody extends React.Component {
   }
 
   updateDimensions = () => {
-    this.setState({gameWidth: window.innerWidth - drawerWidth - 100, gameHeight: window.innerHeight - 150});
+    this.setState({gameWidth: window.innerWidth - drawerWidth, gameHeight: window.innerHeight - 65});
   };
 
   render() {

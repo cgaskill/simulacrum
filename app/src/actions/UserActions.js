@@ -19,7 +19,7 @@ function setUserToken(token) {
   localStorage.setItem('accessToken', token);
 }
 
-function getToken() {
+export function getToken() {
   const token = localStorage.getItem('accessToken');
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   return token;
@@ -32,14 +32,12 @@ function clearToken() {
 
 export function login(googleUser) {
   return (dispatch) => {
-    if (getToken() === googleUser.Zi.access_token) {
-      return;
-    }
-    setUserToken(googleUser.Zi.access_token);
+    const accessToken = googleUser.Zi.access_token;
+    setUserToken(accessToken);
 
     return axios.post('/api/users/login')
     .then((response) => {
-      dispatch(loginUserSuccess(response.data, googleUser.accessToken));
+      dispatch(loginUserSuccess(response.data, accessToken));
     })
     .catch((error) => {
       dispatch(loginUserFailure(error));
