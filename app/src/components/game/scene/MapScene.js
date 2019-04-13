@@ -66,6 +66,14 @@ export default class MapScene extends Phaser.Scene {
   }
 
   drawGrid = (mapLayer, currentScene) => {
+    const displayArea = new Phaser.Geom.Rectangle(
+        -10 * this.borderOffset,
+        -10 * this.borderOffset,
+        currentScene.width * this.squareLength + this.borderOffset * 10,
+        currentScene.height * this.squareLength + this.borderOffset * 10);
+
+    this.cameras.main.setBounds(displayArea.x, displayArea.y, displayArea.width, displayArea.height);
+
     const grid = this.add.graphics({
       lineStyle: {
         width: 2,
@@ -84,19 +92,12 @@ export default class MapScene extends Phaser.Scene {
       }
     }
 
-    const hitArea = new Phaser.Geom.Rectangle(
-        0,
-        0,
-        this.squareLength * this.borderOffset,
-        this.squareLength * this.borderOffset);
-
     grid.setInteractive({
-      hitArea: hitArea,
+      hitArea: displayArea,
         draggable: true,
         hitAreaCallback: (hitArea, x, y, gameObject) => {
       return true;
     }});
-    mapLayer.add(grid);
 
     grid.on('dragstart', (pointer, dragX, dragY) => {
       this.gridPrevX = 0;
@@ -113,6 +114,8 @@ export default class MapScene extends Phaser.Scene {
       this.gridPrevX = dragX;
       this.gridPrevY = dragY;
     });
+
+    mapLayer.add(grid);
   };
 
   update(time, delta) {

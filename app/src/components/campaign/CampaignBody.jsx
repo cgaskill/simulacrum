@@ -1,7 +1,4 @@
-import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import ContentList from 'components/campaign/info/content/ContentList';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -50,7 +47,7 @@ class CampaignBody extends React.Component {
     super(props);
     this.state = {
       gameWidth: window.innerWidth - drawerWidth,
-      gameHeight: window.innerHeight - 65,
+      gameHeight: window.innerHeight,
     };
 
     window.addEventListener('resize', this.updateDimensions);
@@ -69,7 +66,7 @@ class CampaignBody extends React.Component {
   }
 
   updateDimensions = () => {
-    this.setState({gameWidth: window.innerWidth - drawerWidth, gameHeight: window.innerHeight - 65});
+    this.setState({gameWidth: window.innerWidth - drawerWidth, gameHeight: window.innerHeight});
   };
 
   render() {
@@ -85,15 +82,7 @@ class CampaignBody extends React.Component {
 
     return (
         <div className={classes.root}>
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Permanent drawer
-              </Typography>
-            </Toolbar>
-          </AppBar>
           <div className={classes.content}>
-            <div className={classes.toolbar} />
             <GameContainer {...this.props} width={this.state.gameWidth} height={this.state.gameHeight} />
           </div>
           <Drawer
