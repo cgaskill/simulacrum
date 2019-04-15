@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     campaign: currentCampaign,
     contentItems: currentContentItems,
-    isLoading: state.campaigns.isLoading || currentCampaign === null,
+    isLoaded: state.campaigns.isLoaded && currentCampaign !== null,
     isCreator: currentCampaign != null && currentCampaign.creator === state.user.info.id,
   };
 };

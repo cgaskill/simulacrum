@@ -6,9 +6,9 @@ import * as NotificationActions from 'actions/NotificationActions';
 const mapStateToProps = (state, ownProps) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
-    isLoading: state.user.isLoading,
+    isLoaded: state.user.isLoaded,
     notifications: state.notifications.instances,
-    isLoadingNotifications: state.isLoadingNotifications,
+    isLoadedNotifications: state.notifications.isLoadedNotifications,
     reloadNotificationsInterval: 60000,
   };
 };

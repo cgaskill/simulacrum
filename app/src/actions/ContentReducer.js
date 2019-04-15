@@ -2,7 +2,7 @@ import {TYPES} from 'actions/ContentActions';
 import _ from 'lodash';
 
 const INITIAL_STATE = {
-  isLoading: true,
+  isLoaded: true,
   instances: [],
   error: false,
 };
@@ -10,19 +10,19 @@ const INITIAL_STATE = {
 export function contentReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case TYPES.PUT_CONTENT_ITEM_START:
-      return {...state, isLoading: true, error: false};
+      return {...state, isLoaded: false, error: false};
     case TYPES.PUT_CONTENT_ITEM_SUCCESS:
-      return {...state, instances: replaceItem(state.instances, action.contentItem), isLoading: false, error: false};
+      return {...state, instances: replaceItem(state.instances, action.contentItem), isLoaded: true, error: false};
     case TYPES.PUT_CONTENT_ITEM_FAILURE:
-      return {...state, isLoading: false, error: action.error};
+      return {...state, isLoaded: true, error: action.error};
     case TYPES.LOAD_CONTENT_ITEMS_START:
-      return {...state, instances: [], campaignId: action.campaignId, isLoading: true, error: false};
+      return {...state, instances: [], campaignId: action.campaignId, isLoaded: false, error: false};
     case TYPES.LOAD_CONTENT_ITEMS_SUCCESS:
-      return {...state, instances: action.contentItems, campaignId: action.campaignId, isLoading: false, error: false};
+      return {...state, instances: action.contentItems, campaignId: action.campaignId, isLoaded: true, error: false};
     case TYPES.LOAD_CONTENT_ITEMS_FAILURE:
-      return {...state, instances: [], isLoading: false, error: action.error};
+      return {...state, instances: [], isLoaded: true, error: action.error};
     case TYPES.LOAD_CAMPAIGN_START:
-      return {...state, instances: [], isLoading: false, error: false};
+      return {...state, instances: [], isLoaded: true, error: false};
     default:
       return state;
   }
@@ -45,3 +45,7 @@ function replaceItem(instances, newContentItem) {
 //     return instances;
 //   }
 // }
+
+export function getCurrentContentItems(state, campaignId) {
+  return state.content.campaignId !== null && state.content.campaignId === campaignId ? state.content.instances : null;
+}

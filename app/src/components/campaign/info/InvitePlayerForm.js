@@ -41,7 +41,6 @@ class InvitePlayerForm extends React.Component {
     invitePlayer: PropTypes.func.isRequired,
     campaign: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
   };

@@ -37,7 +37,7 @@ class CreateContentItemForm extends React.Component {
     invitePlayer: PropTypes.func.isRequired,
     campaign: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
   };
@@ -51,9 +51,9 @@ class CreateContentItemForm extends React.Component {
   }
 
   render() {
-    const {handleSubmit, pristine, submitting, classes, isLoading, invitePlayer} = this.props;
+    const {handleSubmit, pristine, submitting, classes, isLoaded, invitePlayer} = this.props;
 
-    if (isLoading) {
+    if (!isLoaded) {
       return null;
     }
 

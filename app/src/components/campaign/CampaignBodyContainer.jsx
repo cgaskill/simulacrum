@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
     contentItems: currentContentItems,
     token: state.user.token,
     userId: state.user.info.id,
-    isLoading: state.campaigns.isLoading ||
+    isLoaded: state.campaigns.isLoaded ||
       state.campaigns.current === null ||
       state.campaigns.current.id !== ownProps.campaignId,
   };

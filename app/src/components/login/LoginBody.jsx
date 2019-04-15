@@ -37,7 +37,7 @@ const GOOGLE_BUTTON_ID = 'google-sign-in-button';
 class LoginBody extends Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     loginSuccess: PropTypes.func.isRequired,
     loginFailure: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
@@ -71,9 +71,9 @@ class LoginBody extends Component {
   }
 
   render() {
-    const {classes, isLoggedIn, isLoading} = this.props;
+    const {classes, isLoggedIn, isLoaded} = this.props;
 
-    if (isLoading) {
+    if (!isLoaded) {
       return null;
     }
     if (isLoggedIn) {

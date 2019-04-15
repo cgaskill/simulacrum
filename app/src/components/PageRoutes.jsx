@@ -12,7 +12,7 @@ const AsyncCampaignPage = asyncComponent(() => import('components/campaign/Campa
 
 export default class PageRoutes extends Component {
   static propTypes = {
-    isLoading: PropTypes.bool.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     gapiLoaded: PropTypes.bool.isRequired,
     initializeUser: PropTypes.func.isRequired,
@@ -23,7 +23,7 @@ export default class PageRoutes extends Component {
   }
 
   render() {
-    if (this.props.isLoading) {
+    if (!this.props.isLoaded) {
       return null;
     }
     return (

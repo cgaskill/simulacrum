@@ -12,7 +12,7 @@ const styles = (themes) => ({
 class CampaignInfoBody extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     campaignId: PropTypes.number.isRequired,
     loadCampaign: PropTypes.func.isRequired,
     loadContentItems: PropTypes.func.isRequired,
@@ -35,9 +35,9 @@ class CampaignInfoBody extends React.Component {
   }
 
   render() {
-    const {isCreator, isLoading, campaign} = this.props;
+    const {isCreator, isLoaded, campaign} = this.props;
 
-    if (isLoading) {
+    if (!isLoaded) {
       return null;
     }
 

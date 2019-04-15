@@ -39,7 +39,7 @@ class Header extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     handleLogoutClick: PropTypes.func.isRequired,
     hideHeaderBanner: PropTypes.bool,
   };
@@ -59,7 +59,7 @@ class Header extends Component {
               </Typography>
               {this.props.isLoggedIn && <UserNotificationMenu {...this.props} />}
               {
-                !this.props.isLoggedIn && !this.props.isLoading &&
+                !this.props.isLoggedIn && this.props.isLoaded &&
                 <Button color={'inherit'} component={Link} to="/login" className={classes.loginLink}>Login</Button>
               }
               {

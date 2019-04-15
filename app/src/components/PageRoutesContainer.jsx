@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom';
 const mapStateToProps = (state, ownProps) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
-    isLoading: state.user.isLoading,
+    isLoaded: state.user.isLoaded,
     gapiLoaded: state.user.gapiLoaded,
   };
 };

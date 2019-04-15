@@ -3,27 +3,26 @@ import {TYPES} from 'actions/NotificationActions';
 
 const INITIAL_STATE = {
   isLoggedIn: false,
-  isLoading: true,
+  isLoaded: false,
   info: null,
-  isLoadingNotifications: true,
+  isLoadedNotifications: false,
   instances: [],
 };
 
 export function notificationReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case TYPES.LOAD_NOTIFICATIONS_START:
-      return {...state, isLoadingNotifications: true};
+      return {...state, isLoadedNotifications: false};
     case TYPES.LOAD_NOTIFICATIONS_SUCCESS:
-      return {...state, instances: action.notifications,
-        isLoadingNotifications: false};
+      return {...state, instances: action.notifications, isLoadedNotifications: true};
     case TYPES.LOAD_NOTIFICATIONS_FAILURE:
-      return {...state, instances: [], isLoadingNotifications: false};
+      return {...state, instances: [], isLoadedNotifications: true};
     // case TYPES.MARK_NOTIFICATION_READ_START:
-      // return { ...state, instances: [], isLoadingNotifications: true};
+      // return { ...state, instances: [], isLoadedNotifications: false};
     case TYPES.MARK_NOTIFICATION_READ_SUCCESS:
       return {...state, instances: replace(state.instances, action.notification)};
     // case TYPES.MARK_NOTIFICATION_READ_FAILURE:
-    //   return { ...state, instances: [], isLoadingNotifications: false};
+    //   return { ...state, instances: [], isLoadedNotifications: true};
     default:
       return state;
   }
