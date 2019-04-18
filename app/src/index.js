@@ -7,7 +7,7 @@ import registerServiceWorker from './registerServiceWorker';
 import App from './App';
 
 export const history = createHistory();
-const store = configureStore(history);
+export const store = configureStore(history);
 configureAxios(history, store);
 
 const root = document.getElementById('root');

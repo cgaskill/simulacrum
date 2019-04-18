@@ -3,3 +3,4 @@
 /build
 */out
 npm-debug.log
+api/target/*

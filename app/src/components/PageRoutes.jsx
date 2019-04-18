@@ -19,7 +19,9 @@ export default class PageRoutes extends Component {
   };
 
   componentDidMount() {
-    this.props.initializeUser(this.props.gapiLoaded);
+    if (!this.props.isLoaded) {
+      this.props.initializeUser(this.props.gapiLoaded);
+    }
   }
 
   render() {

@@ -1,13 +1,18 @@
 package alloy.simulacrum.api.content
 
 import alloy.simulacrum.api.campaign.Campaign
+import alloy.simulacrum.api.campaign.CampaignService
 import alloy.simulacrum.api.campaign.Campaigns
 import alloy.simulacrum.api.user.User
+import org.jetbrains.exposed.sql.and
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
+import javax.sql.rowset.serial.SerialBlob
 
 @Service
-class ContentService {
+class ContentService(val campaignService: CampaignService) {
+
     @Transactional
     fun putContentItem(user: User, contentItemDTO: ContentItemDTO): ContentItemDTO {
         val currentUser = User.findById(user.id)!!
@@ -54,6 +59,37 @@ class ContentService {
         }
 
         return contentItems.map { ContentItemDTO(it) }
+    }
+
+    @Transactional
+    fun saveImage(campaignId: Long, user: User, images: List<MultipartFile>) {
+        val currentCampaign = Campaign.findById(campaignId)!!
+        campaignService.userCanModify(user, currentCampaign)
+
+        for (image in images) {
+            if (image.isEmpty) {
+                continue
+            }
+
+            val bytes = image.bytes
+            CampaignImage.new {
+                fileName = image.originalFilename!!
+                fileType = image.contentType!!
+                campaign = currentCampaign.id
+                data = SerialBlob(bytes)
+            }
+        }
+    }
+
+    @Transactional(readOnly = true)
+    fun getImage(campaignId: Long, user: User, fileName: String): CampaignImageDTO {
+        val currentCampaign = Campaign.findById(campaignId)!!
+        campaignService.userCanAccess(user, currentCampaign)
+
+        return CampaignImage
+                .find { CampaignImages.fileName eq fileName and (CampaignImages.campaign eq currentCampaign.id) }
+                .map { CampaignImageDTO(it) }
+                .first()
     }
 }
 

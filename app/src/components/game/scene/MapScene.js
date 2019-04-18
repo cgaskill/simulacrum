@@ -1,3 +1,4 @@
+import {TYPES} from 'actions/GameActions';
 import Phaser from 'phaser';
 
 export default class MapScene extends Phaser.Scene {
@@ -12,7 +13,7 @@ export default class MapScene extends Phaser.Scene {
     this.data = data;
     this.fontsReady = false;
     this.borderOffset = 32;
-    this.squareLength = 32;
+    this.squareLength = 64;
 
     this.currentScene = this.data.sceneConfigs.find((scene) => {
       return scene.sceneId === this.data.gameConfig.currentSceneId;
@@ -21,16 +22,14 @@ export default class MapScene extends Phaser.Scene {
     // TODO Remove after testing
     this.currentScene.width = 100;
     this.currentScene.height = 100;
+
+    this.load.xhr.header = 'Authorization';
+    this.load.xhr.headerValue = `Bearer ${this.data.token}`;
   }
 
   preload() {
-    this.map = this.make.tilemap({
-      width: this.currentScene.width * 32,
-      height: this.currentScene.height * 32,
-      tileWidth: 32,
-      tileHeight: 32,
-    });
-    this.tiles = this.map.addTilesetImage('grass_biome');
+    // TODO load existing tokens
+
   }
 
   create(data) {
@@ -38,37 +37,19 @@ export default class MapScene extends Phaser.Scene {
 
     // this.mapLayer
     this.mapLayer = this.add.container(0, 0);
-    this.drawGrid(this.mapLayer, this.currentScene);
+    this.currentLayer = this.mapLayer;
+    this.grid = this.drawGrid(this.mapLayer, this.currentScene);
 
-    this.zooming = false;
     this.zoomAmount = 0;
 
-    this.container = document.getElementById('phaser-container');
-    window.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      if (e.ctrlKey) {
-        this.zoomAmount += Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail))) * .020;
-      } else {
-        // posX -= e.deltaX * 2;
-        // posY -= e.deltaY * 2;
-      }
-    }, {passive: false});
-    window.addEventListener('gesturestart', (e) => {
-      e.preventDefault();
-      this.zoomAmount += 0.020;
-    }, {passive: false});
-    window.addEventListener('gesturechange', (e) => {
-      e.preventDefault();
-    }, {passive: false});
-    window.addEventListener('gestureend', (e) => {
-      e.preventDefault();
-    }, {passive: false});
+    this.handleInteractions();
+    this.registerActions();
   }
 
   drawGrid = (mapLayer, currentScene) => {
     const displayArea = new Phaser.Geom.Rectangle(
-        -10 * this.borderOffset,
-        -10 * this.borderOffset,
+        -20 * this.borderOffset,
+        -20 * this.borderOffset,
         currentScene.width * this.squareLength + this.borderOffset * 10,
         currentScene.height * this.squareLength + this.borderOffset * 10);
 
@@ -116,6 +97,7 @@ export default class MapScene extends Phaser.Scene {
     });
 
     mapLayer.add(grid);
+    return grid;
   };
 
   update(time, delta) {
@@ -132,8 +114,87 @@ export default class MapScene extends Phaser.Scene {
     }
   }
 
+  registerActions = () => {
+    this.data.eventEmitter.on(TYPES.PLACE_TOKEN, this.placeToken, this);
+  };
+
   onHold(inputManager, position) {
     // TODO what else to do on a long press
     // this.mediator.localLongPress(position.x, position.y);
   }
+
+  handleInteractions() {
+    this.container = document.getElementById(this.data.container);
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.ctrlKey) {
+        this.zoomAmount += Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail))) * .020;
+      }
+    }, {passive: false});
+    window.addEventListener('gesturestart', (e) => {
+      e.preventDefault();
+      this.zoomAmount += 0.020;
+    }, {passive: false});
+    window.addEventListener('gesturechange', (e) => {
+      e.preventDefault();
+    }, {passive: false});
+    window.addEventListener('gestureend', (e) => {
+      e.preventDefault();
+    }, {passive: false});
+
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+      this.container.addEventListener(eventName, function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (eventName === 'drop') {
+          handleDrop(e);
+        }
+      }, false);
+    });
+
+    const handleDrop = (ev) => {
+      if (ev.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+          // If dropped items aren't files, reject them
+          if (ev.dataTransfer.items[i].kind === 'file') {
+            const file = ev.dataTransfer.items[i].getAsFile();
+            const worldLocation = this.cameras.main.getWorldPoint(ev.clientX, ev.clientY);
+            this.data.triggerEvent({
+              type: TYPES.SAVE_IMAGE,
+              image: file,
+              x: worldLocation.x,
+              y: worldLocation.y,
+              layer: this.currentLayer,
+            });
+          }
+        }
+      } else {
+        // Use DataTransfer interface to access the file(s)
+        for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+          const file = ev.dataTransfer.files[i];
+          const worldLocation = this.cameras.main.getWorldPoint(ev.clientX, ev.clientY);
+          this.data.triggerEvent({
+            type: TYPES.SAVE_IMAGE,
+            image: file,
+            x: worldLocation.x,
+            y: worldLocation.y,
+            layer: this.currentLayer,
+          });
+        }
+      }
+    };
+  }
+
+  placeToken = (event) => {
+    this.load.on('filecomplete', (key, type, texture) => {
+      this.add.image(event.x, event.y, key);
+
+      // TODO Make image movable
+    }, this);
+    this.load.image(event.id, event.imageUrl);
+    this.load.start();
+  };
 }

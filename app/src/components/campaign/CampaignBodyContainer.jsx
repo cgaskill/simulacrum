@@ -1,21 +1,19 @@
 import * as ContentActions from 'actions/ContentActions';
+import {getCurrentContentItems} from 'actions/ContentReducer';
+import {getCurrentCampaign} from 'actions/CampaignReducer';
 import {connect} from 'react-redux';
 import CampaignBody from 'components/campaign/CampaignBody';
 import * as CampaignActions from 'actions/CampaignActions';
 
 const mapStateToProps = (state, ownProps) => {
-  const currentCampaign = state.campaigns.current !== null &&
-    state.campaigns.current.id === ownProps.campaignId ? state.campaigns.current : null;
-  const currentContentItems = state.content.campaignId !== null &&
-    state.content.campaignId === ownProps.campaignId ? state.content.instances : null;
   return {
-    campaign: currentCampaign,
-    contentItems: currentContentItems,
+    campaign: getCurrentCampaign(state, ownProps.campaignId),
+    contentItems: getCurrentContentItems(state, ownProps.campaignId),
     token: state.user.token,
     userId: state.user.info.id,
-    isLoaded: state.campaigns.isLoaded ||
-      state.campaigns.current === null ||
-      state.campaigns.current.id !== ownProps.campaignId,
+    isLoaded: state.campaigns.isLoaded &&
+      state.campaigns.current !== null &&
+      state.campaigns.current.id === ownProps.campaignId,
   };
 };
 

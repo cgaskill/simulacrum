@@ -1,10 +1,12 @@
+import * as UserActions from 'actions/UserActions';
 import {TYPES} from 'actions/UserActions';
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   isLoggedIn: false,
   isLoaded: false,
   info: null,
   gapiLoaded: false,
+  token: UserActions.getToken(),
 };
 
 export function userReducer(state = INITIAL_STATE, action) {

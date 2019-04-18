@@ -115,6 +115,19 @@ class CampaignService(val notificationService: NotificationService, val userServ
         return campaignDTO.creator == user.id.value
     }
 
+    fun userCanAccess(user: User, campaign: Campaign): Boolean {
+        if(userCanModify(user, campaign)) {
+            return true
+        }
+
+        TODO("check for if user is a player")
+    }
+
+    fun userCanModify(user: User, campaign: Campaign): Boolean {
+        // TODO check for if user is a player
+        return campaign.creator.id.value == user.id.value
+    }
+
     // TODO check if user can invite player
     @Transactional
     fun invitePlayer(user: User, campaignInviteDTO: CampaignController.CampaignInviteDTO): NotificationDTO {

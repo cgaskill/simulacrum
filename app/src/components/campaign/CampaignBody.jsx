@@ -1,10 +1,10 @@
 import Drawer from '@material-ui/core/Drawer';
 import ContentList from 'components/campaign/info/content/ContentList';
+import GameContainer from 'components/game/GameContainer';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
-import GameContainer from 'components/game/GameContainer';
 import {Redirect} from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -39,7 +39,6 @@ class CampaignBody extends React.Component {
     campaignId: PropTypes.number.isRequired,
     loadCampaign: PropTypes.func.isRequired,
     loadContentItems: PropTypes.func.isRequired,
-    token: PropTypes.string.isRequired,
     campaign: PropTypes.object,
   };
 
@@ -70,13 +69,13 @@ class CampaignBody extends React.Component {
   };
 
   render() {
-    const {classes, campaign, isLoaded, token, ...other} = this.props;
+    const {classes, campaign, isLoaded, ...other} = this.props;
 
     if (!isLoaded) {
       return null;
     }
 
-    if (_.isEmpty(campaign) || _.isEmpty(token)) {
+    if (_.isEmpty(campaign)) {
       return <Redirect to={'/login'} />;
     }
 

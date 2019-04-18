@@ -32,3 +32,6 @@ export function campaignReducer(state = INITIAL_STATE, action) {
   }
 }
 
+export function getCurrentCampaign(state, campaignId) {
+  return state.campaigns.current !== null && state.campaigns.current.id === campaignId ? state.campaigns.current : null;
+}
