@@ -54,6 +54,20 @@ export default class MapScene extends Phaser.Scene {
     this.registerActions();
   }
 
+  update(time, delta) {
+    if (this.zoomAmount !== 0) {
+      const cam = this.cameras.main;
+      let progressizeZoomAmount = this.zoomAmount * .25;
+      if (cam.zoom + progressizeZoomAmount > 0.5 && cam.zoom + progressizeZoomAmount < 3) {
+        cam.zoomTo(cam.zoom + progressizeZoomAmount, .25);
+      }
+      this.zoomAmount -= progressizeZoomAmount;
+      if (this.zoomAmount < .001 && this.zoomAmount > -.001) {
+        this.zoomAmount = 0;
+      }
+    }
+  }
+
   drawGrid = (mapLayer, currentScene) => {
     const displayArea = new Phaser.Geom.Rectangle(
         -20 * this.borderOffset,
@@ -108,19 +122,6 @@ export default class MapScene extends Phaser.Scene {
     return grid;
   };
 
-  update(time, delta) {
-    if (this.zoomAmount !== 0) {
-      const cam = this.cameras.main;
-      let progressizeZoomAmount = this.zoomAmount * .25;
-      if (cam.zoom + progressizeZoomAmount > 0.5 && cam.zoom + progressizeZoomAmount < 3) {
-        cam.zoomTo(cam.zoom + progressizeZoomAmount, .25);
-      }
-      this.zoomAmount -= progressizeZoomAmount;
-      if (this.zoomAmount < .001 && this.zoomAmount > -.001) {
-        this.zoomAmount = 0;
-      }
-    }
-  }
 
   registerActions = () => {
     this.data.eventEmitter.on(TYPES.PUT_TOKEN_SUCCESS, this.placeToken, this);
