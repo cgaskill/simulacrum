@@ -39,13 +39,14 @@ export default class MapScene extends Phaser.Scene {
   }
 
   create(data) {
-    this.currentTile = 0;
-
-    // this.mapLayer
     this.mapLayer = this.add.container(0, 0);
+    this.tokenLayer = this.add.container(0, 0);
+    this.gmLayer = this.add.container(0, 0);
 
     this.layerMap = {};
     this.layerMap[LAYERS.MAP] = this.mapLayer;
+    this.layerMap[LAYERS.TOKEN] = this.tokenLayer;
+    this.layerMap[LAYERS.GM] = this.gmLayer;
     this.currentLayer = LAYERS.TOKEN;
 
     this.grid = this.drawGrid(this.mapLayer, this.currentScene);
