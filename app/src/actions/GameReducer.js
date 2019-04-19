@@ -6,8 +6,8 @@ const INITIAL_STATE = {
 
 export function gameReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case TYPES.PLACE_TOKEN:
-      return {...state, currentEvent: {...action.event, type: TYPES.PLACE_TOKEN}};
+    case TYPES.PUT_TOKEN_SUCCESS:
+      return {...state, currentEvent: action.event, currentEventType: TYPES.PUT_TOKEN_SUCCESS};
     default:
       return state;
   }

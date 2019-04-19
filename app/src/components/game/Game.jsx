@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import GameMediator from 'components/game/ClientGameMediator';
 import Phaser from 'phaser';
+import uuid from 'uuid/v4';
 
 let width;
 let height;
@@ -12,6 +13,7 @@ let eventId;
 class Game extends Component {
   static propTypes = {
     currentEvent: PropTypes.object.isRequired,
+    currentEventType: PropTypes.object.isRequired,
     campaign: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired,
     userId: PropTypes.number.isRequired,
@@ -40,6 +42,7 @@ class Game extends Component {
     const triggerEvent = (event) => {
       event.userId = this.props.userId;
       event.campaignId = this.props.campaign.id;
+      event.eventId = uuid();
       this.props.triggerEvent(event);
     };
 
@@ -77,9 +80,9 @@ class Game extends Component {
       this.game.scale.resize(width, height);
     }
 
-    if (nextProps.currentEvent.id !== eventId) {
-      eventId = nextProps.currentEvent.id;
-      this.eventEmitter.emit(nextProps.currentEvent.type, nextProps.currentEvent);
+    if (nextProps.currentEvent.eventId !== eventId) {
+      eventId = nextProps.currentEvent.eventId;
+      this.eventEmitter.emit(nextProps.currentEventType, nextProps.currentEvent);
     }
 
     return false;

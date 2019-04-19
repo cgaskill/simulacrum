@@ -190,4 +190,16 @@ class CampaignService(val notificationService: NotificationService, val userServ
         // TODO Send a message to the creator with decline
 
     }
+
+    @Transactional
+    fun putToken(user: User, tokenDTO: TokenDTO): TokenDTO {
+        val newToken = Token.new {
+            xCoordinate = tokenDTO.x
+            yCoordinate = tokenDTO.y
+            layer = tokenDTO.layer
+            imageUrl = tokenDTO.imageUrl
+        }
+
+        return TokenDTO(newToken)
+    }
 }

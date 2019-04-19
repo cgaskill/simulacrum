@@ -2,8 +2,9 @@ package alloy.simulacrum.api.config
 
 import alloy.simulacrum.api.campaign.CampaignPlayers
 import alloy.simulacrum.api.campaign.Campaigns
-import alloy.simulacrum.api.content.ContentItems
+import alloy.simulacrum.api.campaign.Tokens
 import alloy.simulacrum.api.content.CampaignImages
+import alloy.simulacrum.api.content.ContentItems
 import alloy.simulacrum.api.user.Permissions
 import alloy.simulacrum.api.user.Roles
 import alloy.simulacrum.api.user.Users
@@ -31,7 +32,7 @@ class DatabaseConfig(private val dataSource: DataSource) {
         Database.connect(dataSource)
         return transaction {
             createMissingTablesAndColumns(Users, Roles, Permissions, Campaigns, Notifications,
-                    CampaignPlayers, ContentItems, CampaignImages)
+                    CampaignPlayers, ContentItems, CampaignImages, Tokens)
         }
     }
 

@@ -91,4 +91,9 @@ class CampaignController(val campaignService: CampaignService, val notifactionSe
         campaignAction.userId = user.id.value
         return campaignAction
     }
+
+    @PutMapping("/{campaignId}/token")
+    fun putToken(@AuthenticationPrincipal user: User, @PathVariable campaignId: Long, @RequestBody tokenDTO: TokenDTO): TokenDTO {
+        return campaignService.putToken(user, tokenDTO)
+    }
 }

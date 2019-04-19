@@ -1,6 +1,10 @@
 import {TYPES} from 'actions/GameActions';
 import Phaser from 'phaser';
 
+const LAYERS = {
+  MAP: 'MAP',
+};
+
 export default class MapScene extends Phaser.Scene {
   constructor() {
     super({
@@ -37,7 +41,11 @@ export default class MapScene extends Phaser.Scene {
 
     // this.mapLayer
     this.mapLayer = this.add.container(0, 0);
-    this.currentLayer = this.mapLayer;
+
+    this.layerMap = {};
+    this.layerMap[LAYERS.MAP] = this.mapLayer;
+    this.currentLayer = LAYERS.MAP;
+
     this.grid = this.drawGrid(this.mapLayer, this.currentScene);
 
     this.zoomAmount = 0;
@@ -115,7 +123,7 @@ export default class MapScene extends Phaser.Scene {
   }
 
   registerActions = () => {
-    this.data.eventEmitter.on(TYPES.PLACE_TOKEN, this.placeToken, this);
+    this.data.eventEmitter.on(TYPES.PUT_TOKEN_SUCCESS, this.placeToken, this);
   };
 
   onHold(inputManager, position) {
@@ -189,12 +197,13 @@ export default class MapScene extends Phaser.Scene {
   }
 
   placeToken = (event) => {
+    const token = event.token;
     this.load.on('filecomplete', (key, type, texture) => {
-      this.add.image(event.x, event.y, key);
+      this.add.image(token.x, token.y, key);
 
       // TODO Make image movable
     }, this);
-    this.load.image(event.id, event.imageUrl);
+    this.load.image(token.id, token.imageUrl);
     this.load.start();
   };
 }

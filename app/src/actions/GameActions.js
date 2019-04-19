@@ -4,7 +4,9 @@ export const TYPES = {
   PUT_IMAGE_START: 'PUT_IMAGE_START',
   PUT_IMAGE_SUCCESS: 'PUT_IMAGE_SUCCESS',
   PUT_IMAGE_FAILURE: 'PUT_IMAGE_FAILURE',
-  PLACE_TOKEN: 'PLACE_TOKEN',
+  PUT_TOKEN_START: 'PUT_TOKEN_START',
+  PUT_TOKEN_SUCCESS: 'PUT_TOKEN_SUCCESS',
+  PUT_TOKEN_FAILURE: 'PUT_TOKEN_FAILURE',
   SAVE_IMAGE: 'SAVE_IMAGE',
 };
 
@@ -36,10 +38,23 @@ export function saveImage(event) {
     })
     .then((response) => {
       dispatch(putImageSuccess(response.data, event));
-      // TODO persist token location
-      dispatch(placeToken({...event, imageUrl: `/api/content/${campaignId}/image/${image.name}`}));
+      dispatch(putToken({...event, imageUrl: `/api/content/${campaignId}/image/${image.name}`}));
     }).catch((error) => {
       dispatch(putImageFailure(error, image));
+    });
+  };
+}
+
+export function putToken(event) {
+  return (dispatch) => {
+    const {campaignId} = event;
+    dispatch(putTokenStart(event));
+
+    return axios.put(`/api/campaigns/${campaignId}/token`, event)
+    .then((response) => {
+      dispatch(putTokenSuccess({...event, token: response.data}));
+    }).catch((error) => {
+      dispatch(putTokenFailure(error, event));
     });
   };
 }
@@ -67,9 +82,24 @@ export function putImageFailure(error, event) {
   };
 }
 
-export function placeToken(event) {
+export function putTokenStart(event) {
   return {
-    type: TYPES.PLACE_TOKEN,
+    type: TYPES.PUT_TOKEN_START,
+    event,
+  };
+}
+
+export function putTokenSuccess(event) {
+  return {
+    type: TYPES.PUT_TOKEN_SUCCESS,
+    event,
+  };
+}
+
+export function putTokenFailure(error, event) {
+  return {
+    type: TYPES.PUT_TOKEN_FAILURE,
+    error,
     event,
   };
 }
