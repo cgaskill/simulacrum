@@ -3,6 +3,8 @@ import Phaser from 'phaser';
 
 const LAYERS = {
   MAP: 'MAP',
+  TOKEN: 'TOKEN',
+  GM: 'GM',
 };
 
 export default class MapScene extends Phaser.Scene {
@@ -44,7 +46,7 @@ export default class MapScene extends Phaser.Scene {
 
     this.layerMap = {};
     this.layerMap[LAYERS.MAP] = this.mapLayer;
-    this.currentLayer = LAYERS.MAP;
+    this.currentLayer = LAYERS.TOKEN;
 
     this.grid = this.drawGrid(this.mapLayer, this.currentScene);
 
