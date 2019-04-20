@@ -1,12 +1,12 @@
 import configureAxios from 'config/axiosConfig';
 import configureStore from 'config/storeConfig';
-import createHistory from 'history/createBrowserHistory';
+import configureHistory from 'config/historyConfig';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import App from './App';
 
-export const history = createHistory();
+export const history = configureHistory();
 export const store = configureStore(history);
 configureAxios(history, store);
 
