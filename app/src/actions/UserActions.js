@@ -37,7 +37,11 @@ export function login(googleUser) {
 
     return axios.post('/api/users/login')
     .then((response) => {
-      dispatch(loginUserSuccess(response.data, accessToken));
+      if(response.data.username) {
+        dispatch(loginUserSuccess(response.data, accessToken));
+      } else {
+        dispatch(loginUserFailure(response.data));
+      }
     })
     .catch((error) => {
       dispatch(loginUserFailure(error));
@@ -58,7 +62,11 @@ export function initializeUser(gapiLoaded) {
     // TODO check for an expired token
     return axios.get('/api/users/currentUser')
     .then((response) => {
-      dispatch(loadUserFromTokenSuccess(response.data, token));
+      if(response.data.username) {
+        dispatch(loadUserFromTokenSuccess(response.data, token));
+      } else {
+        dispatch(loadUserFromTokenFailure(response.data));
+      }
     }).catch((error) => {
       dispatch(loadUserFromTokenFailure(error));
     });
@@ -121,6 +129,7 @@ export function setgapiLoaded() {
 }
 
 export function loadUserFromTokenFailure(error) {
+  clearToken();
   return {
     type: TYPES.LOAD_USER_FROM_TOKEN_FAILURE,
     error,

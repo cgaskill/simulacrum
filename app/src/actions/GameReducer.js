@@ -2,6 +2,7 @@ import {TYPES} from 'actions/GameActions';
 
 const INITIAL_STATE = {
   currentEvent: {},
+  currentEventType: 'NONE',
 };
 
 export function gameReducer(state = INITIAL_STATE, action) {

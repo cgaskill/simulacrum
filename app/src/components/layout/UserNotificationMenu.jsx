@@ -16,6 +16,7 @@ import _ from 'lodash';
 
 class UserNotificationMenu extends Component {
   static propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
     markNotificationRead: PropTypes.func.isRequired,
     loadNotifications: PropTypes.func.isRequired,
     reloadNotificationsInterval: PropTypes.number.isRequired,
@@ -40,7 +41,7 @@ class UserNotificationMenu extends Component {
     this.setState({anchorEl: null});
   };
 
-  handleMessageClick = (notificationId) => (event) => {
+  handleMessageClick = (notificationId) => () => {
     this.setState({currentNotificationId: notificationId});
   };
 
@@ -51,7 +52,9 @@ class UserNotificationMenu extends Component {
 
   scheduleLoadNotifications() {
     this.interval = setInterval(() => {
-      this.props.loadNotifications();
+      if (this.props.isLoggedIn) {
+        this.props.loadNotifications();
+      }
     }, this.props.reloadNotificationsInterval);
   }
 
@@ -76,7 +79,7 @@ class UserNotificationMenu extends Component {
     return <NotificationIcon />;
   }
 
-  renderNotification(notification, index) {
+  renderNotification(notification) {
     return (
       <React.Fragment key={notification.id}>
         <MenuItem onClick={this.handleMessageClick(notification.id)}>
