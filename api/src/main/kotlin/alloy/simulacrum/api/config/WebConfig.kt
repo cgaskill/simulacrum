@@ -33,7 +33,8 @@ class ResourceServiceConfigurer : ResourceServerConfigurerAdapter() {
                 .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
                 .antMatchers("/admin/**", "/actuator/**").hasAnyRole("ROLE_ADMIN")
-                .anyRequest().authenticated().and()
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll().and()
                 .exceptionHandling().accessDeniedHandler(OAuth2AccessDeniedHandler()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }

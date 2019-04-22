@@ -4,3 +4,4 @@
 */out
 npm-debug.log
 api/target/*
+/node
