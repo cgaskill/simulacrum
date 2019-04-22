@@ -1,11 +1,11 @@
 package alloy.simulacrum.api
 
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
 class ApiApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(ApiApplication::class.java, *args)
+    runApplication<ApiApplication>(*args)
 }
