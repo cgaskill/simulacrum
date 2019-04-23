@@ -82,7 +82,7 @@ function initializeGoogleAPI(dispatch, gapiLoaded) {
 
 function initSigninV2(dispatch) {
   const auth2 = window.gapi.auth2.init({
-    client_id: '1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com',
+    client_id: process.env.REACT_APP_GOOGLE_OAUTH2_CLIENTID,
     scope: 'profile',
   });
 
