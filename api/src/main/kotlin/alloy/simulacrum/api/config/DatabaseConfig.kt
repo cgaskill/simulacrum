@@ -13,14 +13,12 @@ import org.jetbrains.exposed.spring.SpringTransactionManager
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils.createMissingTablesAndColumns
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import javax.annotation.PostConstruct
 import javax.sql.DataSource
 
-@EnableCaching(proxyTargetClass = true)
 @EnableTransactionManagement
 @Configuration
 class DatabaseConfig(private val dataSource: DataSource) {

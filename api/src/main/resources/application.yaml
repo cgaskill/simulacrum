@@ -48,3 +48,14 @@ logging:
     root: INFO
     alloy.simulacrum.api: INFO
 #    org.springframework.web.socket.sockjs: DEBUG
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: .*
+      rate-limits:
+        - bandwidths:
+            - capacity: 100
+              time: 10
+              unit: seconds
