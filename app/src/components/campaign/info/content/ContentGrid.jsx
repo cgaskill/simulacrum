@@ -23,6 +23,9 @@ import _ from 'lodash';
 import memoize from 'memoize-one';
 
 const styles = (theme) => ({
+  root: {
+    flexGrow: 1,
+  },
   contentItems: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -166,7 +169,7 @@ class ContentGrid extends Component {
     const filteredContentItems = this.filter(contentItems, this.state.excludedTypes);
 
     return (
-        <div ref={this.rootRef}>
+        <div className={classes.root} ref={this.rootRef}>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.column}>
