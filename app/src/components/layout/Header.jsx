@@ -65,7 +65,7 @@ class Header extends Component {
                 <img src={'/logo.png'} className={classes.appLogo} alt="logo"/>
               </Link>
               <Typography variant="title" color="inherit" className={classes.appTitle}>
-                <Link to={'/'} className={classes.appTitleLink}>Simulacrum</Link>
+                <Link component={RouterLink} to={'/'} className={classes.appTitleLink}>Simulacrum</Link>
               </Typography>
               {this.props.isLoggedIn && <UserNotificationMenu {...this.props} />}
               {
