@@ -100,14 +100,14 @@ class CampaignInfoBodyCreator extends React.Component {
           </Drawer>
 
           <div className={classes.content}>
-            {subPage === 'overview' && <ContentGrid {...otherProps} contentItems={contentItems}/>}
+            {subPage === 'overview' && <ContentGrid campaignId={campaignId} {...otherProps} contentItems={contentItems}/>}
             {subPage === 'journal' && <Journal campaignId={campaignId} {...otherProps} contentItems={this.filter(contentItems, 'journal')}/>}
             {subPage === 'characters' &&
-            <ContentGrid {...otherProps} contentItems={this.filter(contentItems, 'character')}/>}
-            {subPage === 'items' && <ContentGrid {...otherProps} contentItems={this.filter(contentItems, 'item')}/>}
+            <ContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'character')}/>}
+            {subPage === 'items' && <ContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'item')}/>}
             {subPage === 'locations' &&
-            <ContentGrid {...otherProps} contentItems={this.filter(contentItems, 'location')}/>}
-            {subPage === 'everything' && <ContentGrid {...otherProps} contentItems={contentItems}/>}
+            <ContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'location')}/>}
+            {subPage === 'everything' && <ContentGrid {...otherProps} campaignId={campaignId} contentItems={contentItems}/>}
           </div>
         </React.Fragment>
     );
