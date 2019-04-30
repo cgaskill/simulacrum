@@ -101,7 +101,7 @@ class CampaignInfoBodyCreator extends React.Component {
 
           <div className={classes.content}>
             {subPage === 'overview' && <ContentGrid {...otherProps} contentItems={contentItems}/>}
-            {subPage === 'journal' && <Journal {...otherProps} contentItems={this.filter(contentItems, 'journal')}/>}
+            {subPage === 'journal' && <Journal campaignId={campaignId} {...otherProps} contentItems={this.filter(contentItems, 'journal')}/>}
             {subPage === 'characters' &&
             <ContentGrid {...otherProps} contentItems={this.filter(contentItems, 'character')}/>}
             {subPage === 'items' && <ContentGrid {...otherProps} contentItems={this.filter(contentItems, 'item')}/>}
