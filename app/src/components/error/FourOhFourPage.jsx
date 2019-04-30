@@ -5,7 +5,7 @@ export default class FourOhFourPage extends Component {
   render() {
     return (
         <TemplatePage>
-          <p>Error!!</p>
+          <p>Error: 404!!</p>
         </TemplatePage>
     );
   }

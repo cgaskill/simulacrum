@@ -10,7 +10,7 @@ import NotificationIcon from '@material-ui/icons/Notifications';
 import CampaignIcon from '@material-ui/icons/Games';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import InvitationNotificationDialogContainer from 'components/layout/InvitationNotificationDialogContainer';
+import InvitationNotificationDialog from 'components/layout/InvitationNotificationDialog';
 import MenuList from '@material-ui/core/MenuList';
 import _ from 'lodash';
 
@@ -97,7 +97,7 @@ class UserNotificationMenu extends Component {
   renderNotificationDialog(notification) {
     if (notification.type === 'INVITATION') {
       return (
-        <InvitationNotificationDialogContainer
+        <InvitationNotificationDialog
           notification={notification}
           selectedValue={this.state.currentNotificationId}
           open={this.state.currentNotificationId === notification.id}

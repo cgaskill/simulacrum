@@ -3,11 +3,13 @@ import CampaignCard from 'components/campaign/card/CampaignCard';
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import {connect} from 'react-redux';
+import * as CampaignActions from 'actions/CampaignActions';
 
 const styles = (theme) => ({
   root: {
@@ -32,6 +34,11 @@ const styles = (theme) => ({
     height: 0,
     paddingTop: '56.25%',
     width: '100%',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
   },
 });
 
@@ -59,9 +66,13 @@ class UserHomeBody extends Component {
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={'title'}>
                       <Typography variant="headline" component="h2">
                         Campaigns
-                        <Button component={Link} to={'/campaigns/new'}><AddCircleOutlineIcon/></Button>
+
+
                       </Typography>
                       <Divider />
+                      <Fab color={'primary'} aria-label="Add" component={Link} to={'/campaigns/new'} className={classes.fab} >
+                        <AddIcon/>
+                      </Fab>
                     </Grid>
                     {
                       campaigns.instances.map(function(campaign, index) {
@@ -82,4 +93,21 @@ class UserHomeBody extends Component {
   }
 }
 
-export default withStyles(styles)(UserHomeBody);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    campaigns: state.campaigns,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadCampaigns: () => {
+      dispatch(CampaignActions.loadCampaigns());
+    },
+    createCampaign: (campaign) => {
+      dispatch(CampaignActions.createCampaign(campaign));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserHomeBody));

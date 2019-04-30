@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import GameMediator from 'components/game/ClientGameMediator';
 import Phaser from 'phaser';
 import uuid from 'uuid/v4';
+import {connect} from 'react-redux';
+import * as GameActions from 'actions/GameActions';
 
 let width;
 let height;
@@ -95,4 +97,21 @@ class Game extends Component {
   }
 }
 
-export default Game;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    campaigns: state.campaigns,
+    currentEvent: state.game.currentEvent,
+    currentEventType: state.game.currentEventType,
+    token: state.user.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    triggerEvent: (event) => {
+      dispatch(GameActions.triggerEvent(event));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

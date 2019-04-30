@@ -5,17 +5,22 @@ import {create} from 'jss';
 import JssProvider from 'react-jss/lib/JssProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from '@material-ui/core/styles';
-import {lightBlue as primary, green as secondary, yellow as accent} from '@material-ui/core/colors';
-import PageRoutesContainer from './components/PageRoutesContainer';
+import {red} from '@material-ui/core/colors';
+import PageRoutes from './components/PageRoutes';
 import {Provider} from 'react-redux';
 import {ConnectedRouter} from 'connected-react-router';
 
 const theme = createMuiTheme({
   palette: {
-    primary: primary,
-    secondary: secondary,
-    accent: accent,
-    type: 'light',
+    primary: {
+      main: '#15445e'
+    },
+    secondary: {
+      main: '#d7d8db'
+    },
+    accent: red,
+    type: 'light'
+    ,
   },
 });
 
@@ -36,7 +41,7 @@ class App extends Component {
             <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
               <CssBaseline/>
               <ConnectedRouter history={this.props.history}>
-                <PageRoutesContainer/>
+                <PageRoutes/>
               </ConnectedRouter>
             </MuiThemeProvider>
           </JssProvider>

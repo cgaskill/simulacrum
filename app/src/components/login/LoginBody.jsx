@@ -5,6 +5,8 @@ import {Redirect} from 'react-router-dom';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import {connect} from 'react-redux';
+import * as UserActions from 'actions/UserActions';
 
 const styles = (theme) => ({
   root: {
@@ -98,4 +100,22 @@ class LoginBody extends Component {
   }
 }
 
-export default withStyles(styles)(LoginBody);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isLoggedIn: state.user.isLoggedIn,
+    isLoaded: state.user.isLoaded,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginSuccess: (googleUser) => {
+      dispatch(UserActions.login(googleUser));
+    },
+    loginFailure: (error) => {
+
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginBody));

@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
 import {Redirect} from 'react-router-dom';
+import * as ContentActions from 'actions/ContentActions';
+import {connect} from 'react-redux';
+import * as CampaignActions from 'actions/CampaignActions';
+import * as ContentReducer from 'actions/ContentReducer';
+import * as CampaignReducer from 'actions/CampaignReducer';
 
 const styles = (themes) => ({
 });
@@ -60,4 +65,34 @@ class CampaignInfoBody extends React.Component {
   }
 }
 
-export default withStyles(styles)(CampaignInfoBody);
+const mapStateToProps = (state, ownProps) => {
+  const currentCampaign = CampaignReducer.getCurrentCampaign(state, ownProps.campaignId);
+  const currentContentItems = ContentReducer.getCurrentContentItems(state, ownProps.campaignId);
+
+  return {
+    campaign: currentCampaign,
+    contentItems: currentContentItems,
+    isLoaded: state.campaigns.isLoaded && currentCampaign !== null,
+    isCreator: currentCampaign != null && currentCampaign.creator === state.user.info.id,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    putContentItem: (contentItem) => {
+      return dispatch(ContentActions.putContentItem(contentItem));
+    },
+    loadCampaign: (campaignId) => {
+      return dispatch(CampaignActions.loadCampaign(campaignId));
+    },
+    loadContentItems: (campaignId) => {
+      return dispatch(ContentActions.loadContentItems(campaignId));
+    },
+    invitePlayer: (form) => {
+      const {email, campaignId} = form;
+      return dispatch(CampaignActions.invitePlayer(campaignId, email));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CampaignInfoBody));

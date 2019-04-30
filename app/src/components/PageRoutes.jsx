@@ -7,10 +7,13 @@ import LoginPage from 'components/login/LoginPage';
 import UserHomePage from 'components/home/UserHomePage';
 import CampaignInfoPage from 'components/campaign/info/CampaignInfoPage';
 import CampaignCreationPage from 'components/campaign/create/CampaignCreationPage';
+import {connect} from 'react-redux';
+import * as UserActions from 'actions/UserActions';
+import {withRouter} from 'react-router-dom';
 
 const AsyncCampaignPage = asyncComponent(() => import('components/campaign/CampaignPage'));
 
-export default class PageRoutes extends Component {
+class PageRoutes extends Component {
   static propTypes = {
     isLoaded: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -37,6 +40,7 @@ export default class PageRoutes extends Component {
         <AuthenticatedRoute exact path={'/campaigns/new'} component={CampaignCreationPage} {...this.props}/>
         <AuthenticatedRoute exact path={'/campaigns/:campaignId'} component={AsyncCampaignPage} {...this.props}/>
         <AuthenticatedRoute exact path={'/campaigns/:campaignId/info'} component={CampaignInfoPage} {...this.props}/>
+        <AuthenticatedRoute exact path={'/campaigns/:campaignId/info/:subPage'} component={CampaignInfoPage} {...this.props}/>
         <Route component={FourOhFourPage}/>
       </Switch>
     );
@@ -89,3 +93,21 @@ function asyncComponent(importComponent) {
 
   return AsyncComponent;
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+        isLoaded: state.user.isLoaded,
+        gapiLoaded: state.user.gapiLoaded,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        initializeUser: (gapiLoaded) => {
+            dispatch(UserActions.initializeUser(gapiLoaded));
+        },
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PageRoutes));

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CampaignInfoBodyContainer from 'components/campaign/info/CampaignInfoBodyContainer';
+import CampaignInfoBody from 'components/campaign/info/CampaignInfoBody';
 import _ from 'lodash';
 import TemplatePage from 'components/layout/TemplatePage';
 
@@ -11,10 +11,14 @@ export default class CampaignInfoPage extends Component {
 
   render() {
     const campaignId = _.toNumber(this.props.match.params.campaignId);
+    let subPage = 'overview';
+    if (this.props.match.params.subPage) {
+        subPage = this.props.match.params.subPage;
+    }
 
     return (
-        <TemplatePage hideHeaderBanner={true} >
-          <CampaignInfoBodyContainer campaignId={campaignId} {...this.props}/>
+        <TemplatePage hideHeaderBanner={true}>
+          <CampaignInfoBody campaignId={campaignId} subPage={subPage} {...this.props}/>
         </TemplatePage>
     );
   }

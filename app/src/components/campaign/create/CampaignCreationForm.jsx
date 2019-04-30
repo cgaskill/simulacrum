@@ -8,6 +8,8 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {FormTextField} from 'components/util/ReduxFields';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import * as CampaignActions from 'actions/CampaignActions';
 
 const styles = (theme) => ({
   campaignFormContainer: {
@@ -65,7 +67,20 @@ class CampaignCreationForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(reduxForm({
+const mapStateToProps = (state, ownProps) => {
+  return {
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSubmit: (form) => {
+      dispatch(CampaignActions.createCampaign(form));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(reduxForm({
   form: 'CampaignCreationForm',
   validate,
-})(CampaignCreationForm));
+})(CampaignCreationForm)));

@@ -1,11 +1,16 @@
 import Drawer from '@material-ui/core/Drawer';
 import ContentList from 'components/campaign/info/content/ContentList';
-import GameContainer from 'components/game/GameContainer';
+import Game from 'components/game/Game';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
 import {Redirect} from 'react-router-dom';
+import * as ContentActions from 'actions/ContentActions';
+import {getCurrentContentItems} from 'actions/ContentReducer';
+import {getCurrentCampaign} from 'actions/CampaignReducer';
+import {connect} from 'react-redux';
+import * as CampaignActions from 'actions/CampaignActions';
 
 const drawerWidth = 240;
 
@@ -82,7 +87,7 @@ class CampaignBody extends React.Component {
     return (
         <div className={classes.root}>
           <div className={classes.content}>
-            <GameContainer {...this.props} width={this.state.gameWidth} height={this.state.gameHeight} />
+            <Game {...this.props} width={this.state.gameWidth} height={this.state.gameHeight} />
           </div>
           <Drawer
               className={classes.drawer}
@@ -99,4 +104,28 @@ class CampaignBody extends React.Component {
   }
 }
 
-export default withStyles(styles)(CampaignBody);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    campaign: getCurrentCampaign(state, ownProps.campaignId),
+    contentItems: getCurrentContentItems(state, ownProps.campaignId),
+    token: state.user.token,
+    userId: state.user.info.id,
+    isLoaded: state.campaigns.isLoaded,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadCampaign: (campaignId) => {
+      dispatch(CampaignActions.loadCampaign(campaignId));
+    },
+    loadContentItems: (campaignId) => {
+      return dispatch(ContentActions.loadContentItems(campaignId));
+    },
+    putContentItem: (contentItem) => {
+      return dispatch(ContentActions.putContentItem(contentItem));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CampaignBody));

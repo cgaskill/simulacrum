@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import {connect} from 'react-redux';
+import * as CampaignActions from 'actions/CampaignActions';
 
 const styles = {
 
@@ -63,4 +65,21 @@ class InvitationNotificationDialog extends Component {
   }
 }
 
-export default withStyles(styles)(InvitationNotificationDialog);
+const mapStateToProps = (state, ownProps) => {
+  return {
+
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleDeclineInvitation: (token, notificationId) => {
+      dispatch(CampaignActions.declineInvite(token, notificationId));
+    },
+    handleAcceptInvitation: (token, notificationId) => {
+      dispatch(CampaignActions.acceptInvite(token));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(InvitationNotificationDialog));

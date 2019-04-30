@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import HeaderContainer from 'components/layout/HeaderContainer';
-import MainContainer from 'components/layout/MainContainer';
+import Header from 'components/layout/Header';
+import Main from 'components/layout/Main';
 import Footer from 'components/layout/Footer';
 
 export default class TemplatePage extends Component {
@@ -12,10 +12,10 @@ export default class TemplatePage extends Component {
   render() {
     return (
         <React.Fragment>
-          <HeaderContainer { ...this.props } />
-          <MainContainer>
+          <Header { ...this.props } />
+          <Main { ...this.props }>
             { this.props.children }
-          </MainContainer>
+          </Main>
           <Footer { ...this.props } />
         </React.Fragment>
     );
