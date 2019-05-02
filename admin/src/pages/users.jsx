@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import {List, Datagrid, DateField, EmailField, TextField, BooleanField, EditButton, DisabledInput, SimpleForm, Edit,
-  BooleanInput, Filter, ReferenceInput, SelectInput} from "react-admin";
+  BooleanInput, Filter, ReferenceInput, SelectInput} from 'react-admin';
 
 const UserFilter = (props) => (
     <Filter {...props}>
@@ -25,7 +25,7 @@ export const UserList = (props) => (
 );
 
 const UserTitle = ({record}) => {
-  return <span>User {record ? `"${record.username}"` : ""}</span>;
+  return <span>User {record ? `"${record.username}"` : ''}</span>;
 };
 
 export const UserEdit = (props) => (

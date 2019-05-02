@@ -32,7 +32,7 @@ class ResourceServiceConfigurer : ResourceServerConfigurerAdapter() {
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
-                .antMatchers("/admin/**", "/actuator/**").hasAnyRole("ROLE_ADMIN")
+                .antMatchers("/api/**/admin/**", "/actuator/**").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll().and()
                 .exceptionHandling().accessDeniedHandler(OAuth2AccessDeniedHandler()).and()

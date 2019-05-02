@@ -4,8 +4,9 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "scripts": {
-    "start": "NODE_PATH=./src react-scripts start",
-    "build": "NODE_PATH=./src react-scripts build",
+    "start": "NODE_PATH=./src env-cmd ./config/.env.development react-scripts start",
+    "build": "NODE_PATH=./src env-cmd ./config/.env.production react-scripts build",
+    "build-dev": "NODE_PATH=./src env-cmd ./config/.env.development react-scripts build",
     "test": "NODE_PATH=./src react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src --ext .js,.jsx --ignore-pattern node_modules/"
@@ -18,6 +19,7 @@
     "classnames": "^2.2.6",
     "connected-react-router": "^4.3.0",
     "draft-js": "^0.10.5",
+    "env-cmd": "^8.0.2",
     "history": "^4.7.2",
     "http-proxy-middleware": "^0.19.1",
     "jss": "latest",

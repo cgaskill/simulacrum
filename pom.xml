@@ -13,8 +13,9 @@
     </parent>
 
     <modules>
-        <module>api</module>
         <module>app</module>
+        <module>admin</module>
+        <module>api</module>
     </modules>
 
     <properties>

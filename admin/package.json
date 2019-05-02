@@ -7,9 +7,19 @@
       "target": "http://localhost:8080"
     }
   },
+  "homepage": "/admin",
+  "scripts": {
+    "start": "NODE_PATH=./src env-cmd ./config/.env.development react-scripts start",
+    "build": "NODE_PATH=./src env-cmd ./config/.env.production react-scripts build",
+    "build-dev": "NODE_PATH=./src env-cmd ./config/.env.development react-scripts build",
+    "test": "NODE_PATH=./src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src --ext .js,.jsx --ignore-pattern node_modules/"
+  },
   "dependencies": {
     "@material-ui/core": "^3.1.0",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/icons": "^3.0.2",
+    "env-cmd": "^8.0.2",
     "ra-data-json-server": "^2.0.3",
     "ra-data-simple-rest": "^2.0.3",
     "react": "^16.4.1",
@@ -17,12 +27,6 @@
     "react-dom": "^16.4.1",
     "react-google-login": "^3.2.1",
     "react-scripts": "^1.1.5"
-  },
-  "scripts": {
-    "start": "NODE_PATH=./src react-scripts start",
-    "build": "NODE_PATH=./src react-scripts build",
-    "test": "NODE_PATH=./src react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -46,13 +50,16 @@
       "require-jsdoc": "off",
       "max-len": [
         1,
-        120,
+        160,
         4
       ],
       "babel/new-cap": 1,
       "babel/no-invalid-this": 1,
       "babel/object-curly-spacing": 1,
-      "babel/quotes": 1,
+      "babel/quotes": [
+        "warn",
+        "single"
+      ],
       "babel/semi": 1,
       "babel/no-unused-expressions": 1,
       "no-invalid-this": 0,
