@@ -2,6 +2,10 @@
 
 This project uses react and webpack on the front end and spring boot and kotlin on the backend.
 
+## Demo
+https://simulacrum.herokuapp.com
+
+## Get Started
 ```sh
 cd ./api
 mvn spring-boot:run
