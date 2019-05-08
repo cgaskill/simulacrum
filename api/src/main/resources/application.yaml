@@ -1,8 +1,8 @@
 security:
     oauth2:
         client:
-            clientId: <secret>
-            clientSecret: <secret>
+            clientId: 1071523839085-1t6k75k97n5sec0osdkn7av98qoffael.apps.googleusercontent.com
+            # : <secret>
             accessTokenUri: https://www.googleapis.com/oauth2/v3/token
             userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
             tokenName: oauth_token
@@ -26,7 +26,6 @@ spring:
     #initialize: true
     url: jdbc:mysql://${spring.datasource.domain}/${spring.datasource.database}?${spring.datasource.params}
     username: root
-    password: password
     driver-class-name: com.mysql.jdbc.Driver
     domain: localhost
     params: useLegacyDatetimeCode=false&serverTimezone=UTC

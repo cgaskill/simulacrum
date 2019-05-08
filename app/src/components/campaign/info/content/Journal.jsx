@@ -7,8 +7,13 @@ import ContentModal from './ContentModal';
 import Drawer from '@material-ui/core/Drawer';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
-import Dante from 'Dante2';
+// import Dante from 'Dante2';
 import TextField from '@material-ui/core/TextField';
+import {EditorState} from 'draft-js';
+
+import Editor from 'draft-js-plugins-editor';
+import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
+import 'draft-js-static-toolbar-plugin/lib/plugin.css';
 
 const drawerWidth = 240;
 
@@ -37,6 +42,9 @@ const styles = (theme) => ({
     toolbar: theme.mixins.toolbar,
 });
 
+const toolbarPlugin = createToolbarPlugin();
+const { Toolbar } = toolbarPlugin;
+
 class Journal extends Component {
     static propTypes = {
         campaignId: PropTypes.number.isRequired,
@@ -51,7 +59,9 @@ class Journal extends Component {
         this.state = {
             isContentItemModalOpen: false,
             selectedStoryEntry: -1,
+            editorState: EditorState.createEmpty()
         };
+        this.onChange = (editorState) => this.setState({editorState});
     }
 
     render() {
@@ -93,14 +103,22 @@ class Journal extends Component {
                         this.state.selectedStoryEntry > -1 &&
                         <React.Fragment>
                             <TextField placeholder={'Header'}/>
-                            <Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>
+                            <Editor editorState={this.state.editorState}
+                                    placeholder={'You\'re in a tavern...'}
+                                    plugins={[toolbarPlugin]}
+                                    onChange={this.onChange}/>
+                            {/*<Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>*/}
                         </React.Fragment>
                     }
                     {
                         this.state.selectedStoryEntry < 0 &&
                         <React.Fragment>
                             <TextField placeholder={'Header'}/>
-                            <Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>
+                            <Toolbar/>
+                            <Editor editorState={this.state.editorState}
+                                    plugins={[toolbarPlugin]}
+                                    onChange={this.onChange}/>
+                            {/*<Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>*/}
                         </React.Fragment>
                     }
                 </div>
