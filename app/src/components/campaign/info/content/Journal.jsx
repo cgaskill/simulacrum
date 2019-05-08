@@ -9,11 +9,13 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 // import Dante from 'Dante2';
 import TextField from '@material-ui/core/TextField';
-import {EditorState} from 'draft-js';
+import {EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 
 import Editor from 'draft-js-plugins-editor';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import 'draft-js-static-toolbar-plugin/lib/plugin.css';
+import {Promise} from "q";
+import _ from  'lodash';
 
 const drawerWidth = 240;
 
@@ -45,6 +47,13 @@ const styles = (theme) => ({
 const toolbarPlugin = createToolbarPlugin();
 const { Toolbar } = toolbarPlugin;
 
+function fetchContent() {
+    return new Promise((resolve, reject) => {
+         const rawContent = window.localStorage.getItem('content');
+         return resolve(JSON.parse(rawContent));
+    });
+}
+
 class Journal extends Component {
     static propTypes = {
         campaignId: PropTypes.number.isRequired,
@@ -58,11 +67,27 @@ class Journal extends Component {
         super(props);
         this.state = {
             isContentItemModalOpen: false,
-            selectedStoryEntry: -1,
-            editorState: EditorState.createEmpty()
+            selectedStoryEntry: -1
         };
-        this.onChange = (editorState) => this.setState({editorState});
+        this.onChange = (editorState) => {
+            this.saveContent(editorState.getCurrentContent());
+            this.setState({editorState});
+        }
     }
+
+    componentDidMount() {
+        fetchContent()
+            .then(content => {
+                console.log('fetched content:', content);
+                this.setState({editorState: content ? EditorState.createWithContent(convertFromRaw(content)) : EditorState.createEmpty()});
+            })
+            .catch(err => console.log('Error getting content:', err));
+    }
+
+    saveContent = _.throttle((content) => {
+        console.log('persisting content to server', content);
+        window.localStorage.setItem('content', JSON.stringify(convertToRaw(content)));
+    },3000)
 
     render() {
         const {classes, contentItems} = this.props;
@@ -115,9 +140,9 @@ class Journal extends Component {
                         <React.Fragment>
                             <TextField placeholder={'Header'}/>
                             <Toolbar/>
-                            <Editor editorState={this.state.editorState}
+                            { this.state.editorState ? <Editor editorState={this.state.editorState}
                                     plugins={[toolbarPlugin]}
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange}/>  : <span>Loading...</span> }
                             {/*<Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>*/}
                         </React.Fragment>
                     }
