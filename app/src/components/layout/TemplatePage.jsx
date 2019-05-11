@@ -15,9 +15,9 @@ import DefaultHeaderContent from 'components/layout/DefaultHeader';
 
 const TemplatePage = ({LeftNavHeaderContent, LeftNavContent, HeaderContent, layout, children, ...props}) => {
   const [preset] = useState(layout);
-
+  const config = presets[preset]();
   return (
-    <Root config={presets[preset]()} style={{minHeight: '100vh'}}>
+    <Root config={config} style={{minHeight: '100vh'}}>
       <Header
         menuIcon={{inactive: <MenuRoundedIcon/>, active: <ChevronLeftIcon/>}}
         {...props}

@@ -1,7 +1,7 @@
 const presets = {
     createDefaultLayout() {
         return {
-            navWidth: 256,
+            navWidth: 200,
             navAnchor: 'left',
             navVariant: {
                 xs: 'temporary',
@@ -29,6 +29,7 @@ const presets = {
             xs: false,
             md: true,
         },
+        clipped: true,
         squeezed: true,
         headerPosition: 'sticky',
         ...config,

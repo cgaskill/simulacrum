@@ -14,6 +14,7 @@ const styles = ({
                     spacing,
                     zIndex,
                     shadows,
+                    mixins,
                 }) => ({
     root: {},
     container: {
@@ -50,6 +51,7 @@ const styles = ({
             backgroundColor: palette.grey[300],
         },
     },
+    toolbar: mixins.toolbar,
 });
 
 const LeftNav = ({
@@ -61,62 +63,64 @@ const LeftNav = ({
                  collapsedIcon,
                  ...props
              }) => {
-    const ctx = useContext(LayoutContext);
-    const {
-        open,
-        setOpen,
-        navVariant,
-        navAnchor,
-        navWidth,
-        collapsedWidth,
-        collapsible,
-        collapsed,
-        setCollapse,
-    } = ctx;
-    const getWidth = () => {
-        if (collapsible && collapsed) return collapsedWidth;
-        return navWidth;
-    };
-    const shouldRenderButton = collapsible && collapsedIcon;
-    const contentRef = useRef(null);
-    return (
-        <Component>
-            <Drawer
-                className={`${className} ${classes.root}`}
-                open={open}
-                onClose={setOpen}
-                variant={navVariant}
-                anchor={navAnchor}
+  const ctx = useContext(LayoutContext);
+  const {
+    open,
+    setOpen,
+    navVariant,
+    navAnchor,
+    navWidth,
+    collapsedWidth,
+    collapsible,
+    collapsed,
+    setCollapse,
+    clipped,
+  } = ctx;
+  const getWidth = () => {
+    if (collapsible && collapsed) return collapsedWidth;
+    return navWidth;
+  };
+  const shouldRenderButton = collapsible && collapsedIcon;
+  const contentRef = useRef(null);
+  return (
+    <Component>
+      <Drawer
+        className={`${className} ${classes.root}`}
+        open={open}
+        onClose={setOpen}
+        variant={navVariant}
+        anchor={navAnchor}
+      >
+        {clipped && <div className={classes.toolbar}/>}
+        <div className={classes.container} style={{width: getWidth()}}>
+          {typeof header === 'function' ? header(ctx) : header}
+          <div ref={contentRef} className={classes.content}>
+            {typeof children === 'function' ? children(ctx) : children}
+          </div>
+          {shouldRenderButton && (
+            <Button
+              className={classes.collapseButton}
+              fullWidth
+              onClick={setCollapse}
             >
-                <div className={classes.container} style={{width: getWidth()}}>
-                    {typeof header === 'function' ? header(ctx) : header}
-                    <div ref={contentRef} className={classes.content}>
-                        {typeof children === 'function' ? children(ctx) : children}
-                    </div>
-                    {shouldRenderButton && (
-                        <Button
-                            className={classes.collapseButton}
-                            fullWidth
-                            onClick={setCollapse}
-                        >
-                            {collapsed
-                                ? collapsedIcon.active
-                                : collapsedIcon.inactive || collapsedIcon.active}
-                        </Button>
-                    )}
-                </div>
-            </Drawer>
-            <Grow in={open && navVariant === 'temporary' && collapsedIcon}>
-                <IconButton
-                    className={classes.closeButton}
-                    style={{left: navWidth + 16}}
-                    onClick={setOpen}
-                >
-                    {collapsedIcon.inactive}
-                </IconButton>
-            </Grow>
-        </Component>
-    );
+              {collapsed
+                ? collapsedIcon.active
+                : collapsedIcon.inactive || collapsedIcon.active}
+            </Button>
+          )}
+        </div>
+      </Drawer>
+      <Grow in={open && navVariant === 'temporary' && collapsedIcon != null}>
+        <IconButton
+          className={classes.closeButton}
+          style={{left: navWidth + 16}}
+          onClick={setOpen}
+        >
+          {collapsedIcon.inactive}
+        </IconButton>
+      </Grow>
+    </Component>
+  );
 };
 
 LeftNav.propTypes = {

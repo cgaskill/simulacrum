@@ -17,7 +17,7 @@ import 'draft-js-static-toolbar-plugin/lib/plugin.css';
 import {Promise} from 'q';
 import _ from 'lodash';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const styles = (theme) => ({
     fab: {
@@ -39,7 +39,7 @@ const styles = (theme) => ({
     },
     content: {
         flexGrow: 1,
-        paddingLeft: theme.spacing.unit * 2,
+        padding: theme.spacing.unit * 2,
     },
     toolbar: theme.mixins.toolbar,
 });
@@ -113,6 +113,7 @@ class Journal extends Component {
                                               onClick={(e) => this.toggleSelectedStoryEntry(e, contentItem.id)}
                                               classes={{root: classes.tile}}>
                                         <ListItemText
+                                          primaryTypographyProps={{noWrap: true}}
                                             primary={contentItem.name}
                                         />
                                     </ListItem>
