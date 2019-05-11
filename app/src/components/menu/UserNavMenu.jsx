@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu/index';
+import MenuItem from '@material-ui/core/MenuItem/index';
+import IconButton from '@material-ui/core/IconButton/index';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItemText from '@material-ui/core/ListItemText/index';
 import {withStyles} from '@material-ui/core/styles/index';
+import {Link as RouterLink} from 'react-router-dom';
 
 const styles = (theme) => ({
   root: {
@@ -53,7 +54,7 @@ class UserNavMenu extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleClose}
           >
-            <MenuItem><Link to={'/account'}>My account</Link></MenuItem>
+            <MenuItem><Link component={RouterLink} to={'/account'}>My account</Link></MenuItem>
             <MenuItem onClick={handleLogoutClick}>
               <ListItemText primary={'Logout'} />
             </MenuItem>

@@ -18,8 +18,6 @@ export function triggerEvent(event) {
   return (dispatch) => {
     if (eventMap[event.type]) {
       dispatch(eventMap[event.type](event));
-    } else {
-      console.log('Unregistered event: ' + event.type);
     }
   };
 }

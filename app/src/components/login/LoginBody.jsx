@@ -43,6 +43,7 @@ class LoginBody extends Component {
     loginSuccess: PropTypes.func.isRequired,
     loginFailure: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   };
 
   state = {};
@@ -89,7 +90,7 @@ class LoginBody extends Component {
             <Card className={classes.card}>
               <CardContent className={classes.content}>
                 <div className={classes.row}>
-                  <Typography variant="headline" gutterBottom>Login</Typography>
+                  <Typography variant="h5" gutterBottom>Login</Typography>
                 </div>
                 <div id={GOOGLE_BUTTON_ID}/>
               </CardContent>

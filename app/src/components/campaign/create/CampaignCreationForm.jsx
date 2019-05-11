@@ -50,7 +50,7 @@ class CampaignCreationForm extends React.Component {
         <form onSubmit={handleSubmit}>
           <Card className={classes.campaignForm}>
             <CardContent>
-              <Typography variant="headline" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
+              <Typography variant="h5" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
                 Start your next Adventure
               </Typography>
               <div>

@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
-import Header from 'components/layout/Header';
 import LoginBody from 'components/login/LoginBody';
-import Main from 'components/layout/Main';
+import TemplatePage from 'components/layout/TemplatePage';
 
 export default class LoginPage extends Component {
   render() {
     return (
-        <React.Fragment>
-          <Header/>
-          <Main>
-            <LoginBody {...this.props}/>
-          </Main>
-        </React.Fragment>
+      <TemplatePage>
+        <LoginBody {...this.props}/>
+      </TemplatePage>
     );
   }
 }

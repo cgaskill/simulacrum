@@ -48,7 +48,7 @@ class Header extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.container}>
-          <Typography variant="display3"
+          <Typography variant="h2"
                       gutterBottom
                       color={'inherit'}
                       className={classes.headerTitle}

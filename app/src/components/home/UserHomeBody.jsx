@@ -64,7 +64,7 @@ class UserHomeBody extends Component {
                 <div className={classes.root} elevation={4}>
                   <Grid container spacing={32} className={classes.campaignGrid}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={'title'}>
-                      <Typography variant="headline" component="h2">
+                      <Typography variant="h5" component="h2">
                         Campaigns
 
 

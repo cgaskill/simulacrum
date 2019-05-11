@@ -45,7 +45,7 @@ const styles = (theme) => ({
 });
 
 const toolbarPlugin = createToolbarPlugin();
-const { Toolbar } = toolbarPlugin;
+const {Toolbar} = toolbarPlugin;
 
 function fetchContent() {
     return new Promise((resolve, reject) => {
@@ -67,7 +67,7 @@ class Journal extends Component {
         super(props);
         this.state = {
             isContentItemModalOpen: false,
-            selectedStoryEntry: -1
+            selectedStoryEntry: -1,
         };
         this.onChange = (editorState) => {
             this.saveContent(editorState.getCurrentContent());
@@ -132,7 +132,6 @@ class Journal extends Component {
                                     placeholder={'You\'re in a tavern...'}
                                     plugins={[toolbarPlugin]}
                                     onChange={this.onChange}/>
-                            {/*<Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>*/}
                         </React.Fragment>
                     }
                     {
@@ -142,8 +141,7 @@ class Journal extends Component {
                             <Toolbar/>
                             { this.state.editorState ? <Editor editorState={this.state.editorState}
                                     plugins={[toolbarPlugin]}
-                                    onChange={this.onChange}/>  : <span>Loading...</span> }
-                            {/*<Dante body_placeholder={'Two Dwarfs walked into a bar...'}/>*/}
+                                    onChange={this.onChange}/> : <span>Loading...</span> }
                         </React.Fragment>
                     }
                 </div>

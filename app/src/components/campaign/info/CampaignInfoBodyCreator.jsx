@@ -2,25 +2,18 @@ import ContentGrid from 'components/campaign/info/content/ContentGrid';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import BookIcon from '@material-ui/icons/Book';
-import PersonIcon from '@material-ui/icons/Person';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import TerrainIcon from '@material-ui/icons/Terrain';
-import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import _ from 'lodash';
-import {Link as RouterLink, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import Journal from './content/Journal';
 import memoize from 'memoize-one';
-import Drawer from '@material-ui/core/Drawer';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-
 const drawerWidth = 240;
 
-const styles = (theme) => ({
+const styles =
+    ({
+      breakpoints,
+      palette,
+      mixins,
+    }) => ({
   root: {
     display: 'flex',
   },
@@ -35,7 +28,7 @@ const styles = (theme) => ({
     flexGrow: 1,
     display: 'flex',
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: mixins.toolbar,
 });
 
 class CampaignInfoBodyCreator extends React.Component {
@@ -67,38 +60,6 @@ class CampaignInfoBodyCreator extends React.Component {
 
     return (
         <React.Fragment>
-          <Drawer
-              className={classes.drawer}
-              variant="permanent"
-              classes={{
-                paper: classes.drawerPaper,
-              }}>
-            <div className={classes.toolbar}/>
-
-            <List subheader={<ListSubheader>Campaign</ListSubheader>}>
-              <ListItem component={RouterLink} to={`/campaigns/${campaignId}/info`} selected={subPage === 'overview'} button>
-                <ListItemIcon><ThreeSixtyIcon/></ListItemIcon>
-                <ListItemText primary={'Overview'}/>
-              </ListItem>
-              <ListItem component={RouterLink} to={`/campaigns/${campaignId}/info/journal`} selected={subPage === 'journal'} button>
-                <ListItemIcon><BookIcon/></ListItemIcon>
-                <ListItemText primary={'Journal'}/>
-              </ListItem>
-              <ListItem component={RouterLink} to={`/campaigns/${campaignId}/info/characters`} selected={subPage === 'characters'} button>
-                <ListItemIcon><PersonIcon/></ListItemIcon>
-                <ListItemText primary={'Characters'}/>
-              </ListItem>
-              <ListItem component={RouterLink} to={`/campaigns/${campaignId}/info/items`} selected={subPage === 'items'} button>
-                <ListItemIcon><BusinessCenterIcon/></ListItemIcon>
-                <ListItemText primary={'Items'}/>
-              </ListItem>
-              <ListItem component={RouterLink} to={`/campaigns/${campaignId}/info/locations`} selected={subPage === 'locations'} button>
-                <ListItemIcon><TerrainIcon/></ListItemIcon>
-                <ListItemText primary={'Locations'}/>
-              </ListItem>
-            </List>
-          </Drawer>
-
           <div className={classes.content}>
             {subPage === 'overview' && <ContentGrid campaignId={campaignId} {...otherProps} contentItems={contentItems}/>}
             {subPage === 'journal' && <Journal campaignId={campaignId} {...otherProps} contentItems={this.filter(contentItems, 'journal')}/>}

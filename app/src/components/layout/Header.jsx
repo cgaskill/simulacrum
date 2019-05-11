@@ -1,112 +1,130 @@
-import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import {withStyles} from '@material-ui/core/styles';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { Link as RouterLink } from 'react-router-dom'
-import Link from '@material-ui/core/Link';
-import UserNavMenu from 'components/layout/UserNavMenu';
-import UserNotificationMenu from 'components/layout/UserNotificationMenu';
-import SubMenu from 'components/layout/SubMenu';
-import {connect} from 'react-redux';
-import * as UserActions from 'actions/UserActions';
-import * as NotificationActions from 'actions/NotificationActions';
+import {withStyles} from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import {LayoutContext} from './Root';
 
-const styles = (theme) => ({
-  appbar: {
-    zIndex: theme.zIndex.drawer + 1,
-    flexGrow: 1,
-    backgroundColor: '#090809',
-    color: '#ffffff',
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  appTitle: {
-    flex: 1,
-  },
-  appTitleLink: {
-    color: '#ffffff',
-    textDecoration: 'none',
-  },
-  loginLink: {
-    color: '#ffffff',
-    textDecoration: 'none',
-  },
-  appLogo: {
-    height: 30,
-  },
+const styles = ({transitions, zIndex}) => ({
+    root: {
+        backgroundColor: '#090809',
+        color: '#ffffff',
+        transition: transitions.create(['margin', 'width'], {
+            easing: transitions.easing.sharp,
+            duration: transitions.duration.leavingScreen,
+        }),
+    },
+    menuButton: {
+        color: '#ffffff',
+        marginLeft: -8,
+        marginRight: 8,
+    },
 });
 
-class Header extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    isLoaded: PropTypes.bool.isRequired,
-    handleLogoutClick: PropTypes.func.isRequired,
-    hideHeaderBanner: PropTypes.bool,
-  };
+const createGet = (
+    {clipped, navVariant, collapsible, collapsed, open, squeezed, navAnchor},
+    normal,
+    shrink,
+    pushed,
+    unsqueeze,
+) => () => {
+    if (clipped || navAnchor !== 'left') return normal;
+    if (navVariant === 'persistent' && open) {
+        // open is effect only when
+        // navVariant === 'persistent' ||
+        // navVariant === 'temporary'
+        if (squeezed) {
+            return pushed;
+        }
+        return unsqueeze;
+    }
+    if (navVariant === 'permanent') {
+        if (collapsible) {
+            if (collapsed) return shrink;
+            return pushed;
+        }
+        return pushed;
+    }
+    return normal;
+};
 
-  render() {
-    const {classes, hideHeaderBanner} = this.props;
-
-    return (
-        <React.Fragment>
-          <AppBar className={classes.appbar} position="fixed" color="default">
-            <Toolbar>
-              <Link component={RouterLink} to={'/'}>
-                <img src={'/logo.png'} className={classes.appLogo} alt="logo"/>
-              </Link>
-              <Typography variant="title" color="inherit" className={classes.appTitle}>
-                <Link component={RouterLink} to={'/'} className={classes.appTitleLink}>Simulacrum</Link>
-              </Typography>
-              {this.props.isLoggedIn && <UserNotificationMenu {...this.props} />}
-              {
-                !this.props.isLoggedIn && this.props.isLoaded &&
-                <Button color={'inherit'} component={Link} to="/login" className={classes.loginLink}>Login</Button>
-              }
-              {
-                this.props.isLoggedIn && <UserNavMenu handleLogoutClick={this.props.handleLogoutClick} />
-              }
-            </Toolbar>
-          </AppBar>
-          {
-            !hideHeaderBanner && <SubMenu />
-          }
-        </React.Fragment>
+const Header = ({
+                    className,
+                    component: Component,
+                    classes,
+                    menuIcon,
+                    style,
+                    theme,
+                    children,
+                    toolbarProps,
+                    ...props
+                }) => {
+    const ctx = useContext(LayoutContext);
+    const {
+        clipped,
+        collapsedWidth,
+        navWidth,
+        navVariant,
+        headerPosition,
+        open,
+        setOpen,
+    } = ctx;
+    const getWidth = createGet(
+        ctx,
+        '100%',
+        `calc(100% - ${collapsedWidth}px)`,
+        `calc(100% - ${navWidth}px)`,
+        '100%',
     );
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    isLoggedIn: state.user.isLoggedIn,
-    isLoaded: state.user.isLoaded,
-    notifications: state.notifications.instances,
-    isLoadedNotifications: state.notifications.isLoadedNotifications,
-    reloadNotificationsInterval: 60000,
-  };
+    const getMargin = createGet(ctx, 0, collapsedWidth, navWidth, navWidth);
+    const shouldRenderMenu = navVariant !== 'permanent' && !!menuIcon;
+    return (
+        <AppBar
+            color={'default'}
+            elevation={0}
+            className={`${className} ${classes.root}`}
+            position={headerPosition}
+            style={{
+                ...style,
+                zIndex: clipped ? theme.zIndex.drawer + 1 : theme.zIndex.appBar,
+                width: getWidth(),
+                marginLeft: getMargin(),
+            }}
+        >
+            <Toolbar {...toolbarProps}>
+                {shouldRenderMenu && (
+                    <IconButton onClick={setOpen} className={classes.menuButton}>
+                        {open ? menuIcon.active : menuIcon.inactive || menuIcon.active}
+                    </IconButton>
+                )}
+                {typeof children === 'function' ? children(ctx) : children}
+            </Toolbar>
+        </AppBar>
+    );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    handleLogoutClick: () => {
-      dispatch(UserActions.logoutUser());
-    },
-    loadNotifications: () => {
-      dispatch(NotificationActions.loadNotifications());
-    },
-    markNotificationRead: (notificationId) => {
-      dispatch(NotificationActions.markNotificationRead(notificationId));
-    },
-  };
+Header.propTypes = {
+    className: PropTypes.string,
+    classes: PropTypes.shape({}).isRequired,
+    component: PropTypes.elementType,
+    style: PropTypes.shape({}),
+    position: PropTypes.string,
+    theme: PropTypes.shape({}).isRequired,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired,
+    toolbarProps: PropTypes.shape({}),
+    menuIcon: PropTypes.shape({
+        inactive: PropTypes.node.isRequired,
+        active: PropTypes.node,
+    }),
+};
+Header.defaultProps = {
+    className: '',
+    component: 'div',
+    style: {},
+    position: 'relative',
+    toolbarProps: {},
+    menuIcon: null,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));
+export default withStyles(styles, {withTheme: true, name: 'MuiHeader'})(Header);

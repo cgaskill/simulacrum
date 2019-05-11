@@ -61,7 +61,7 @@ class InvitePlayerForm extends React.Component {
           <form onSubmit={handleSubmit(invitePlayer)}>
             <Card className={classes.campaignForm}>
               <CardContent>
-                <Typography variant="headline" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
+                <Typography variant="h5" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
                   Invite Your Adventurers
                 </Typography>
                 <div>

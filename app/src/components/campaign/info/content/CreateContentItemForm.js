@@ -62,7 +62,7 @@ class CreateContentItemForm extends React.Component {
           <form onSubmit={(e) => handleSubmit(invitePlayer)}>
             <Card className={classes.campaignForm}>
               <CardContent>
-                <Typography variant="headline" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
+                <Typography variant="h5" color={'inherit'} gutterBottom className={classes.campaignFormTitle}>
                   Add a New Character
                 </Typography>
                 <div>

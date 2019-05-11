@@ -13,14 +13,17 @@ import {ConnectedRouter} from 'connected-react-router';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#15445e'
+      main: '#15445e',
     },
     secondary: {
-      main: '#d7d8db'
+      main: '#d7d8db',
     },
     accent: red,
     type: 'light'
     ,
+  },
+  typography: {
+    useNextVariants: true,
   },
 });
 
