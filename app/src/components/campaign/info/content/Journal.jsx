@@ -14,8 +14,8 @@ import {EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import 'draft-js-static-toolbar-plugin/lib/plugin.css';
-import {Promise} from "q";
-import _ from  'lodash';
+import {Promise} from 'q';
+import _ from 'lodash';
 
 const drawerWidth = 240;
 
@@ -72,22 +72,22 @@ class Journal extends Component {
         this.onChange = (editorState) => {
             this.saveContent(editorState.getCurrentContent());
             this.setState({editorState});
-        }
+        };
     }
 
     componentDidMount() {
         fetchContent()
-            .then(content => {
+            .then((content) => {
                 console.log('fetched content:', content);
                 this.setState({editorState: content ? EditorState.createWithContent(convertFromRaw(content)) : EditorState.createEmpty()});
             })
-            .catch(err => console.log('Error getting content:', err));
+            .catch((err) => console.log('Error getting content:', err));
     }
 
     saveContent = _.throttle((content) => {
         console.log('persisting content to server', content);
         window.localStorage.setItem('content', JSON.stringify(convertToRaw(content)));
-    },3000)
+    }, 3000);
 
     render() {
         const {classes, contentItems} = this.props;
