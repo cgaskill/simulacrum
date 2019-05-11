@@ -45,7 +45,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit * 1,
   },
   fab: {
     position: 'absolute',

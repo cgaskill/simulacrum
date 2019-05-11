@@ -12,9 +12,10 @@ import {connect} from 'react-redux';
 import * as CampaignActions from 'actions/CampaignActions';
 
 const styles = (theme) => ({
-  campaignFormContainer: {
+  root: {
     display: 'flex',
     justifyContent: 'center',
+    padding: theme.spacing.unit * 3,
   },
   campaignForm: {
 
@@ -35,7 +36,7 @@ const validate = (values) => {
   return errors;
 };
 
-class CampaignCreationForm extends React.Component {
+class CampaignCreationBody extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
@@ -46,7 +47,7 @@ class CampaignCreationForm extends React.Component {
   render() {
     const {handleSubmit, pristine, submitting, classes} = this.props;
     return (
-      <div className={classes.campaignFormContainer}>
+      <div className={classes.root}>
         <form onSubmit={handleSubmit}>
           <Card className={classes.campaignForm}>
             <CardContent>
@@ -81,6 +82,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(reduxForm({
-  form: 'CampaignCreationForm',
+  form: 'CampaignCreationBody',
   validate,
-})(CampaignCreationForm)));
+})(CampaignCreationBody)));

@@ -13,8 +13,10 @@ const styles =
       breakpoints,
       palette,
       mixins,
+      spacing,
     }) => ({
   root: {
+    padding: spacing.unit * 3,
     display: 'flex',
   },
   drawer: {

@@ -5,9 +5,9 @@ import TemplatePage from 'components/layout/TemplatePage';
 export default class UserHomePage extends Component {
   render() {
     return (
-        <TemplatePage layout={'createContentBasedLayout'}>
-            <UserHomeBody />
-        </TemplatePage>
+      <TemplatePage>
+        <UserHomeBody/>
+      </TemplatePage>
     );
   }
 }

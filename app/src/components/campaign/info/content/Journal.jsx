@@ -34,7 +34,7 @@ const styles = (theme) => ({
     },
     drawerPaper: {
         width: drawerWidth,
-        left: drawerWidth,
+        left: 'auto',
         zIndex: 9,
     },
     content: {

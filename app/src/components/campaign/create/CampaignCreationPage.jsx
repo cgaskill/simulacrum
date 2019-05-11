@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import CampaignCreationForm from 'components/campaign/create/CampaignCreationForm';
+import CampaignCreationBody from 'components/campaign/create/CampaignCreationBody';
 import TemplatePage from 'components/layout/TemplatePage';
 
 export default class CampaignCreationPage extends Component {
   render() {
     return (
-        <TemplatePage>
-          <CampaignCreationForm/>
-        </TemplatePage>
+      <TemplatePage>
+        <CampaignCreationBody/>
+      </TemplatePage>
     );
   }
 }

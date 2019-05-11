@@ -17,6 +17,7 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'start',
     overflow: 'hidden',
+    padding: theme.spacing.unit * 3,
   },
   campaignGrid: {
     marginBottom: 0,
