@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 class PageController {
 
-    @GetMapping("/{path:[^\\.]*}")
+    @GetMapping("/**/{path:[^\\.]*}")
     fun forward(request: HttpServletRequest): String? {
         if(request.requestURI.startsWith("/admin")) {
             return "forward:/admin/index.html"
         }
-        return "forward:/"
+        return "forward:/index.html"
     }
 }
