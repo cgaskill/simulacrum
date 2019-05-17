@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import CampaignInfoBody from 'components/campaign/info/CampaignInfoBody';
 import _ from 'lodash';
 import TemplatePage from 'components/layout/TemplatePage';
-import CampaignInfoNav from 'components/campaign/info/CampaignInfoNav';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as CampaignReducer from 'actions/CampaignReducer';
@@ -47,9 +46,7 @@ class CampaignInfoPage extends Component {
     }
 
     return (
-      <TemplatePage LeftNavContent={CampaignInfoNav}
-                    LeftNavHeader={CampaignInfoNavHeader}
-                    layout={'createFixedLayout'}
+      <TemplatePage LeftNavHeader={CampaignInfoNavHeader}
                     subPage={subPage}
                     campaignId={campaignId}>
         <CampaignInfoBody campaignId={campaignId} subPage={subPage} {...this.props}/>

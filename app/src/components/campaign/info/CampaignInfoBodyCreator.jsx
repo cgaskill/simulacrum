@@ -6,15 +6,19 @@ import _ from 'lodash';
 import {Redirect} from 'react-router-dom';
 import Journal from './content/Journal';
 import memoize from 'memoize-one';
-const drawerWidth = 240;
+import CampaignInfoNav from 'components/campaign/info/CampaignInfoNav';
+import Drawer from '@material-ui/core/Drawer';
+
+const drawerWidth = 200;
 
 const styles =
     ({
-      breakpoints,
-      palette,
-      mixins,
-      spacing,
-    }) => ({
+       breakpoints,
+       palette,
+       mixins,
+       spacing,
+       zIndex,
+     }) => ({
   root: {
     padding: spacing.unit * 3,
     display: 'flex',
@@ -25,10 +29,13 @@ const styles =
   },
   drawerPaper: {
     width: drawerWidth,
+    left: 'auto',
+    zIndex: 9,
   },
   content: {
     flexGrow: 1,
     display: 'flex',
+    marginLeft: drawerWidth,
   },
   toolbar: mixins.toolbar,
 });
@@ -62,6 +69,15 @@ class CampaignInfoBodyCreator extends React.Component {
 
     return (
         <React.Fragment>
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}>
+            <div className={classes.toolbar}/>
+            <CampaignInfoNav {...this.props} />
+          </Drawer>
           <div className={classes.content}>
             {subPage === 'overview' && <ContentGrid campaignId={campaignId} {...otherProps} contentItems={contentItems}/>}
             {subPage === 'journal' && <Journal campaignId={campaignId} {...otherProps} contentItems={this.filter(contentItems, 'journal')}/>}

@@ -33,7 +33,7 @@ const styles = (theme) => ({
     overflow: 'hidden',
   },
   gridList: {
-    marginBottom: 0,
+    padding: 0,
     backgroundColor: theme.palette.background.paper,
   },
   subheader: {
