@@ -35,6 +35,7 @@ const styles = (theme) => ({
     drawerPaper: {
         width: drawerWidth,
         left: 'auto',
+        top: 'auto',
         zIndex: 9,
     },
     content: {
@@ -103,7 +104,6 @@ class Journal extends Component {
                     classes={{
                         paper: classes.drawerPaper,
                     }}>
-                    <div className={classes.toolbar}/>
                     <List subheader={<ListSubheader>Journal</ListSubheader>}>
                         {
                             contentItems.map((contentItem, index) => {
