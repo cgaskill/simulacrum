@@ -5,10 +5,10 @@ import alloy.simulacrum.api.content.ContentItems
 import alloy.simulacrum.api.user.User
 import alloy.simulacrum.api.user.Users
 import com.fasterxml.jackson.annotation.JsonInclude
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
-import org.jetbrains.exposed.dao.LongIdTable
+import org.jetbrains.exposed.dao.id.LongIdTable
 import org.joda.time.DateTime
 
 object Campaigns: LongIdTable() {

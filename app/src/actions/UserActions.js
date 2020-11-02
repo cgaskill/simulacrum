@@ -32,7 +32,7 @@ function clearToken() {
 
 export function login(googleUser) {
   return (dispatch) => {
-    const accessToken = googleUser.Zi.access_token;
+    const accessToken = googleUser.wc.access_token;
     setUserToken(accessToken);
 
     return axios.post('/api/users/login')

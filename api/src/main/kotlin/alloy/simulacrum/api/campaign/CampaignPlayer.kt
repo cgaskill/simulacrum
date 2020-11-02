@@ -1,10 +1,11 @@
 package alloy.simulacrum.api.campaign
 
 import alloy.simulacrum.api.user.Users
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
-import org.jetbrains.exposed.dao.LongIdTable
+import org.jetbrains.exposed.dao.id.LongIdTable
+import org.jetbrains.exposed.sql.jodatime.datetime
 
 object CampaignPlayers: LongIdTable() {
     val campaign = reference("campaign_id", Campaigns).primaryKey(2)

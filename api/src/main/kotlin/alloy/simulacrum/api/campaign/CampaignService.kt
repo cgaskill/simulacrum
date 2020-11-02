@@ -8,6 +8,7 @@ import alloy.simulacrum.api.user.Users
 import alloy.simulacrum.api.user.notification.NotificationDTO
 import alloy.simulacrum.api.user.notification.NotificationService
 import alloy.simulacrum.api.withPageable
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.select
@@ -25,7 +26,7 @@ class CampaignService(val notificationService: NotificationService, val userServ
         return Campaigns.leftJoin(CampaignPlayers)
                 .slice(Campaigns.columns)
                 .select { ((CampaignPlayers.player eq user.id) or (Campaigns.creator eq user.id)) and Campaigns.archived.eq(false) }
-                .orderBy(CampaignPlayers.lastAccessed to false)
+                .orderBy(CampaignPlayers.lastAccessed, SortOrder.DESC)
                 .map { Campaign.wrapRow(it) }
                 .map { CampaignSummaryDTO(it) }
     }

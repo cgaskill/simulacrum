@@ -2,10 +2,11 @@ package alloy.simulacrum.api.user
 
 import alloy.simulacrum.api.RestUtils
 import com.fasterxml.jackson.annotation.JsonInclude
-import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
-import org.jetbrains.exposed.dao.LongIdTable
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.LongIdTable
+import org.jetbrains.exposed.sql.jodatime.datetime
 import org.joda.time.DateTime
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

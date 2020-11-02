@@ -2,10 +2,10 @@ package alloy.simulacrum.api.content
 
 import alloy.simulacrum.api.campaign.Campaigns
 import alloy.simulacrum.api.user.Users
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
-import org.jetbrains.exposed.dao.LongIdTable
+import org.jetbrains.exposed.dao.id.LongIdTable
 
 object ContentItems: LongIdTable() {
     val visibleToPlayers = bool("visibile_to_player").default(false)

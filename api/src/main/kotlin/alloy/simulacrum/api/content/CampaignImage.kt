@@ -1,10 +1,10 @@
 package alloy.simulacrum.api.content
 
 import alloy.simulacrum.api.campaign.Campaigns
-import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
-import org.jetbrains.exposed.dao.LongIdTable
+import org.jetbrains.exposed.dao.id.LongIdTable
 
 object CampaignImages: LongIdTable() {
     val fileName = varchar("file_name", 50)
@@ -31,6 +31,6 @@ data class CampaignImageDTO(val fileName: String) {
     constructor(campaignImage: CampaignImage): this(campaignImage.fileName) {
         id = campaignImage.id.value
         fileType = campaignImage.fileType
-        data = campaignImage.data.getBytes(1, campaignImage.data.length().toInt())
+        data = campaignImage.data.bytes
     }
 }

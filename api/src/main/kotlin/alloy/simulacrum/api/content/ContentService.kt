@@ -5,6 +5,7 @@ import alloy.simulacrum.api.campaign.CampaignService
 import alloy.simulacrum.api.campaign.Campaigns
 import alloy.simulacrum.api.user.User
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -76,7 +77,7 @@ class ContentService(val campaignService: CampaignService) {
                 fileName = image.originalFilename!!
                 fileType = image.contentType!!
                 campaign = currentCampaign.id
-                data = SerialBlob(bytes)
+                data = ExposedBlob(bytes)
             }
         }
     }
