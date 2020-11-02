@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withWidth from '@material-ui/core/withWidth';
 import {withStyles} from '@material-ui/core/styles';
-import presets from './layoutPresets';
+import presets from 'components/layout/layoutPresets';
 
 const keys = ['xs', 'sm', 'md', 'lg', 'xl'];
 

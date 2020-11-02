@@ -4,10 +4,10 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "scripts": {
-    "start": "NODE_PATH=./src env-cmd ./config/.env.development react-scripts start",
-    "build": "NODE_PATH=./src env-cmd ./config/.env.production react-scripts build",
-    "build-dev": "NODE_PATH=./src env-cmd ./config/.env.development react-scripts build",
-    "test": "NODE_PATH=./src react-scripts test --env=jsdom",
+    "start": "env-cmd ./config/.env.development react-scripts start",
+    "build": "env-cmd ./config/.env.production react-scripts build",
+    "build-dev": "env-cmd ./config/.env.development react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ./src --ext .js,.jsx --ignore-pattern node_modules/"
   },
@@ -34,7 +34,7 @@
     "react-jss": "^8.5.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.8",
+    "react-scripts": "4.0.0",
     "redux": "^4.0.0",
     "redux-form": "^7.4.2",
     "redux-thunk": "^2.3.0",
@@ -43,60 +43,23 @@
     "typeface-roboto": "0.0.54",
     "uuid": "^3.3.2"
   },
-  "devDependencies": {
-    "babel-eslint": "^9.0.0",
-    "eslint": "5.12.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-babel": "^5.1.0",
-    "eslint-plugin-flowtype": "^2.49.3",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.10.0"
-  },
+  "devDependencies": {},
   "eslintConfig": {
     "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
       "react-app",
-      "google"
-    ],
-    "rules": {
-      "require-jsdoc": "off",
-      "max-len": [
-        1,
-        160,
-        4
-      ],
-      "babel/new-cap": 1,
-      "babel/no-invalid-this": 1,
-      "babel/object-curly-spacing": 1,
-      "babel/quotes": [
-        "warn",
-        "single"
-      ],
-      "babel/semi": 1,
-      "babel/no-unused-expressions": 1,
-      "no-invalid-this": 0,
-      "quotes": 0,
-      "no-restricted-imports": [
-        "error",
-        {
-          "patterns": [
-            "@material-ui/core/es/*"
-          ]
-        }
-      ]
-    },
-    "plugins": [
-      "babel",
-      "react"
+      "react-app/jest"
     ]
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

@@ -6,3 +6,4 @@ npm-debug.log
 api/target/*
 admin/target/*
 /node
+node_modules

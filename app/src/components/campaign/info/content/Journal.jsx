@@ -3,11 +3,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ContentModal from './ContentModal';
 import Drawer from '@material-ui/core/Drawer';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
-// import Dante from 'Dante2';
 import TextField from '@material-ui/core/TextField';
 import {EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 
@@ -16,6 +14,7 @@ import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import 'draft-js-static-toolbar-plugin/lib/plugin.css';
 import {Promise} from 'q';
 import _ from 'lodash';
+import ContentModal from "components/campaign/info/content/ContentModal";
 
 const drawerWidth = 200;
 

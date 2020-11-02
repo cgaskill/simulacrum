@@ -6,7 +6,7 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from '@material-ui/core/styles';
 import {red} from '@material-ui/core/colors';
-import PageRoutes from './components/PageRoutes';
+import PageRoutes from 'components/PageRoutes';
 import {Provider} from 'react-redux';
 import {ConnectedRouter} from 'connected-react-router';
 

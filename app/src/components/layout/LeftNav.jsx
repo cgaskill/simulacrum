@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Grow from '@material-ui/core/Grow';
-import {LayoutContext} from './Root';
+import {LayoutContext} from 'components/layout/Root';
 
 const styles = ({
                     breakpoints,

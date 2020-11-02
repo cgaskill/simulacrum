@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
 import {Redirect} from 'react-router-dom';
-import Journal from './content/Journal';
+import Journal from 'components/campaign/info/content/Journal';
 import memoize from 'memoize-one';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import BookIcon from '@material-ui/icons/Book';
