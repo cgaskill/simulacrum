@@ -26,10 +26,13 @@ spring:
     #initialize: true
     url: jdbc:mysql://${spring.datasource.domain}/${spring.datasource.database}?${spring.datasource.params}
     username: root
+    password: REPLACEME
     driver-class-name: com.mysql.jdbc.Driver
     domain: localhost
     params: useLegacyDatetimeCode=false&serverTimezone=UTC
     database: simulacrum
+  exposed:
+    generate-ddl: true
 
 management:
   endpoints:
