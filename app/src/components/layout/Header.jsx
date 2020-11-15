@@ -20,6 +20,9 @@ const styles = ({transitions, zIndex}) => ({
         marginLeft: -8,
         marginRight: 8,
     },
+    toolbar: {
+        borderBottom: '3px solid rgb(10,64,34)',
+    }
 });
 
 const createGet = (
@@ -92,7 +95,9 @@ const Header = ({
                 marginLeft: getMargin(),
             }}
         >
-            <Toolbar {...toolbarProps}>
+            <Toolbar
+                className={classes.toolbar}
+            >
                 {shouldRenderMenu && (
                     <IconButton onClick={setOpen} className={classes.menuButton}>
                         {open ? menuIcon.active : menuIcon.inactive || menuIcon.active}
@@ -112,7 +117,6 @@ Header.propTypes = {
     position: PropTypes.string,
     theme: PropTypes.shape({}).isRequired,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired,
-    toolbarProps: PropTypes.shape({}),
     menuIcon: PropTypes.shape({
         inactive: PropTypes.node.isRequired,
         active: PropTypes.node,
@@ -123,7 +127,6 @@ Header.defaultProps = {
     component: 'div',
     style: {},
     position: 'relative',
-    toolbarProps: {},
     menuIcon: null,
 };
 

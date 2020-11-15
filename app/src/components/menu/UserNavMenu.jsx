@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu/index';
 import MenuItem from '@material-ui/core/MenuItem/index';
 import IconButton from '@material-ui/core/IconButton/index';
@@ -8,11 +7,15 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ListItemText from '@material-ui/core/ListItemText/index';
 import {withStyles} from '@material-ui/core/styles/index';
 import {Link as RouterLink} from 'react-router-dom';
+import Link from "@material-ui/core/Link";
 
 const styles = (theme) => ({
   root: {
 
   },
+  userNavMenu: {
+
+  }
 });
 
 class UserNavMenu extends Component {
