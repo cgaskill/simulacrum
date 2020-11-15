@@ -19,7 +19,7 @@ const styles = (theme) => ({
   },
   appTitle: {
     flex: 1,
-    paddingLeft: theme.spacing.unit * 1,
+    paddingLeft: theme.spacing(1),
   },
   appTitleLink: {
     color: '#ffffff',

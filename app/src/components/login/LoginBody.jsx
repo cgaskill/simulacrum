@@ -14,7 +14,7 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
   },
   row: {
   },

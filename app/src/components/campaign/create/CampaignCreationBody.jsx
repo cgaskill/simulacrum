@@ -15,7 +15,7 @@ const styles = (theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
   },
   campaignForm: {
 

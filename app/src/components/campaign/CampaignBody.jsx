@@ -17,7 +17,7 @@ const drawerWidth = 240;
 const styles = (theme) => ({
   root: {
     display: 'flex',
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
   },
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,

@@ -19,13 +19,13 @@ const styles = (theme) => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     position: 'absolute',
-    width: theme.spacing.unit * 50,
+    width: theme.spacing(50),
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     outline: 'none',
   },
   modalContent: {
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing(4),
   },
 });
 

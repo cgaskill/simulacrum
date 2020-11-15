@@ -21,8 +21,8 @@ const drawerWidth = 200;
 const styles = (theme) => ({
     fab: {
         position: 'absolute',
-        bottom: theme.spacing.unit * 2,
-        right: theme.spacing.unit * 2,
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
     },
     root: {
         display: 'flex',
@@ -39,7 +39,7 @@ const styles = (theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 2,
+        padding: theme.spacing(2),
     },
     toolbar: theme.mixins.toolbar,
 });

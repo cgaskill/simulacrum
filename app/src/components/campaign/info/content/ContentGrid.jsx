@@ -45,12 +45,12 @@ const styles = (theme) => ({
     width: '100%',
   },
   button: {
-    margin: theme.spacing.unit * 1,
+    margin: theme.spacing(1),
   },
   fab: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
   tile: {
     cursor: 'pointer',
