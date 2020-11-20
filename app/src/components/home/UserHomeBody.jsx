@@ -84,7 +84,6 @@ class UserHomeBody extends Component {
           </Fab>
 
           <Grid container style={{height: '70vh'}}>
-            <Grid item sm={false} md={2}/>
             <Grid item sm={12} md={8}>
               <Grid container spacing={4} className={classes.campaignGrid}>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12} key={'title'}>

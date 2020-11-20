@@ -65,11 +65,7 @@ class LoginBody extends Component {
 
   render() {
     const {classes, isLoggedIn, isLoaded} = this.props;
-    console.log("Rending LoginBody [isLoaded: ",
-      isLoaded,
-      ", isLoggedIn: ",
-      isLoggedIn,
-      "]");
+
     if (!isLoaded) {
       return null;
     }

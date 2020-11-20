@@ -7,7 +7,6 @@ import registerServiceWorker from 'registerServiceWorker';
 import App from 'App';
 import * as UserActions from "actions/UserActions";
 import {Provider} from "react-redux";
-import {ConnectedRouter} from "connected-react-router";
 import createRootReducer from 'actions/reducer';
 
 export const history = configureHistory();
@@ -22,11 +21,9 @@ const root = document.getElementById('root');
 
 const render = () => {
   ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
+      <Provider store={store}>
         <App history={history}/>
-      </ConnectedRouter>
-    </Provider>,
+      </Provider>,
     root);
 }
 

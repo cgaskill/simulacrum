@@ -147,7 +147,6 @@ export function logoutUser() {
   clearToken();
   let auth2 = window.gapi.auth2.getAuthInstance();
   auth2.signOut();
-  console.log("Signed out user... dispatching logout event")
   return {
     type: TYPES.LOGOUT_USER,
   };
