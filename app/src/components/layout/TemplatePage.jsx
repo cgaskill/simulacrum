@@ -1,45 +1,60 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Content from 'components/layout/Content';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeftOutlined';
-import ChevronRightIcon from '@material-ui/icons/ChevronRightOutlined';
-import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import Root from 'components/layout/Root';
-import presets from 'components/layout/layoutPresets';
-import LeftNav from 'components/layout/LeftNav';
-import Header from 'components/layout/Header';
-import Footer from 'components/layout/Footer';
 import DefaultLeftNavHeaderContent from 'components/layout/DefaultLeftNavContentHeaderContent';
 import DefaultLevNavContent from 'components/layout/DefaultLeftNavContent';
 import DefaultHeaderContent from 'components/layout/DefaultHeader';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import MenuRounded from '@material-ui/icons/MenuRounded';
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
-const TemplatePage = ({LeftNavHeaderContent, LeftNavContent, HeaderContent, layout, children, ...props}) => {
+import {
+  Root,
+  Header,
+  Nav,
+  Content,
+  Footer,
+  presets,
+} from 'mui-layout';
+
+const useHeaderStyles = makeStyles(({ palette, spacing }) => ({
+  header: {
+    backgroundColor: palette.primary.main
+  }
+}));
+
+const TemplatePage = ({LeftNavHeaderContent = DefaultLeftNavHeaderContent,
+                        LeftNavContent = DefaultLevNavContent,
+                        HeaderContent = DefaultHeaderContent,
+                        layout = 'createContentBasedLayout',
+                        children = () => {},
+                        ...props}) => {
+  const {
+    header: headerCss
+  } = useHeaderStyles();
+
   const [preset] = useState(layout);
   const config = presets[preset]();
-  return (
-    <Root config={config} style={{minHeight: '100vh'}}>
-      <Header
-        menuIcon={{inactive: <MenuRoundedIcon/>, active: <ChevronLeftIcon/>}}
-        {...props}
-      >
-        {({screen, collapsed}) => <HeaderContent screen={screen} collapsed={collapsed}/>}
-      </Header>
-      <LeftNav
-        collapsedIcon={{
-          inactive: <ChevronLeftIcon/>,
-          active: <ChevronRightIcon/>,
-        }}
-        header={({collapsed}) => <LeftNavHeaderContent collapsed={collapsed} {...props}/>}
-        {...props}
-      >
-        {({collapsed}) => <LeftNavContent collapsed={collapsed} {...props}/>}
-      </LeftNav>
-      <Content>
-        {children}
-      </Content>
-      <Footer />
-    </Root>
-  );
+  return <Root config={config} style={{minHeight: '100vh'}}>
+    <Header
+      classes={{ root: headerCss }}
+      renderMenuIcon={open => (open ? <ChevronLeft /> : <MenuRounded />)}
+    >
+      {({screen, collapsed}) => <HeaderContent screen={screen} collapsed={collapsed}/>}
+    </Header>
+    <Nav
+      renderIcon={collapsed =>
+        collapsed ? <ChevronRight /> : <ChevronLeft />
+      }
+    >
+      {({collapsed}) => <LeftNavContent collapsed={collapsed} {...props}/>}
+    </Nav>
+    <Content>
+      {children || <div/>}
+    </Content>
+    <Footer>
+    </Footer>
+  </Root>
 };
 
 
@@ -49,13 +64,6 @@ TemplatePage.propTypes = {
   LeftNavContent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   HeaderContent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   layout: PropTypes.string,
-};
-
-TemplatePage.defaultProps = {
-  LeftNavHeaderContent: DefaultLeftNavHeaderContent,
-  LeftNavContent: DefaultLevNavContent,
-  HeaderContent: DefaultHeaderContent,
-  layout: 'createContentBasedLayout',
 };
 
 export default TemplatePage;

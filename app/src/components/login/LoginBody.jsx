@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import * as UserActions from 'actions/UserActions';
+import GoogleButton from "react-google-button";
 
 const styles = (theme) => ({
   root: {
@@ -34,8 +35,6 @@ const styles = (theme) => ({
   },
 });
 
-const GOOGLE_BUTTON_ID = 'google-sign-in-button';
-
 class LoginBody extends Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
@@ -59,23 +58,18 @@ class LoginBody extends Component {
     return null;
   }
 
-  componentDidMount() {
-    if (!this.props.isLoggedIn && window.gapi) {
-      window.gapi.signin2.render(
-          GOOGLE_BUTTON_ID,
-          {
-            width: 200,
-            height: 50,
-            onsuccess: this.props.loginSuccess,
-            onFailure: this.props.loginFailure,
-          },
-      );
-    }
-  }
+  handleGoogleLoginClick = () => {
+    const auth2 = window.gapi.auth2.getAuthInstance();
+    auth2.signIn();
+  };
 
   render() {
     const {classes, isLoggedIn, isLoaded} = this.props;
-
+    console.log("Rending LoginBody [isLoaded: ",
+      isLoaded,
+      ", isLoggedIn: ",
+      isLoggedIn,
+      "]");
     if (!isLoaded) {
       return null;
     }
@@ -92,7 +86,7 @@ class LoginBody extends Component {
                 <div className={classes.row}>
                   <Typography variant="h5" gutterBottom>Login</Typography>
                 </div>
-                <div id={GOOGLE_BUTTON_ID}/>
+                <GoogleButton onClick={(e) => this.handleGoogleLoginClick(e)} />
               </CardContent>
             </Card>
           </div>
@@ -110,8 +104,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginSuccess: (googleUser) => {
-      dispatch(UserActions.login(googleUser));
+    loginSuccess: (authResponse) => {
+      dispatch(UserActions.login(authResponse));
     },
     loginFailure: (error) => {
 

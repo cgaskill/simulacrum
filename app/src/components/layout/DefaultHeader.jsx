@@ -14,19 +14,18 @@ import * as NotificationActions from 'actions/NotificationActions';
 
 const styles = (theme) => ({
   menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
+
   },
   appTitle: {
     flex: 1,
     paddingLeft: theme.spacing(1),
   },
   appTitleLink: {
-    color: '#ffffff',
+    // color: '#ffffff',
     textDecoration: 'none',
   },
   loginLink: {
-    color: '#ffffff',
+    // color: '#ffffff',
     textDecoration: 'none',
   },
   appLogo: {

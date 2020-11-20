@@ -11,7 +11,6 @@ export const TYPES = {
   LOGIN_USER_FAILURE: 'LOGIN_USER_FAILURE',
   LOGOUT_USER: 'LOGOUT_USER',
   USER_FROM_TOKEN: 'USER_FROM_TOKEN',
-  GAPI_LOADED: 'GAPI_LOADED',
 };
 
 function setUserToken(token) {
@@ -30,9 +29,9 @@ function clearToken() {
   localStorage.removeItem('accessToken');
 }
 
-export function login(googleUser) {
+export function login(authResponse) {
   return (dispatch) => {
-    const accessToken = googleUser.wc.access_token;
+    const accessToken = authResponse.access_token;
     setUserToken(accessToken);
 
     return axios.post('/api/users/login')
@@ -49,9 +48,9 @@ export function login(googleUser) {
   };
 }
 
-export function initializeUser(gapiLoaded) {
+export function initializeUser() {
   return (dispatch) => {
-    initializeGoogleAPI(dispatch, gapiLoaded);
+    initializeGoogleAPI(dispatch);
 
     let token = getToken();
     if (_.isEmpty(token)) {
@@ -73,43 +72,42 @@ export function initializeUser(gapiLoaded) {
   };
 }
 
-function initializeGoogleAPI(dispatch, gapiLoaded) {
-  if (!gapiLoaded && window.gapi) {
-    window.gapi.load('auth2', () => initSigninV2(dispatch));
-    dispatch(setgapiLoaded());
+function initializeGoogleAPI(dispatch) {
+  if (!window.gapi) {
+    const script = document.createElement("script");
+    script.src = "https://apis.google.com/js/client.js";
+    script.onload = () => {
+      const initClient = () => {
+        const config = {
+          client_id: process.env.REACT_APP_GOOGLE_OAUTH2_CLIENTID,
+          scope: 'profile',
+        }
+        window.gapi.client.init(config).then(() => {
+          const auth2 = window.gapi.auth2.getAuthInstance();
+          auth2.isSignedIn.listen((isSignedIn) => handleSigninStatusChange(dispatch, isSignedIn));
+
+          const currentUser = auth2.currentUser.get();
+          const authResponse = currentUser.getAuthResponse(true);
+          if (authResponse && currentUser) {
+            dispatch(login(authResponse));
+          }
+        });
+      };
+      window.gapi.load("client:auth2", initClient);
+    };
+
+    document.body.appendChild(script);
   }
 }
 
-function initSigninV2(dispatch) {
-  const auth2 = window.gapi.auth2.init({
-    client_id: process.env.REACT_APP_GOOGLE_OAUTH2_CLIENTID,
-    scope: 'profile',
-  });
-
-  auth2.currentUser.listen((user) => userChanged(dispatch, user));
-
-  const user = auth2.isSignedIn.get();
-  if (user) {
-    auth2.signIn();
-  }
-
-  refreshValues(dispatch, auth2);
-}
-
-function userChanged(dispatch, user) {
-  updateGoogleUser(dispatch, user);
-}
-
-function updateGoogleUser(dispatch, googleUser) {
-  if (googleUser && googleUser.Zi) {
-    dispatch(login(googleUser));
-  }
-}
-
-function refreshValues(dispatch, auth2) {
-  if (auth2) {
-    const googleUser = auth2.currentUser.get();
-    updateGoogleUser(googleUser);
+function handleSigninStatusChange(dispatch, isSignedIn) {
+  const auth2 = window.gapi.auth2.getAuthInstance();
+  if (isSignedIn) {
+    const currentUser = auth2.currentUser.get();
+    const authResponse = currentUser.getAuthResponse(true);
+    if (authResponse) {
+      dispatch(login(authResponse));
+    }
   }
 }
 
@@ -119,12 +117,6 @@ export function loadUserFromTokenSuccess(user, token) {
     type: TYPES.LOAD_USER_FROM_TOKEN_SUCCESS,
     user,
     token,
-  };
-}
-
-export function setgapiLoaded() {
-  return {
-    type: TYPES.GAPI_LOADED,
   };
 }
 
@@ -155,7 +147,7 @@ export function logoutUser() {
   clearToken();
   let auth2 = window.gapi.auth2.getAuthInstance();
   auth2.signOut();
-
+  console.log("Signed out user... dispatching logout event")
   return {
     type: TYPES.LOGOUT_USER,
   };

@@ -37,7 +37,7 @@ const styles = (theme) => ({
   },
 });
 
-class Header extends Component {
+class SubMenu extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
   };
@@ -61,4 +61,4 @@ class Header extends Component {
   }
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(SubMenu);

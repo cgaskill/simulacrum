@@ -5,19 +5,40 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from 'registerServiceWorker';
 import App from 'App';
+import * as UserActions from "actions/UserActions";
+import {Provider} from "react-redux";
+import {ConnectedRouter} from "connected-react-router";
+import createRootReducer from 'actions/reducer';
 
 export const history = configureHistory();
 export const store = configureStore(history);
 configureAxios(history, store);
 
+store.dispatch((dispatch) => {
+  dispatch(UserActions.initializeUser())
+});
+
 const root = document.getElementById('root');
-ReactDOM.render(<App store={store} history={history}/>, root);
+
+const render = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <App history={history}/>
+      </ConnectedRouter>
+    </Provider>,
+    root);
+}
+
+render();
 
 if (module.hot) {
   module.hot.accept('App', () => {
-    const NextApp = require('App').default;
-    ReactDOM.render(<NextApp store={store} history={history}/>, root);
-  });
+    render()
+  })
+  module.hot.accept('actions/reducer', () => {
+    store.replaceReducer(createRootReducer(history))
+  })
 }
 
 registerServiceWorker();

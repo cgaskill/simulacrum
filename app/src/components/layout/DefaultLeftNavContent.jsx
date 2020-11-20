@@ -3,7 +3,6 @@ import {withStyles} from '@material-ui/core';
 import {Component} from 'react';
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as UserActions from 'actions/UserActions';
 import * as NotificationActions from 'actions/NotificationActions';
 
 const styles = (theme) => ({
@@ -14,7 +13,6 @@ class DefaultHeader extends Component {
     classes: PropTypes.object.isRequired,
     isLoggedIn: PropTypes.bool,
     isLoaded: PropTypes.bool.isRequired,
-    handleLogoutClick: PropTypes.func.isRequired,
   };
 
   render() {
@@ -37,9 +35,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleLogoutClick: () => {
-      dispatch(UserActions.logoutUser());
-    },
     loadNotifications: () => {
       dispatch(NotificationActions.loadNotifications());
     },
@@ -49,4 +44,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withStyles(styles, {withTheme: true, name: 'MuiHeader'})(connect(mapStateToProps, mapDispatchToProps)(DefaultHeader));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DefaultHeader));

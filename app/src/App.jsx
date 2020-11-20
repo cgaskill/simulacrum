@@ -1,105 +1,75 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import 'typeface-roboto';
-import {Provider} from 'react-redux';
-import {ConnectedRouter} from 'connected-react-router';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import FourOhFourPage from 'components/error/FourOhFourPage';
 import LoginPage from 'components/login/LoginPage';
 import CampaignInfoPage from 'components/campaign/info/CampaignInfoPage';
 import CampaignCreationPage from 'components/campaign/create/CampaignCreationPage';
-import {connect} from 'react-redux';
-import * as UserActions from 'actions/UserActions';
-import UserHomeBody from "components/home/UserHomeBody";
-import TemplatePage from "components/layout/TemplatePage";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {ThemeProvider} from "@material-ui/core/styles";
-import theme from 'theme';
+import createTheme from 'theme';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import HomePage from "components/home/HomePage";
+import UserHomePage from "components/home/UserHomePage";
 
-class App extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    history: PropTypes.object,
-    isLoaded: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    gapiLoaded: PropTypes.bool.isRequired,
-    initializeUser: PropTypes.func.isRequired,
-  };
+function App(props) {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  componentDidMount() {
-    if (!this.props.isLoaded) {
-      this.props.initializeUser(this.props.gapiLoaded);
-    }
-  }
+  const theme = React.useMemo(
+    () =>
+      createTheme(prefersDarkMode),
+    [prefersDarkMode],
+  );
 
-  render() {
-    if (!this.props.isLoaded) {
-      return null;
-    }
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline/>
+      <Switch>
+        {
+          props.isLoggedIn ?
+            <AuthenticatedRoute exact path={'/'} component={UserHomePage} isLoggedIn={props.isLoggedIn}/> :
+            <Route exact path={'/'} render={() => <HomePage/>}/>
+        }
 
-    return (
-        <ThemeProvider theme={theme}>
-          <CssBaseline/>
-          <Provider store={this.props.store}>
-            <ConnectedRouter history={this.props.history}>
-              <Switch>
-                <Route exact path={'/'} render={(props) => {
-                  return this.props.isLoggedIn ? <TemplatePage children={<UserHomeBody {...props}/>}/> :
-                      <TemplatePage {...props} />;
-                }}/>
-                <Route path={'/login'} component={LoginPage} {...this.props} />
-                <AuthenticatedRoute exact path={'/campaigns/new'} component={CampaignCreationPage} {...this.props}/>
-                <AuthenticatedRoute exact path={'/campaigns/:campaignId'}
-                                    component={AsyncCampaignPage} {...this.props}/>
-                <AuthenticatedRoute exact path={'/campaigns/:campaignId/info'}
-                                    component={CampaignInfoPage} {...this.props}/>
-                <AuthenticatedRoute exact path={'/campaigns/:campaignId/info/:subPage'}
-                                    component={CampaignInfoPage} {...this.props}/>
-                <Route component={FourOhFourPage}/>
-              </Switch>
-            </ConnectedRouter>
-          </Provider>
-        </ThemeProvider>
-    );
-  }
+        <Route exact path={'/login'} component={LoginPage}/>
+
+        <AuthenticatedRoute exact path={'/campaigns/new'} component={CampaignCreationPage} isLoggedIn={props.isLoggedIn}/>
+        <AuthenticatedRoute exact path={'/campaigns/:campaignId'} component={AsyncCampaignPage} isLoggedIn={props.isLoggedIn}/>
+        <AuthenticatedRoute exact path={'/campaigns/:campaignId/info'} component={CampaignInfoPage} isLoggedIn={props.isLoggedIn}/>
+        <AuthenticatedRoute exact path={'/campaigns/:campaignId/info/:subPage'} component={CampaignInfoPage} isLoggedIn={props.isLoggedIn}/>
+
+        <Route component={FourOhFourPage}/>
+      </Switch>
+    </ThemeProvider>
+  );
 }
+
+App.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
-    isLoaded: state.user.isLoaded,
-    gapiLoaded: state.user.gapiLoaded,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initializeUser: (gapiLoaded) => {
-      dispatch(UserActions.initializeUser(gapiLoaded));
-    },
-  };
-};
+const AuthenticatedRoute = withRouter(({ isLoggedIn, location, component: Component, ...rest }) => {
+  console.log("Rending AuthenticatedRoute [isLoggedIn: ",
+    isLoggedIn,
+    ", location: ",
+    location,
+    "]");
+  return <Route {...rest} render={(props) => (
+    isLoggedIn === true
+      ? <Component {...props} />
+      : <Redirect to={{pathname: "/login", state: {from: location || '/'}}} />
+  )} />
+});
 
 const AsyncCampaignPage = asyncComponent(() => import('components/campaign/CampaignPage'));
-
-const AuthenticatedRoute = ({component: Component, isLoggedIn, ...rest}) => (
-    <Route {...rest}
-           render={
-             (props) => isLoggedIn
-                 ? <Component {...props} />
-                 : <Redirect to={{
-                   pathname: '/login',
-                   state: {from: props.location},
-                 }}/>
-           }
-    />
-);
-
-AuthenticatedRoute.propTypes = {
-  component: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  location: PropTypes.object.isRequired,
-};
 
 function asyncComponent(importComponent) {
   class AsyncComponent extends Component {
@@ -128,4 +98,4 @@ function asyncComponent(importComponent) {
   return AsyncComponent;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
