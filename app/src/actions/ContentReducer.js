@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   isLoaded: true,
   instances: [],
   error: false,
+  templates: {},
 };
 
 export function contentReducer(state = INITIAL_STATE, action) {
@@ -23,6 +24,8 @@ export function contentReducer(state = INITIAL_STATE, action) {
       return {...state, instances: [], isLoaded: true, error: action.error};
     case TYPES.LOAD_CAMPAIGN_START:
       return {...state, instances: [], isLoaded: true, error: false};
+    case TYPES.LOAD_TEMPLATES_SUCCESS:
+      return {...state, templates: action.templates};
     default:
       return state;
   }
@@ -48,4 +51,8 @@ function replaceItem(instances, newContentItem) {
 
 export function getCurrentContentItems(state, campaignId) {
   return state.content.campaignId !== null && state.content.campaignId === campaignId ? state.content.instances : null;
+}
+
+export function getTemplates(state) {
+  return state.content.templates;
 }

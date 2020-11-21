@@ -4,13 +4,16 @@ export const TYPES = {
   PUT_CONTENT_ITEM_START: 'PUT_CONTENT_ITEM_START',
   PUT_CONTENT_ITEM_SUCCESS: 'PUT_CONTENT_ITEM_SUCCESS',
   PUT_CONTENT_ITEM_FAILURE: 'PUT_CONTENT_ITEM_FAILURE',
+  LOAD_TEMPLATES_START: 'LOAD_TEMPLATES_START',
+  LOAD_TEMPLATES_SUCCESS: 'LOAD_TEMPLATES_SUCCESS',
+  LOAD_TEMPLATES_FAILURE: 'LOAD_TEMPLATES_FAILURE',
   LOAD_CONTENT_ITEMS_START: 'LOAD_CONTENT_ITEMS_START',
   LOAD_CONTENT_ITEMS_SUCCESS: 'LOAD_CONTENT_ITEMS_SUCCESS',
   LOAD_CONTENT_ITEMS_FAILURE: 'LOAD_CONTENT_ITEMS_FAILURE',
 };
 
 export function putContentItem(contentItem) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(putContentStart(contentItem));
     return axios.put('/api/content/', contentItem)
     .then((response) => {
@@ -22,7 +25,7 @@ export function putContentItem(contentItem) {
 }
 
 export function loadContentItems(campaignId) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(loadContentItemsStart(campaignId));
     return axios.get(`/api/content/${campaignId}/load`)
     .then((response) => {
@@ -30,6 +33,18 @@ export function loadContentItems(campaignId) {
     }).catch((error) => {
       dispatch(loadContentItemsFailure(error));
     });
+  };
+}
+
+export function loadTemplates() {
+  return (dispatch) => {
+    dispatch(loadTemplateStart());
+    return axios.get('/api/content/item/templates')
+      .then((response) => {
+        dispatch(loadTemplateSuccess(response.data['contentItemTemplates']));
+      }).catch((error) => {
+        dispatch(loadTemplateFailure(error));
+      });
   };
 }
 
@@ -52,6 +67,26 @@ export function putContentFailure(error, contentItem) {
     type: TYPES.PUT_CONTENT_ITEM_FAILURE,
     error,
     contentItem,
+  };
+}
+
+export function loadTemplateStart() {
+  return {
+    type: TYPES.LOAD_TEMPLATES_START,
+  };
+}
+
+export function loadTemplateSuccess(templates) {
+  return {
+    type: TYPES.LOAD_TEMPLATES_SUCCESS,
+    templates,
+  };
+}
+
+export function loadTemplateFailure(error) {
+  return {
+    type: TYPES.LOAD_TEMPLATES_FAILURE,
+    error,
   };
 }
 

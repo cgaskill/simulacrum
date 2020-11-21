@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import * as UserActions from 'actions/UserActions';
 import GoogleButton from "react-google-button";
+import DynamicMuiForm from 'components/dynamicform/DynamicForm';
 
 const styles = (theme) => ({
   root: {
@@ -15,7 +16,7 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing(3),
+    padding: theme.spacing.unit * 3,
   },
   row: {
   },
@@ -64,7 +65,7 @@ class LoginBody extends Component {
   };
 
   render() {
-    const {classes, isLoggedIn, isLoaded} = this.props;
+    const {classes, isLoggedIn, isLoaded, handleSubmitBasicAuthLogin} = this.props;
 
     if (!isLoaded) {
       return null;
@@ -83,6 +84,28 @@ class LoginBody extends Component {
                   <Typography variant="h5" gutterBottom>Login</Typography>
                 </div>
                 <GoogleButton onClick={(e) => this.handleGoogleLoginClick(e)} />
+                {
+                  'development' === process.env.NODE_ENV &&
+                  <DynamicMuiForm
+                    form={'login'}
+                    fields={[
+                      {
+                        label: 'Username',
+                        name: 'username',
+                        required: true,
+                        component: 'text',
+                      },
+                      {
+                        label: 'Password',
+                        name: 'password',
+                        required: true,
+                        component: 'text',
+                        type: 'password',
+                      },
+                    ]}
+                    onSubmit={handleSubmitBasicAuthLogin}
+                  />
+                }
               </CardContent>
             </Card>
           </div>
@@ -100,8 +123,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginSuccess: (authResponse) => {
-      dispatch(UserActions.login(authResponse));
+    loginSuccess: (googleUser) => {
+      dispatch(UserActions.login(googleUser));
     },
     loginFailure: (error) => {
 

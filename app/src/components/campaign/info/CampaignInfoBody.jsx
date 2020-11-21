@@ -35,10 +35,10 @@ class CampaignInfoBody extends React.Component {
             isCreator &&
             <CampaignInfoBodyCreator {...this.props} />
           }
-          {
-            !isCreator &&
-            this.renderPlayerView()
-          }
+          {/* {*/}
+          {/*  !isCreator &&*/}
+          {/*  this.renderPlayerView()*/}
+          {/* }*/}
         </React.Fragment>
     );
   }

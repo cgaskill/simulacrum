@@ -1,0 +1,58 @@
+import {Field} from "redux-form";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import PropTypes from "prop-types";
+import React from "react";
+
+const MuiDropdownSelect = (
+  {
+    label,
+    name,
+    placeholder,
+    required,
+    val,
+  }) => (
+  <div>
+    <Field
+      name={name}
+      component={
+        ({
+           input,
+           label,
+           meta: {touched, error},
+           children,
+           ...custom
+         }) => (
+          <Select
+            floatingLabelText={label}
+            errorText={touched && error}
+            {...input}
+            onChange={(event, index, value) => input.onChange(value)}
+            {...custom}
+          >
+            {...children}
+          </Select>
+        )}
+      label={label}
+    >
+      <MenuItem value="ff0000" primaryText="Red" />
+      <MenuItem value="00ff00" primaryText="Green" />
+      <MenuItem value="0000ff" primaryText="Blue" />
+    </Field>
+  </div>
+);
+
+
+MuiDropdownSelect.propTypes = {
+  name: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  required: PropTypes.bool,
+  val: PropTypes.object,
+};
+
+MuiDropdownSelect.defaultProps = {
+  required: false,
+};
+
+export default MuiDropdownSelect

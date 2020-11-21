@@ -16,8 +16,10 @@ class CampaignInfoPage extends Component {
     match: PropTypes.object.isRequired,
     isLoaded: PropTypes.bool,
     campaign: PropTypes.object,
+    templates: PropTypes.object,
     loadCampaign: PropTypes.func.isRequired,
     loadContentItems: PropTypes.func.isRequired,
+    loadTemplates: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -25,6 +27,9 @@ class CampaignInfoPage extends Component {
       const campaignId = _.toNumber(this.props.match.params.campaignId);
       this.props.loadCampaign(campaignId);
       this.props.loadContentItems(campaignId);
+    }
+    if (_.isEmpty(this.props.templates)) {
+      this.props.loadTemplates();
     }
   }
 
@@ -37,7 +42,7 @@ class CampaignInfoPage extends Component {
 
     const {isLoaded, campaign} = this.props;
 
-    if (!isLoaded) {
+    if (!isLoaded || !this.props.templates) {
       return null;
     }
 
@@ -66,6 +71,7 @@ const mapStateToProps = (state, ownProps) => {
     contentItems: currentContentItems,
     isLoaded: state.campaigns.isLoaded && currentCampaign !== null,
     isCreator: currentCampaign != null && currentCampaign.creator === state.user.info.id,
+    templates: ContentReducer.getTemplates(state),
   };
 };
 
@@ -79,6 +85,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadContentItems: (campaignId) => {
       return dispatch(ContentActions.loadContentItems(campaignId));
+    },
+    loadTemplates: () => {
+      return dispatch(ContentActions.loadTemplates());
     },
     invitePlayer: (form) => {
       const {email, campaignId} = form;

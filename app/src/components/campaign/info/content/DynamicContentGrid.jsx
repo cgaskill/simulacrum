@@ -45,12 +45,12 @@ const styles = (theme) => ({
     width: '100%',
   },
   button: {
-    margin: theme.spacing(1),
+    margin: theme.spacing.unit * 1,
   },
   fab: {
     position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
   },
   tile: {
     cursor: 'pointer',
@@ -60,13 +60,15 @@ const styles = (theme) => ({
   },
 });
 
-class ContentGrid extends Component {
+class DynamicContentGrid extends Component {
   static propTypes = {
     campaignId: PropTypes.number.isRequired,
     contentItems: PropTypes.array,
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     putContentItem: PropTypes.func.isRequired,
+    templates: PropTypes.object,
+    template: PropTypes.object,
   };
 
   constructor(props) {
@@ -220,9 +222,12 @@ class ContentGrid extends Component {
               this.state.groupByType && this.renderGroupContentItems(filteredContentItems)
             }
           </GridList>
-          <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.handleOpenContentItemModal} >
-            <AddIcon />
-          </Fab>
+          {
+            this.props.template &&
+            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.handleOpenContentItemModal}>
+              <AddIcon />
+            </Fab>
+          }
           {
             filteredContentItems.map((contentItem, index) => {
               if (_.includes(this.state.openContentModals, contentItem.id)) {
@@ -232,21 +237,25 @@ class ContentGrid extends Component {
                                      handleClose={(e) => this.handleCloseContentItemModal(e, contentItem)}
                                      isOpen={true}
                                      campaignId={this.props.campaignId}
-                                     putContentItem={this.props.putContentItem}/>;
+                                     putContentItem={this.props.putContentItem}
+                                     template={this.props.templates[contentItem.type]}/>;
               }
               return null;
             })
           }
 
-          <ContentModal initialValues={null}
-                        form={'newContentModal'}
-                        handleClose={(e) => this.handleCloseContentItemModal(e)}
-                        isOpen={_.includes(this.state.openContentModals, -1)}
-                        campaignId={this.props.campaignId}
-                        putContentItem={this.props.putContentItem}/>
+          { this.props.template &&
+            <ContentModal initialValues={null}
+                          form={'newContentModal'}
+                          handleClose={(e) => this.handleCloseContentItemModal(e)}
+                          isOpen={_.includes(this.state.openContentModals, -1)}
+                          campaignId={this.props.campaignId}
+                          putContentItem={this.props.putContentItem}
+                          template={this.props.template}/>
+          }
         </div>
     );
   }
 }
 
-export default withStyles(styles, {withTheme: true})(ContentGrid);
+export default withStyles(styles, {withTheme: true})(DynamicContentGrid);

@@ -1,6 +1,5 @@
 package alloy.simulacrum.api.config
 
-import alloy.simulacrum.api.user.User
 import alloy.simulacrum.api.user.UserDTO
 import alloy.simulacrum.api.user.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -12,11 +11,15 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.Authoriti
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import org.springframework.core.env.Environment
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler
@@ -24,7 +27,7 @@ import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHand
 @EnableWebSecurity
 @EnableResourceServer
 @Configuration
-class ResourceServiceConfigurer : ResourceServerConfigurerAdapter() {
+class ResourceServiceConfigurer(val env: Environment) : ResourceServerConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -37,13 +40,22 @@ class ResourceServiceConfigurer : ResourceServerConfigurerAdapter() {
                 .anyRequest().permitAll().and()
                 .exceptionHandling().accessDeniedHandler(OAuth2AccessDeniedHandler()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        if(env.activeProfiles.contains("TEST")) {
+            http.httpBasic()
+        }
+    }
+
+    @Bean
+    @Profile("TEST")
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 
     @Bean
     fun principalExtractor(userService: UserService): PrincipalExtractor {
         return PrincipalExtractor { map ->
             val email = map!!["email"] as String
-            var user = userService.loadUserByUsername(email) as User?
+            var user = userService.loadUserByUsername(email) as UserDTO?
             if (user == null) {
                 val userDto = UserDTO(email)
                 user = userService.registerUser(userDto)

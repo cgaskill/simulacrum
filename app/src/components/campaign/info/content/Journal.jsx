@@ -55,111 +55,113 @@ function fetchContent() {
 }
 
 class Journal extends Component {
-    static propTypes = {
-        campaignId: PropTypes.number.isRequired,
-        contentItems: PropTypes.array,
-        classes: PropTypes.object.isRequired,
-        theme: PropTypes.object.isRequired,
-        putContentItem: PropTypes.func.isRequired,
+  static propTypes = {
+    campaignId: PropTypes.number.isRequired,
+    contentItems: PropTypes.array,
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+    putContentItem: PropTypes.func.isRequired,
+    saveContent: PropTypes.func.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isContentItemModalOpen: false,
+      selectedStoryEntry: -1,
     };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            isContentItemModalOpen: false,
-            selectedStoryEntry: -1,
-        };
-        this.onChange = (editorState) => {
-            this.saveContent(editorState.getCurrentContent());
-            this.setState({editorState});
-        };
+  componentDidMount() {
+    // TODO get content from API
+    fetchContent()
+      .then((content) => {
+        console.log('fetched content:', content);
+        this.setState({editorState: content ? EditorState.createWithContent(convertFromRaw(content)) : EditorState.createEmpty()});
+      })
+      .catch((err) => console.log('Error getting content:', err));
+  }
+
+  onChange = (editorState, journalEntry) => {
+    this.saveContent(editorState.getCurrentContent());
+    this.setState({editorState});
+  };
+
+  saveContent = _.throttle((content) => {
+    // this.props.saveContent(content);
+    window.localStorage.setItem('content', JSON.stringify(convertToRaw(content)));
+  }, 3000);
+
+  render() {
+    const {classes, contentItems} = this.props;
+    if (contentItems == null) {
+      return null;
     }
 
-    componentDidMount() {
-        fetchContent()
-            .then((content) => {
-                console.log('fetched content:', content);
-                this.setState({editorState: content ? EditorState.createWithContent(convertFromRaw(content)) : EditorState.createEmpty()});
-            })
-            .catch((err) => console.log('Error getting content:', err));
-    }
-
-    saveContent = _.throttle((content) => {
-        console.log('persisting content to server', content);
-        window.localStorage.setItem('content', JSON.stringify(convertToRaw(content)));
-    }, 3000);
-
-    render() {
-        const {classes, contentItems} = this.props;
-        if (contentItems == null) {
-            return null;
-        }
-
-        return (
+    return (
+      <React.Fragment>
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}>
+          <List subheader={<ListSubheader>Journal</ListSubheader>}>
+            {
+              contentItems.map((contentItem, index) => {
+                return (
+                  <ListItem key={index}
+                            selected={this.state.selectedStoryEntry === contentItem.id}
+                            onClick={(e) => this.toggleSelectedStoryEntry(e, contentItem.id)}
+                            classes={{root: classes.tile}}>
+                    <ListItemText
+                      primaryTypographyProps={{noWrap: true}}
+                      primary={contentItem.name}
+                    />
+                  </ListItem>
+                );
+              })
+            }
+            {/* TODO create an add button for new entries*/}
+          </List>
+        </Drawer>
+        <div className={classes.content}>
+          {
+            this.state.selectedStoryEntry > -1 &&
             <React.Fragment>
-                <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}>
-                    <List subheader={<ListSubheader>Journal</ListSubheader>}>
-                        {
-                            contentItems.map((contentItem, index) => {
-                                return (
-                                    <ListItem key={index}
-                                              selected={this.state.selectedStoryEntry === contentItem.id}
-                                              onClick={(e) => this.toggleSelectedStoryEntry(e, contentItem.id)}
-                                              classes={{root: classes.tile}}>
-                                        <ListItemText
-                                          primaryTypographyProps={{noWrap: true}}
-                                            primary={contentItem.name}
-                                        />
-                                    </ListItem>
-                                );
-                            })
-                        }
-                        {/* TODO create an add button for new entries*/}
-                    </List>
-                </Drawer>
-                {/* TODO configure persistence of story*/}
-                <div className={classes.content}>
-                    {
-                        this.state.selectedStoryEntry > -1 &&
-                        <React.Fragment>
-                            <TextField placeholder={'Header'}/>
-                            <Editor editorState={this.state.editorState}
-                                    placeholder={'You\'re in a tavern...'}
-                                    plugins={[toolbarPlugin]}
-                                    onChange={this.onChange}/>
-                        </React.Fragment>
-                    }
-                    {
-                        this.state.selectedStoryEntry < 0 &&
-                        <React.Fragment>
-                            <TextField placeholder={'Header'}/>
-                            <Toolbar/>
-                            { this.state.editorState ? <Editor editorState={this.state.editorState}
-                                    plugins={[toolbarPlugin]}
-                                    onChange={this.onChange}/> : <span>Loading...</span> }
-                        </React.Fragment>
-                    }
-                </div>
-                <ContentModal initialValues={null}
-                              handleClose={(e) => this.handleCloseContentItemModal(e)}
-                              isOpen={this.state.isContentItemModalOpen}
-                              campaignId={this.props.campaignId}
-                              putContentItem={this.props.putContentItem}/>
-            </React.Fragment>);
-    }
+              <TextField placeholder={'Header'}/>
+              <Editor editorState={this.state.editorState}
+                      placeholder={'You\'re in a tavern...'}
+                      plugins={[toolbarPlugin]}
+                      onChange={(state) => this.onChange(state, this.state.selectedStoryEntry)}/>
+            </React.Fragment>
+          }
+          {
+            this.state.selectedStoryEntry < 0 &&
+            <React.Fragment>
+              <TextField placeholder={'Header'}/>
+              <Toolbar/>
+              {this.state.editorState ? <Editor editorState={this.state.editorState}
+                                                plugins={[toolbarPlugin]}
+                                                onChange={this.onChange}/> : <span>Loading...</span>}
+            </React.Fragment>
+          }
+        </div>
+        <ContentModal initialValues={null}
+                      handleClose={(e) => this.handleCloseContentItemModal(e)}
+                      isOpen={this.state.isContentItemModalOpen}
+                      campaignId={this.props.campaignId}
+                      putContentItem={this.props.putContentItem}/>
+      </React.Fragment>);
+  }
 
-    toggleSelectedStoryEntry(e, id) {
-        if (this.state.selectedStoryEntry === id) {
-            this.setState({selectedStoryEntry: -1});
-        } else {
-            this.setState({selectedStoryEntry: id});
-        }
+  toggleSelectedStoryEntry(e, id) {
+    if (this.state.selectedStoryEntry === id) {
+      this.setState({selectedStoryEntry: -1});
+    } else {
+      this.setState({selectedStoryEntry: id});
     }
+  }
 }
 
 export default withStyles(styles, {withTheme: true})(Journal);

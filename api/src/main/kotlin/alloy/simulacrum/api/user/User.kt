@@ -1,6 +1,6 @@
 package alloy.simulacrum.api.user
 
-import alloy.simulacrum.api.RestUtils
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
@@ -16,7 +16,7 @@ object Users: LongIdTable() {
     val email = varchar("email", 250)
     val firstName = varchar("first_name", 50).nullable()
     val lastName = varchar("last_name", 50).nullable()
-    val password = varchar("password", 50).nullable()
+    val password = varchar("password", 60).nullable()
     val enabled = bool("enabled").default(true)
     val expiredCredentials = bool("expired_credentials").default(false)
     val accountExpired = bool("account_expired").default(false)
@@ -25,7 +25,7 @@ object Users: LongIdTable() {
     val created =  datetime("created").default(DateTime.now())
 }
 
-class User(id: EntityID<Long>) : LongEntity(id), UserDetails {
+class User(id: EntityID<Long>) : LongEntity(id) {
     companion object : LongEntityClass<User>(Users)
 
     var userName by Users.username
@@ -40,9 +40,41 @@ class User(id: EntityID<Long>) : LongEntity(id), UserDetails {
     val roles by Role referrersOn Roles.user
     var lastLogin by Users.lastLogin
     var created by Users.created
+}
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class UserDTO(val userName: String) : UserDetails {
+    var lastName: String? = null
+    var firstName: String? = null
+    var enabled: Boolean = true
+    var expiredCredentials: Boolean = false
+    var accountExpired: Boolean = false
+    var accountLocked: Boolean = false
+    var created: DateTime? = null
+    @JsonIgnore
+    var passWord: String? = null
+    var authorities: List<GrantedAuthority>? = null
+    var id: Long? = null
+
+    constructor(user: User) : this(user.userName) {
+        this.id = user.id.value
+        this.lastName = user.lastName
+        this.firstName = user.firstName
+        this.created = user.created
+        this.passWord = user.passWord
+
+        var authorities = ArrayList<GrantedAuthority>()
+        authorities.addAll(user.roles.map { RolesDTO(it) })
+        authorities.addAll(user.roles.map { it.permissions }.flatMap { it.map { PermissionDTO(it) } })
+        this.authorities = authorities
+
+        this.enabled = user.enabled
+        this.accountExpired = user.accountExpired
+        this.accountLocked = user.accountLocked
+    }
 
     override fun equals(other: Any?): Boolean {
-        if (other is User) {
+        if (other is UserDTO) {
             return this.id == other.id
         }
 
@@ -51,11 +83,10 @@ class User(id: EntityID<Long>) : LongEntity(id), UserDetails {
 
     override fun hashCode(): Int {
         var hashCode = 1
-        hashCode = (31 * hashCode + this.id.value).toInt()
+        hashCode = (31 * hashCode + this.id!!).toInt()
         return hashCode
     }
-
-    override fun getUsername(): String {
+    override fun getUsername(): String? {
         return userName
     }
 
@@ -71,7 +102,6 @@ class User(id: EntityID<Long>) : LongEntity(id), UserDetails {
         return !expiredCredentials
     }
 
-
     override fun isAccountNonExpired(): Boolean {
         return !accountExpired
     }
@@ -79,28 +109,7 @@ class User(id: EntityID<Long>) : LongEntity(id), UserDetails {
     override fun isAccountNonLocked(): Boolean {
         return !accountLocked
     }
-
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return roles.toMutableList()
-    }
-}
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class UserDTO(val username: String) {
-    var lastName: String? = null
-    var firstName: String? = null
-    var id: Long? = null
-    var enabled: Boolean? = null
-    var created: DateTime? = null
-
-    constructor(user: User) : this(user.username) {
-        this.id = user.id.value
-        this.lastName = user.lastName
-        this.firstName = user.firstName
-        this.created = user.created
-
-        if(RestUtils.shouldPopulateAdminFields()) {
-            this.enabled = user.enabled
-        }
+        return authorities!!.toMutableList()
     }
 }

@@ -3,6 +3,7 @@ package alloy.simulacrum.api.campaign
 import alloy.simulacrum.api.Page
 import alloy.simulacrum.api.Pageable
 import alloy.simulacrum.api.user.User
+import alloy.simulacrum.api.user.UserDTO
 import alloy.simulacrum.api.user.UserService
 import alloy.simulacrum.api.user.Users
 import alloy.simulacrum.api.user.notification.NotificationDTO
@@ -22,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap
 class CampaignService(val notificationService: NotificationService, val userService: UserService) {
 
     @Transactional(readOnly = true)
-    fun findAllActiveCampaigns(user: User): List<CampaignSummaryDTO> {
+    fun findAllActiveCampaigns(user: UserDTO): List<CampaignSummaryDTO> {
         return Campaigns.leftJoin(CampaignPlayers)
                 .slice(Campaigns.columns)
                 .select { ((CampaignPlayers.player eq user.id) or (Campaigns.creator eq user.id)) and Campaigns.archived.eq(false) }
@@ -32,8 +33,8 @@ class CampaignService(val notificationService: NotificationService, val userServ
     }
 
     @Transactional
-    fun create(user: User, campaignDTO: CampaignDTO): CampaignDTO {
-        val currentUser = User.findById(user.id)!!
+    fun create(user: UserDTO, campaignDTO: CampaignDTO): CampaignDTO {
+        val currentUser = User.findById(user.id!!)!!
 
         val newCampaign = Campaign.new {
             name = campaignDTO.name
@@ -46,7 +47,7 @@ class CampaignService(val notificationService: NotificationService, val userServ
 
     // TODO validate user can update this campaign
     @Transactional
-    fun update(user: User, campaignDTO: CampaignDTO): CampaignDTO {
+    fun update(user: UserDTO, campaignDTO: CampaignDTO): CampaignDTO {
 
         val campaign = Campaign.find {
             Campaigns.id eq campaignDTO.id
@@ -62,7 +63,7 @@ class CampaignService(val notificationService: NotificationService, val userServ
     }
 
     @Transactional
-    fun archive(user: User, campaignId: Long) {
+    fun archive(user: UserDTO, campaignId: Long) {
         val campaign = Campaign.find {
             Campaigns.creator eq user.id and (Campaigns.id eq campaignId)
         }.forUpdate().first()
@@ -111,12 +112,12 @@ class CampaignService(val notificationService: NotificationService, val userServ
         return Page(campaigns, total, pageable.offset, pageable.limit)
     }
 
-    fun userCanAccess(user: User, campaignDTO: CampaignDTO): Boolean {
+    fun userCanAccess(user: UserDTO, campaignDTO: CampaignDTO): Boolean {
         // TODO check for if user is a player
-        return campaignDTO.creator == user.id.value
+        return campaignDTO.creator == user.id
     }
 
-    fun userCanAccess(user: User, campaign: Campaign): Boolean {
+    fun userCanAccess(user: UserDTO, campaign: Campaign): Boolean {
         if(userCanModify(user, campaign)) {
             return true
         }
@@ -124,15 +125,15 @@ class CampaignService(val notificationService: NotificationService, val userServ
         TODO("check for if user is a player")
     }
 
-    fun userCanModify(user: User, campaign: Campaign): Boolean {
+    fun userCanModify(user: UserDTO, campaign: Campaign): Boolean {
         // TODO check for if user is a player
-        return campaign.creator.id.value == user.id.value
+        return campaign.creator.id.value == user.id
     }
 
     // TODO check if user can invite player
     @Transactional
-    fun invitePlayer(user: User, campaignInviteDTO: CampaignController.CampaignInviteDTO): NotificationDTO {
-        val toUser = userService.loadUserByUsername(campaignInviteDTO.username) as User
+    fun invitePlayer(user: UserDTO, campaignInviteDTO: CampaignController.CampaignInviteDTO): NotificationDTO {
+        val toUser = userService.loadUserByUsername(campaignInviteDTO.username) as UserDTO
         val campaign = getCampaign(campaignInviteDTO.campaignId)
 
         val token = saveInvite(campaignInviteDTO)
@@ -156,7 +157,7 @@ class CampaignService(val notificationService: NotificationService, val userServ
     }
 
     @Transactional
-    fun acceptInvite(user: User, token: String): CampaignSummaryDTO {
+    fun acceptInvite(user: UserDTO, token: String): CampaignSummaryDTO {
         // TODO update to use DB
         val invite = map[token]!!
         if(user.userName != invite.username) {
@@ -168,16 +169,18 @@ class CampaignService(val notificationService: NotificationService, val userServ
             Campaigns.id eq invite.campaignId
         }.first()
 
+        val dbUser = User.find { Users.username eq user.userName }.first()
+
         CampaignPlayer.new {
             campaign = newCampaign.id
-            player = user.id
+            player = dbUser.id
         }
 
         return CampaignSummaryDTO(newCampaign)
     }
 
     @Transactional
-    fun declineInvite(user: User, token: String) {
+    fun declineInvite(user: UserDTO, token: String) {
         // TODO update to use DB
         if(!map.containsKey(token)) {
             throw IllegalStateException()
@@ -193,7 +196,7 @@ class CampaignService(val notificationService: NotificationService, val userServ
     }
 
     @Transactional
-    fun putToken(user: User, tokenDTO: TokenDTO): TokenDTO {
+    fun putToken(user: UserDTO, tokenDTO: TokenDTO): TokenDTO {
         val newToken = Token.new {
             xCoordinate = tokenDTO.x
             yCoordinate = tokenDTO.y

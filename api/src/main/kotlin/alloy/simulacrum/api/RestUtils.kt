@@ -1,10 +1,14 @@
 package alloy.simulacrum.api
 
+import alloy.simulacrum.api.user.UserDTO
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.*
-import org.springframework.security.core.context.SecurityContextHolder
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.Query
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import javax.servlet.http.HttpServletResponse
 
 class RestUtils {
@@ -15,12 +19,12 @@ class RestUtils {
             }
         }
 
-        fun shouldPopulateAdminFields(): Boolean {
-            return  isAdminUser()
+        fun shouldPopulateAdminFields(userDTO: UserDTO): Boolean {
+            return  isAdminUser(userDTO)
         }
 
-        fun isAdminUser(): Boolean {
-            return SecurityContextHolder.getContext().authentication.authorities.map { it.authority == "ROLE_ADMIN" }.isNotEmpty()
+        fun isAdminUser(user: UserDTO): Boolean {
+            return user.authorities?.any { it.authority == "ROLE_ADMIN" } ?: false
         }
     }
 }

@@ -1,12 +1,9 @@
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Modal from '@material-ui/core/Modal';
 import {withStyles} from '@material-ui/core/styles/index';
-import {FormTextField} from 'components/util/ReduxFields';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Field, reduxForm} from 'redux-form';
 import Draggable from 'react-draggable';
+import DynamicForm from 'components/dynamicform/DynamicForm';
 
 const styles = (theme) => ({
   dense: {
@@ -29,29 +26,16 @@ const styles = (theme) => ({
   },
 });
 
-const validate = (values) => {
-  const errors = {};
-  const requiredFields = ['name', 'type'];
-  requiredFields.forEach((field) => {
-    if (!values[field]) {
-      errors[field] = 'Required';
-    }
-  });
-  return errors;
-};
-
 class ContentModal extends Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
+    reset: PropTypes.func,
     putContentItem: PropTypes.func.isRequired,
     campaignId: PropTypes.number.isRequired,
     classes: PropTypes.object.isRequired,
     initialValues: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-    pristine: PropTypes.bool.isRequired,
-    submitting: PropTypes.bool.isRequired,
+    template: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -79,10 +63,15 @@ class ContentModal extends Component {
   };
 
   render() {
-    const {handleSubmit, pristine, submitting, classes} = this.props;
+    const {classes, template} = this.props;
 
     const contentItemId = !this.props.initialValues || !this.props.initialValues.contentItem ? -1 : this.props.initialValues.contentItem.id;
 
+    if (!template) {
+      return null;
+    }
+
+    console.log(template.fields);
     return (
         <Draggable handle={'.content-modal-' + contentItemId}>
           <Modal
@@ -91,38 +80,16 @@ class ContentModal extends Component {
               hideBackdrop={true}
               aria-labelledby="form-dialog-title"
               classes={{root: classes.modal}}>
-            <form onSubmit={handleSubmit(this.handleSaveContentItem)}>
-              <div className={classes.paper}>
-                <div className={'content-modal-' + contentItemId}>
-                  <DialogTitle id="form-dialog-title">New Content</DialogTitle>
-                </div>
-                <div className={classes.modalContent}>
-                  <Field name="name" type="text"
-                         component={FormTextField} label="Name"/>
-                  <Field name="type" type="text"
-                         component={FormTextField} label="Type"/>
-                  <Field name="image" type="text"
-                         component={FormTextField} label="Image"/>
-                  <Field name="notes" type="text"
-                         component={FormTextField} label="Notes"/>
-                  <Field name="gmNotes" type="text"
-                         component={FormTextField} label="GM Only Notes"/>
-                  <Button onClick={this.handleClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={pristine || submitting} color={'inherit'}>
-                    Submit
-                  </Button>
-                </div>
-              </div>
-            </form>
+            <div className={classes.paper}>
+              <DynamicForm
+                onSubmit={this.handleSaveContentItem}
+                fields={template.fields}
+              />
+            </div>
           </Modal>
         </Draggable>
     );
   }
 }
 
-export default withStyles(styles)(reduxForm({
-  form: 'ContentModal',
-  validate,
-})(ContentModal));
+export default withStyles(styles)(ContentModal);

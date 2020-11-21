@@ -1,7 +1,8 @@
 package alloy.simulacrum.api.content
 
-import alloy.simulacrum.api.user.User
+import alloy.simulacrum.api.user.UserDTO
 import mu.KLogging
+import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 @RestController
@@ -18,19 +20,19 @@ class ContentController(val contentService: ContentService) {
     companion object : KLogging()
 
     @PutMapping
-    fun putContentItem(@AuthenticationPrincipal user: User, @RequestBody contentItemDTO: ContentItemDTO): ContentItemDTO {
+    fun putContentItem(@AuthenticationPrincipal user: UserDTO, @RequestBody contentItemDTO: ContentItemDTO): ContentItemDTO {
         return contentService.putContentItem(user, contentItemDTO)
     }
 
     @GetMapping("/{campaignId}/load")
-    fun findConfig(@AuthenticationPrincipal user: User, @PathVariable campaignId: Long): List<ContentItemDTO> {
-        return contentService.findContentItems(user.id.value, campaignId)
+    fun findConfig(@AuthenticationPrincipal user: UserDTO, @PathVariable campaignId: Long): List<ContentItemDTO> {
+        return contentService.findContentItems(user.id!!, campaignId)
     }
 
     @PutMapping("/{campaignId}/image")
-    fun uploadImage(@AuthenticationPrincipal user: User,
-                   @PathVariable campaignId: Long,
-                   @RequestParam("image") image: MultipartFile): ResponseEntity<*> {
+    fun uploadImage(@AuthenticationPrincipal user: UserDTO,
+                    @PathVariable campaignId: Long,
+                    @RequestParam("image") image: MultipartFile): ResponseEntity<*> {
 
         if (image.isEmpty) {
             return ResponseEntity("Please upload a file", HttpStatus.BAD_REQUEST)
@@ -46,14 +48,19 @@ class ContentController(val contentService: ContentService) {
     }
 
     @GetMapping("/{campaignId}/image/{fileId}")
-    fun getImage(@AuthenticationPrincipal user: User,
+    fun getImage(@AuthenticationPrincipal user: UserDTO,
                  @PathVariable fileId: String,
                  @PathVariable campaignId: Long): ResponseEntity<ByteArray> {
         val file = contentService.getImage(campaignId, user, fileId)
 
         val headers = HttpHeaders()
-//        headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+        headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
 
         return ResponseEntity(file.data!!, headers, HttpStatus.OK)
+    }
+
+    @GetMapping("/item/templates")
+    fun getTemplates(@AuthenticationPrincipal user: UserDTO): ResponseEntity<ContentTemplatesDTO> {
+        return ResponseEntity.ok(contentService.getContentItemTemplates())
     }
 }

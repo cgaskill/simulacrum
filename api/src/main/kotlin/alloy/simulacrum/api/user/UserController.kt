@@ -12,38 +12,37 @@ import javax.servlet.http.HttpServletResponse
 class UserController(val userService: UserService) {
 
     @GetMapping("/currentUser")
-    fun getCurrentUser(@AuthenticationPrincipal user: User): UserDTO {
-        return UserDTO(user)
+    fun getCurrentUser(@AuthenticationPrincipal user: UserDTO): UserDTO {
+        return user
     }
 
     @PostMapping("/login")
-    fun login(@AuthenticationPrincipal user: User): UserDTO {
-        userService.registerLogin(user)
-        return UserDTO(user)
+    fun login(@AuthenticationPrincipal user: UserDTO): UserDTO {
+        return userService.registerLogin(user)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{userId}")
-    fun getUser(@AuthenticationPrincipal user: User, @PathVariable userId: Long): UserDTO {
+    fun getUser(@AuthenticationPrincipal user: UserDTO, @PathVariable userId: Long): UserDTO {
         return userService.read(userId)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{userId}")
-    fun updateUser(@AuthenticationPrincipal user: User, @PathVariable userId: Long, @RequestBody userDTO: UserDTO): UserDTO {
+    fun updateUser(@AuthenticationPrincipal user: UserDTO, @PathVariable userId: Long, @RequestBody userDTO: UserDTO): UserDTO {
         return userService.update(userId, userDTO)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{userId}")
-    fun deleteUser(@AuthenticationPrincipal user: User, @PathVariable userId: Long): UserDTO {
+    fun deleteUser(@AuthenticationPrincipal user: UserDTO, @PathVariable userId: Long): UserDTO {
         return userService.delete(userId)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
     fun getUsers(
-            @AuthenticationPrincipal user: User,
+            @AuthenticationPrincipal user: UserDTO,
             response: HttpServletResponse,
             @RequestParam range: String?,
             @RequestParam filter: String?,

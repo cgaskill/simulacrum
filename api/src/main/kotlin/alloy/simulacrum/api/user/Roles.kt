@@ -12,19 +12,19 @@ object Roles:  IntIdTable() {
     val roleName = varchar("role_name", 50)
 }
 
-class Role(id: EntityID<Int>) : IntEntity(id), GrantedAuthority {
+class Role(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Role>(Roles)
 
     var user by User referencedOn Roles.user
     var roleName by Roles.roleName
     val permissions by Permission.referrersOn(Permissions.role)
+}
+
+data class RolesDTO(val roleName: String) : GrantedAuthority {
+    constructor(role: Role) : this(role.roleName)
 
     override fun getAuthority(): String {
         return roleName
-    }
-
-    fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return permissions.toMutableList()
     }
 
     override fun equals(other: Any?): Boolean {

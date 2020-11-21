@@ -11,11 +11,15 @@ object Permissions:  IntIdTable() {
     val permissionName = varchar("permission_name", 50)
 }
 
-class Permission(id: EntityID<Int>) : IntEntity(id), GrantedAuthority {
+class Permission(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Permission>(Permissions)
 
     var role by Role referencedOn Permissions.role
     var permissionName by Permissions.permissionName
+}
+
+data class PermissionDTO(val permissionName: String) : GrantedAuthority {
+    constructor(permission: Permission) : this(permission.permissionName)
 
     override fun getAuthority(): String {
         return permissionName

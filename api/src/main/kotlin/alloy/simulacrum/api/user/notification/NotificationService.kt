@@ -2,8 +2,9 @@ package alloy.simulacrum.api.user.notification
 
 import alloy.simulacrum.api.Pageable
 import alloy.simulacrum.api.user.User
+import alloy.simulacrum.api.user.UserDTO
 import alloy.simulacrum.api.withPageable
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.and
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
@@ -18,7 +19,7 @@ class NotificationService {
     lateinit var template: SimpMessagingTemplate
 
     @Transactional
-    fun getNotifications(user: User, pageable: Pageable): List<NotificationDTO> {
+    fun getNotifications(user: UserDTO, pageable: Pageable): List<NotificationDTO> {
         return Notifications
                 .withPageable(pageable)
                 .map { Notification.wrapRow(it) }
@@ -34,9 +35,11 @@ class NotificationService {
     }
 
     @Transactional
-    fun createInvitationNotification(to: User, toMessage: String, toToken: String, toLinkMessage: String): NotificationDTO {
+    fun createInvitationNotification(to: UserDTO, toMessage: String, toToken: String, toLinkMessage: String): NotificationDTO {
+        val toUser = User.findById(to.id!!)!!
+
         val notification = Notification.new {
-            user = to
+            user = toUser
             message = toMessage
             token = toToken
             title = "Campaign Invitation"
@@ -47,8 +50,8 @@ class NotificationService {
     }
 
     @Transactional
-    fun markNotificationRead(user: User, notificationId: Long): NotificationDTO {
-        val notification = Notification.findById(notificationId)!!
+    fun markNotificationRead(user: UserDTO, notificationId: Long): NotificationDTO {
+        val notification = Notification.find { Notifications.user eq user.id and (Notifications.id eq notificationId) }.forUpdate().first()
         notification.read = true
 
         return NotificationDTO(notification)

@@ -1,4 +1,3 @@
-import ContentGrid from 'components/campaign/info/content/ContentGrid';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
@@ -15,6 +14,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {withRouter} from 'react-router-dom';
+import DynamicContentGrid from 'components/campaign/info/content/DynamicContentGrid';
 
 const styles =
     ({
@@ -40,6 +40,7 @@ class CampaignInfoBodyCreator extends React.Component {
     contentItems: PropTypes.array,
     subPage: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
+    templates: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -58,10 +59,14 @@ class CampaignInfoBodyCreator extends React.Component {
   };
 
   render() {
-    const {campaign, campaignId, subPage, classes, contentItems, ...otherProps} = this.props;
+    const {campaign, campaignId, subPage, classes, contentItems, templates, ...otherProps} = this.props;
 
     if (_.isEmpty(campaign)) {
       return <Redirect to={'/'}/>;
+    }
+
+    if (!templates) {
+      return null;
     }
 
     return (
@@ -76,14 +81,29 @@ class CampaignInfoBodyCreator extends React.Component {
             </Tabs>
           </AppBar>
           <div className={classes.content}>
-            {subPage === 'overview' && <ContentGrid campaignId={campaignId} {...otherProps} contentItems={contentItems}/>}
+            {
+              subPage === 'overview' &&
+              <DynamicContentGrid campaignId={campaignId} {...otherProps} contentItems={contentItems} templates={templates}/>
+            }
             {subPage === 'journal' && <Journal campaignId={campaignId} {...otherProps} contentItems={this.filter(contentItems, 'journal')}/>}
-            {subPage === 'characters' &&
-            <ContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'character')}/>}
-            {subPage === 'items' && <ContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'item')}/>}
-            {subPage === 'locations' &&
-            <ContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'location')}/>}
-            {subPage === 'everything' && <ContentGrid {...otherProps} campaignId={campaignId} contentItems={contentItems}/>}
+            {
+              subPage === 'characters' &&
+              <DynamicContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'character')}
+                                  template={templates['character']} templates={templates}/>
+            }
+            {
+              subPage === 'items' &&
+              <DynamicContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'item')}
+                                  template={templates['item']} templates={templates}/>
+            }
+            {
+              subPage === 'locations' &&
+              <DynamicContentGrid {...otherProps} campaignId={campaignId} contentItems={this.filter(contentItems, 'location')}
+                                  template={templates['locations']} templates={templates}/>
+            }
+            {
+              subPage === 'everything' && <DynamicContentGrid {...otherProps} campaignId={campaignId} contentItems={contentItems} templates={templates}/>
+            }
           </div>
         </div>
     );

@@ -4,19 +4,19 @@ import alloy.simulacrum.api.campaign.Campaign
 import alloy.simulacrum.api.campaign.CampaignService
 import alloy.simulacrum.api.campaign.Campaigns
 import alloy.simulacrum.api.user.User
+import alloy.simulacrum.api.user.UserDTO
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import javax.sql.rowset.serial.SerialBlob
 
 @Service
 class ContentService(val campaignService: CampaignService) {
 
     @Transactional
-    fun putContentItem(user: User, contentItemDTO: ContentItemDTO): ContentItemDTO {
-        val currentUser = User.findById(user.id)!!
+    fun putContentItem(user: UserDTO, contentItemDTO: ContentItemDTO): ContentItemDTO {
+        val currentUser = User.findById(user.id!!)!!
         val currentCampaign = Campaign.findById(contentItemDTO.campaignId!!)!!
 
         val contentItem = if(contentItemDTO.id != null) {
@@ -24,8 +24,6 @@ class ContentService(val campaignService: CampaignService) {
             if (currentUser.id == oldContentItem.creator
                 || currentCampaign.creator == currentUser) {
                 oldContentItem.archived = contentItemDTO.archived
-                oldContentItem.gmNotes = contentItemDTO.gmNotes ?: ""
-                oldContentItem.notes = contentItemDTO.notes ?: ""
                 oldContentItem.name = contentItemDTO.name
                 oldContentItem.visibleToPlayers = contentItemDTO.visibleToPlayers
             }
@@ -55,7 +53,6 @@ class ContentService(val campaignService: CampaignService) {
             val visibleContentItemDTOs = contentItems
                     .filter { contentItem -> contentItem.visibleToPlayers }
                     .map { ContentItemDTO(it) }
-            visibleContentItemDTOs.forEach { it.gmNotes = null }
             return visibleContentItemDTOs
         }
 
@@ -63,7 +60,7 @@ class ContentService(val campaignService: CampaignService) {
     }
 
     @Transactional
-    fun saveImage(campaignId: Long, user: User, images: List<MultipartFile>) {
+    fun saveImage(campaignId: Long, user: UserDTO, images: List<MultipartFile>) {
         val currentCampaign = Campaign.findById(campaignId)!!
         campaignService.userCanModify(user, currentCampaign)
 
@@ -83,7 +80,7 @@ class ContentService(val campaignService: CampaignService) {
     }
 
     @Transactional(readOnly = true)
-    fun getImage(campaignId: Long, user: User, fileName: String): CampaignImageDTO {
+    fun getImage(campaignId: Long, user: UserDTO, fileName: String): CampaignImageDTO {
         val currentCampaign = Campaign.findById(campaignId)!!
         campaignService.userCanAccess(user, currentCampaign)
 
@@ -91,6 +88,13 @@ class ContentService(val campaignService: CampaignService) {
                 .find { CampaignImages.fileName eq fileName and (CampaignImages.campaign eq currentCampaign.id) }
                 .map { CampaignImageDTO(it) }
                 .first()
+    }
+
+    @Transactional
+    fun getContentItemTemplates(): ContentTemplatesDTO {
+        val contentTemplates =  ContentItemTemplate.all().map { ContentItemTemplateDTO(it) }
+
+        return ContentTemplatesDTO(contentTemplates)
     }
 }
 

@@ -48,6 +48,30 @@ export function login(authResponse) {
   };
 }
 
+function setBasicAuth(username, password) {
+  let basicAuth = new Buffer(`${username}:${password}`).toString('base64');
+  axios.defaults.headers.common['Authorization'] = `Basic ${basicAuth}`;
+  localStorage.setItem('basicAuth', basicAuth);
+}
+
+export function loginBasicAuth(username, password) {
+  return (dispatch) => {
+    setBasicAuth(username, password);
+
+    return axios.post('/api/users/login')
+      .then((response) => {
+        if (response.data.username) {
+          dispatch(loginUserSuccess(response.data));
+        } else {
+          dispatch(loginUserFailure(response.data));
+        }
+      })
+      .catch((error) => {
+        dispatch(loginUserFailure(error));
+      });
+  };
+}
+
 export function initializeUser() {
   return (dispatch) => {
     initializeGoogleAPI(dispatch);

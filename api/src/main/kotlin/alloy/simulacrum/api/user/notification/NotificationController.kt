@@ -1,7 +1,7 @@
 package alloy.simulacrum.api.user.notification
 
 import alloy.simulacrum.api.Pageable
-import alloy.simulacrum.api.user.User
+import alloy.simulacrum.api.user.UserDTO
 import mu.KLogging
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -13,7 +13,7 @@ class NotificationController(val notificationService: NotificationService) {
 
     @GetMapping("/currentUser")
     fun getNotifications(
-            @AuthenticationPrincipal user: User,
+            @AuthenticationPrincipal user: UserDTO,
             @RequestParam(defaultValue = "[0,9]") range: String?,
             @RequestParam filter: String?,
             @RequestParam sort: String?
@@ -24,7 +24,7 @@ class NotificationController(val notificationService: NotificationService) {
     }
 
     @PostMapping("/{notificationId}/read")
-    fun markNotificationRead(@AuthenticationPrincipal user: User, @PathVariable notificationId: Long): NotificationDTO {
+    fun markNotificationRead(@AuthenticationPrincipal user: UserDTO, @PathVariable notificationId: Long): NotificationDTO {
         return notificationService.markNotificationRead(user, notificationId)
     }
 }

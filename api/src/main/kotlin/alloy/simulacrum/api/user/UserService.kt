@@ -3,11 +3,12 @@ package alloy.simulacrum.api.user
 import alloy.simulacrum.api.Page
 import alloy.simulacrum.api.Pageable
 import alloy.simulacrum.api.withPageable
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.dao.with
 import org.joda.time.DateTime
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,10 +17,13 @@ class UserService : UserDetailsService {
 
     @Transactional
     override fun loadUserByUsername(username: String?): UserDetails? {
-        return Users
-                .select { Users.username.eq(username!!) }
-                .mapNotNull { User.wrapRow(it) }
-                .firstOrNull()
+        if(username == null) {
+            throw UsernameNotFoundException(username)
+        }
+        return User.find { Users.username eq username }
+                .with(User::roles, Role::permissions)
+                .map { UserDTO(it) }
+                .firstOrNull() ?: throw UsernameNotFoundException(username)
     }
 
     /**
@@ -27,26 +31,21 @@ class UserService : UserDetailsService {
      */
     @Transactional
     fun loadAuthoritiesForUser(username: String): List<GrantedAuthority> {
-        val roles = (Roles innerJoin Users)
-                .select { Users.username.eq(username) }
-                .mapNotNull { Role.wrapRow(it) }
+        val user = User.find { Users.username eq username }
+                .with(User::roles, Role::permissions)
+                .first()
 
         val allAuths = mutableListOf<GrantedAuthority>()
-        allAuths.addAll(roles)
-        allAuths.addAll(
-                Permissions
-                        .select { Permissions.role inList roles.map { it.id } }
-                        .mapNotNull { Permission.wrapRow(it) }
-        )
-
+        allAuths.addAll(user.roles.map { RolesDTO(it) })
+        allAuths.addAll(user.roles.map { it.permissions }.flatMap { it.map { PermissionDTO(it) } })
         return allAuths
     }
 
     @Transactional
-    fun registerUser(userDTO: UserDTO): User {
+    fun registerUser(userDTO: UserDTO): UserDTO {
         val newUser = User.new {
-            userName = userDTO.username
-            email = userDTO.username
+            userName = userDTO.username!!
+            email = userDTO.username!!
             firstName = userDTO.firstName
             lastName = userDTO.lastName
         }
@@ -56,13 +55,14 @@ class UserService : UserDetailsService {
             roleName = "ROLE_USER"
         }
 
-        return newUser
+        return UserDTO(newUser)
     }
 
     @Transactional
-    fun registerLogin(user: User): User {
-        user.lastLogin = DateTime.now()
-        return user
+    fun registerLogin(user: UserDTO): UserDTO {
+        val dbUser = User.findById(user.id!!)!!
+        dbUser.lastLogin = DateTime.now()
+        return UserDTO(dbUser)
     }
 
     @Transactional
@@ -92,7 +92,7 @@ class UserService : UserDetailsService {
     @Transactional
     fun update(userId: Long, userDTO: UserDTO): UserDTO {
         val user = User.findById(userId)!!
-        user.enabled = userDTO.enabled!!
+        user.enabled = userDTO.enabled
         return UserDTO(user)
     }
 }
