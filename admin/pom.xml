@@ -8,8 +8,8 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.alloy</groupId>
-        <artifactId>simulacrum</artifactId>
+        <groupId>com.simulacrum</groupId>
+        <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 

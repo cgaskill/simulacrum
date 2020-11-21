@@ -48,7 +48,7 @@ logging:
     file: "%d %-5level [%thread] %logger : %msg%n"
   level:
     root: INFO
-    alloy.simulacrum.api: INFO
+    com.simulacrum.api: INFO
 #    org.springframework.web.socket.sockjs: DEBUG
 
 bucket4j:

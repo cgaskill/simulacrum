@@ -8,8 +8,8 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.alloy</groupId>
-        <artifactId>simulacrum</artifactId>
+        <groupId>com.simulacrum</groupId>
+        <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -110,12 +110,12 @@
             <version>${exposed.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alloy</groupId>
+            <groupId>com.simulacrum</groupId>
             <artifactId>app</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.alloy</groupId>
+            <groupId>com.simulacrum</groupId>
             <artifactId>admin</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
